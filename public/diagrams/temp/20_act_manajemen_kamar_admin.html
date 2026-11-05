@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram Aktivitas: Manajemen Data Kamar oleh Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram Aktivitas: Manajemen Data Kamar oleh Admin</h1>
+      <p>Alur Aktivitas Administrator Mengelola Kamar (Tambah, Edit, Hapus, Upload Foto)</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+flowchart TD
+    Start(["Admin Login"]) --> OpenRoomMenu["Akses Menu Kamar di Sidebar Admin"]
+    OpenRoomMenu --> ViewRoomList["Sistem Menampilkan Tabel Semua Kamar & Okupansi"]
+    ViewRoomList --> ChooseAction{"Pilih Tindakan"}
+
+    ChooseAction -->|Tambah Kamar| FormCreate["Buka Formulir Tambah Kamar"]
+    FormCreate --> InputRoomData["Isi Nama, Tipe, Harga, Pajak, Layanan, Kapasitas, & Fasilitas"]
+    InputRoomData --> SaveNewRoom["Klik Simpan"]
+    SaveNewRoom --> ValidateRoom{"Validasi Data Sukses?"}
+    ValidateRoom -->|Gagal| ErrRoom["Tampilkan Kesalahan Validasi"]
+    ErrRoom --> FormCreate
+    ValidateRoom -->|Sukses| UploadImg["Simpan File Gambar ke Storage Public"]
+    UploadImg --> InsertRoomDB["Insert Data ke Tabel Rooms"]
+    InsertRoomDB --> RefreshList["Kembali ke List Kamar dengan Flash Notifikasi Sukses"]
+
+    ChooseAction -->|Ubah Kamar| FormEdit["Buka Formulir Edit Kamar Terpilih"]
+    FormEdit --> ChangeData["Ubah Rincian / Status Aktif / Foto Baru"]
+    ChangeData --> UpdateDB["Update Data Kamar ke Database"]
+    UpdateDB --> RefreshList
+
+    ChooseAction -->|Hapus Kamar| ConfirmDel{"Konfirmasi Hapus Data?"}
+    ConfirmDel -->|Batal| ViewRoomList
+    ConfirmDel -->|Ya| DeleteDB["Hapus Data Kamar dari Database"]
+    DeleteDB --> RefreshList
+
+    RefreshList --> End(["Selesai"])
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

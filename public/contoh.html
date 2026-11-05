@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rama Homestay</title>
+    <style>
+        body { text-align: center; background: #f8fafc; }
+        p { color: #475569; }
+        a { color: #b45309; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <p id="pesan">Selamat datang di Rama Homestay.</p>
+    <a href="#" id="tombol">Lihat Kamar</a>
+
+    <script>
+        document.getElementById('tombol').onclick = () => {
+            document.getElementById('pesan').innerText = "Memuat daftar kamar...";
+        };
+    </script>
+</body>
+</html>

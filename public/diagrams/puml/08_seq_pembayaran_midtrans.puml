@@ -1,0 +1,127 @@
+@startuml 08_seq_pembayaran_midtrans
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #4: Pembayaran via Midtrans Snap & Webhook
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PEMBAYARAN MIDTRANS SNAP & WEBHOOK NOTIFIKASI
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu" as Tamu
+boundary "Snap Modal UI\n(Midtrans JS)" as SnapUI
+boundary "Midtrans Gateway\nServer" as MidServer
+control "MidtransController" as MidCtrl
+control "MidtransService" as MidService
+entity "Reservation\n(Model)" as ResModel
+database "Database MySQL" as DB
+
+Tamu -> SnapUI : Klik tombol "Bayar Sekarang" (snap.pay(token))
+activate SnapUI
+
+SnapUI --> Tamu : Tampilkan pilihan metode bayar (GoPay, QRIS, VA Bank)
+Tamu -> SnapUI : Pilih metode & selesaikan transaksi bayar
+SnapUI -> MidServer : Proses pembayaran transaksi pelanggan
+activate MidServer
+MidServer --> SnapUI : Status transaksi berhasil (settlement / capture)
+deactivate MidServer
+SnapUI --> Tamu : Tampilkan pesan pembayaran sukses
+deactivate SnapUI
+
+== Jalur A: Webhook Otomatis Server-to-Server (Asinkron) ==
+
+MidServer -> MidCtrl : POST /midtrans/notification (Payload JSON)
+activate MidServer
+activate MidCtrl
+
+MidCtrl -> MidService : handleNotification(payload)
+activate MidService
+
+MidService -> MidService : Validasi SHA512 Signature Hash (order_id, status_code, gross_amount, server_key)
+
+alt #White [Signature Valid]
+    MidService -> ResModel : where('booking_code', order_id)->firstOrFail()
+    activate ResModel
+    ResModel -> DB : SELECT * FROM reservations WHERE booking_code = ?
+    activate DB
+    DB --> ResModel : Data reservasi ditemukan
+    deactivate DB
+    ResModel --> MidService : Objek $reservation
+    deactivate ResModel
+
+    MidService -> MidService : applyPaymentStatus($reservation, transaction_status, fraud_status)
+    MidService -> ResModel : update([status='confirmed', paid_at=NOW(), midtrans_transaction_id, ...])
+    activate ResModel
+    ResModel -> DB : UPDATE reservations SET status='confirmed', paid_at=NOW() ...
+    activate DB
+    DB --> ResModel : Sukses update status LUNAS
+    deactivate DB
+    ResModel --> MidService : Record terupdate
+    deactivate ResModel
+
+    MidService --> MidCtrl : return true
+    deactivate MidService
+
+    MidCtrl --> MidServer : HTTP 200 OK (Response: {"status": "success"})
+    deactivate MidCtrl
+
+else #White [Signature Invalid / Fraud]
+    MidService --> MidCtrl : return false
+    activate MidCtrl
+    MidCtrl --> MidServer : HTTP 400 Bad Request (Response: {"status": "error"})
+    deactivate MidCtrl
+end
+deactivate MidServer
+
+== Jalur B: Pengalihan Browser Tamu (Synchronous Return) ==
+
+SnapUI -> MidCtrl : Redirect browser ke /midtrans/finish?order_id=...
+activate MidCtrl
+
+MidCtrl -> MidService : checkStatus(order_id)
+activate MidService
+MidService -> MidServer : GET /v2/{order_id}/status
+activate MidServer
+MidServer --> MidService : Detail status transaksi (settlement)
+deactivate MidServer
+MidService --> MidCtrl : Status settlement terkonfirmasi
+deactivate MidService
+
+MidCtrl -> ResModel : update(['status' => 'confirmed', 'paid_at' => NOW()])
+activate ResModel
+ResModel -> DB : Pastikan data tersinkronisasi lunas
+activate DB
+DB --> ResModel : Sukses sinkronisasi
+deactivate DB
+ResModel --> MidCtrl : Status confirmed
+deactivate ResModel
+
+MidCtrl --> Tamu : Redirect ke /tamu/book-success (Tampilkan E-Tiket LUNAS)
+deactivate MidCtrl
+
+@enduml

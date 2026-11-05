@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram Sequence: Registrasi & Login Akun</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram Sequence: Registrasi & Login Akun</h1>
+      <p>Alur Pendaftaran Akun Tamu dan Login Pengguna / Administrator</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu / Pengguna
+    participant View as View (Blade)
+    participant AuthCtrl as AuthController
+    participant User as Model User
+    participant Session as Laravel Session
+
+    rect rgb(240, 248, 255)
+    note over Tamu, User: Alur Registrasi Akun Baru
+    Tamu->>View: Buka halaman pendaftaran (/register)
+    View-->>Tamu: Tampilkan formulir registrasi
+    Tamu->>AuthCtrl: POST /register (name, email, phone, password)
+    AuthCtrl->>AuthCtrl: Validasi input data
+    AuthCtrl->>User: create([name, email, phone, password, role=tamu])
+    User-->>AuthCtrl: User baru tersimpan
+    AuthCtrl->>Session: Auth::login($user)
+    AuthCtrl-->>Tamu: Redirect ke /tamu/dashboard
+    end
+
+    rect rgb(255, 250, 240)
+    note over Tamu, User: Alur Login Pengguna
+    Tamu->>View: Buka halaman login (/login)
+    View-->>Tamu: Tampilkan formulir login
+    Tamu->>AuthCtrl: POST /login (email, password)
+    AuthCtrl->>AuthCtrl: Auth::attempt(credentials)
+    alt Kredensial Valid
+        AuthCtrl->>User: Cek role pengguna
+        alt Role == admin
+            AuthCtrl-->>Tamu: Redirect ke route(admin.dashboard)
+        else Role == tamu
+            AuthCtrl-->>Tamu: Redirect ke route(tamu.dashboard)
+        end
+    else Kredensial Salah
+        AuthCtrl-->>View: Kembalikan withErrors
+        View-->>Tamu: Tampilkan pesan gagal login
+    end
+    end
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

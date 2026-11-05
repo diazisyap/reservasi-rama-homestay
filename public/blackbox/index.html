@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengujian Black Box - Sistem Reservasi Rama Homestay</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    /* Tombol Aksi Download */
+    .action-bar {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #000000;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: #ffffff;
+      color: #000000;
+      border: 1.5px solid #000000;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* Header Dokumen */
+    .document-header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 3px double #000000;
+    }
+
+    .document-header h1 {
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+    }
+
+    .document-header p {
+      font-size: 13px;
+    }
+
+    /* Kotak Informasi Pengujian */
+    .summary-box {
+      border: 1px solid #000000;
+      padding: 12px 18px;
+      margin-bottom: 25px;
+    }
+
+    .summary-box h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #000000;
+      padding-bottom: 4px;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .summary-table td {
+      padding: 4px 6px;
+      font-size: 12.5px;
+      border-bottom: 1px dotted #888888;
+    }
+
+    .summary-table td:first-child {
+      font-weight: bold;
+      width: 200px;
+    }
+
+    /* Judul Kategori Pengujian */
+    .category-title {
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 30px 0 10px 0;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #000000;
+    }
+
+    /* Tabel Pengujian */
+    .test-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #000000;
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+
+    .test-table th,
+    .test-table td {
+      border: 1px solid #000000;
+      padding: 7px 10px;
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    .test-table th {
+      background-color: #f2f2f2;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .test-table td.col-center {
+      text-align: center;
+    }
+
+    .col-no { width: 35px; }
+    .col-feature { width: 150px; }
+    .col-input { width: 220px; }
+    .col-expected { width: 230px; }
+    .col-actual { width: 200px; }
+    .col-status { width: 75px; }
+
+    /* Pengaturan Cetak / PDF */
+    @media print {
+      body {
+        padding: 0;
+      }
+      .action-bar {
+        display: none !important;
+      }
+      .test-table {
+        page-break-inside: avoid;
+      }
+      .test-table th {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="documentContent">
+
+  <!-- TOMBOL DOWNLOAD DAN CETAK -->
+  <div class="action-bar">
+    <button class="btn" onclick="window.print()">Cetak / Simpan ke PDF</button>
+    <button class="btn" onclick="downloadWord()">Download File Word (.doc)</button>
+    <button class="btn" onclick="downloadMarkdown()">Download File Teks (.md)</button>
+  </div>
+
+  <!-- KOP DOKUMEN -->
+  <div class="document-header">
+    <h1>Laporan Hasil Pengujian Black Box</h1>
+    <h1>Sistem Reservasi Rama Homestay</h1>
+    <p>Pengujian Fungsionalitas Sistem — Format Hitam Putih</p>
+  </div>
+
+  <!-- INFORMASI PENGUJIAN -->
+  <div class="summary-box">
+    <h2>Informasi Pengujian</h2>
+    <table class="summary-table">
+      <tr>
+        <td>Metode Pengujian</td>
+        <td>Black Box Testing (Equivalence Partitioning & Boundary Value Analysis)</td>
+      </tr>
+      <tr>
+        <td>Objek Pengujian</td>
+        <td>Sistem Reservasi Rama Homestay (Website Tamu & Panel Administrator)</td>
+      </tr>
+      <tr>
+        <td>Tujuan Pengujian</td>
+        <td>Memastikan setiap fungsi berjalan sesuai kebutuhan tanpa kesalahan alur kerja</td>
+      </tr>
+      <tr>
+        <td>Kriteria Kesimpulan</td>
+        <td>Sesuai (Hasil pengujian di lapangan sama dengan hasil yang diharapkan)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ======================= 1. PENGUJIAN FITUR TAMU ======================= -->
+  <div class="category-title">1. Pengujian Fungsionalitas Tamu</div>
+
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th class="col-no">No</th>
+        <th class="col-feature">Fungsi yang Diuji</th>
+        <th class="col-input">Aksi / Data Masukan</th>
+        <th class="col-expected">Hasil yang Diharapkan</th>
+        <th class="col-actual">Hasil Pengamatan</th>
+        <th class="col-status">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-center">1</td>
+        <td>Registrasi Tamu (Data Valid)</td>
+        <td>Mengisi nama, email baru, nomor WhatsApp, dan kata sandi dengan benar, lalu klik Daftar.</td>
+        <td>Sistem menyimpan akun baru dan tamu langsung dialihkan ke halaman utama dalam kondisi sudah login.</td>
+        <td>Akun berhasil tersimpan dan langsung diarahkan ke halaman beranda.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">2</td>
+        <td>Registrasi Tamu (Email Sudah Terdaftar)</td>
+        <td>Mendaftar menggunakan email yang sudah pernah dipakai akun lain.</td>
+        <td>Sistem menolak pendaftaran dan memunculkan pesan peringatan bahwa email sudah terdaftar.</td>
+        <td>Pesan kesalahan "Email sudah digunakan" muncul, form tidak tersimpan.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">3</td>
+        <td>Registrasi Tamu (Data Kosong)</td>
+        <td>Mengosongkan form pendaftaran lalu langsung klik Daftar.</td>
+        <td>Sistem memblokir proses dan meminta tamu mengisi seluruh kolom wajib.</td>
+        <td>Muncul peringatan kolom wajib diisi pada masing-masing input.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">4</td>
+        <td>Login Tamu (Data Benar)</td>
+        <td>Memasukkan email dan kata sandi yang sesuai, lalu klik Masuk.</td>
+        <td>Sistem memvalidasi data dan tamu berhasil masuk ke halaman akun pribadinya.</td>
+        <td>Tamu berhasil login dan nama akun tampil di pojok kanan atas.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">5</td>
+        <td>Login Tamu (Kata Sandi Salah)</td>
+        <td>Memasukkan email terdaftar namun kata sandi salah.</td>
+        <td>Sistem menolak login dan memunculkan peringatan kata sandi tidak cocok.</td>
+        <td>Muncul pesan bahwa email atau kata sandi tidak valid.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">6</td>
+        <td>Logout Tamu</td>
+        <td>Menekan tombol Keluar / Logout pada menu profil.</td>
+        <td>Sesi login dihapus dan sistem mengembalikan tampilan ke halaman beranda publik.</td>
+        <td>Sesi login terputus dan tombol Masuk kembali muncul.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">7</td>
+        <td>Melihat Katalog & Filter Kamar</td>
+        <td>Memilih filter kategori tipe kamar atau rentang harga tertentu.</td>
+        <td>Sistem menampilkan daftar kamar yang sesuai dengan kriteria yang dipilih.</td>
+        <td>Daftar kamar terfilter secara tepat sesuai kriteria yang dipilih.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">8</td>
+        <td>Melihat Detail Kamar</td>
+        <td>Mengklik salah satu kartu kamar dari halaman katalog.</td>
+        <td>Sistem menampilkan halaman detail kamar lengkap dengan galeri foto, fasilitas, kapasitas, dan tarif.</td>
+        <td>Informasi detail kamar, fasilitas, dan foto tampil lengkap.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">9</td>
+        <td>Pemeriksaan Ketersediaan Kamar (Kamar Kosong)</td>
+        <td>Memilih tanggal check-in dan check-out yang belum dipesan tamu lain.</td>
+        <td>Sistem menyatakan kamar tersedia dan mengaktifkan tombol Pesan Sekarang.</td>
+        <td>Kalender menandai tanggal kosong dan tombol pesan dapat diklik.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">10</td>
+        <td>Pemeriksaan Ketersediaan Kamar (Kamar Sudah Penuh)</td>
+        <td>Memilih tanggal yang sudah dipesan tamu lain atau ditutup admin.</td>
+        <td>Sistem mengabarkan bahwa kamar pada tanggal tersebut sudah penuh/tidak tersedia.</td>
+        <td>Tanggal tidak dapat dipilih dan muncul peringatan kamar terisi.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">11</td>
+        <td>Membuat Reservasi (Belum Login)</td>
+        <td>Mencoba memesan kamar tanpa melakukan login terlebih dahulu.</td>
+        <td>Sistem meminta tamu untuk login terlebih dahulu sebelum mengisi formulir reservasi.</td>
+        <td>Tamu dialihkan ke halaman login dengan pesan arahan login.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">12</td>
+        <td>Membuat Reservasi Kamar & Tambah Add-on</td>
+        <td>Mengisi data reservasi dan mencentang layanan tambahan (misal: sarapan pagi).</td>
+        <td>Sistem menghitung total harga kamar ditambah harga add-on secara otomatis dan menerbitkan tagihan.</td>
+        <td>Total harga terhitung akurat sesuai jumlah malam dan pilihan add-on.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">13</td>
+        <td>Pembayaran Reservasi (Midtrans Snap)</td>
+        <td>Menekan tombol Bayar Sekarang pada halaman tagihan pesanan.</td>
+        <td>Sistem memunculkan jendela pembayaran Midtrans dengan opsi transfer bank, QRIS, dan e-wallet.</td>
+        <td>Jendela pop-up Midtrans muncul dengan nomor tagihan dan metode bayar lengkap.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">14</td>
+        <td>Melihat Riwayat Reservasi</td>
+        <td>Membuka halaman Riwayat Pemesanan pada menu akun.</td>
+        <td>Sistem menyajikan daftar seluruh pesanan milik tamu beserta status masing-masing.</td>
+        <td>Daftar riwayat transaksi tertampil rapi beserta status pembayarannya.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">15</td>
+        <td>Melihat Detail Reservasi</td>
+        <td>Mengklik salah satu pesanan dari daftar riwayat.</td>
+        <td>Sistem menampilkan rincian nomor pesanan, kamar, tanggal menginap, rincian biaya, dan instruksi check-in.</td>
+        <td>Rincian pemesanan tertampil lengkap dan jelas.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">16</td>
+        <td>Mengunduh E-Tiket (Pesanan Lunas)</td>
+        <td>Menekan tombol Unduh E-Tiket pada pesanan yang sudah berstatus lunas.</td>
+        <td>Sistem menghasilkan file PDF bukti reservasi resmi yang dilengkapi kode pesanan.</td>
+        <td>File PDF e-tiket berhasil terunduh ke perangkat pengguna.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">17</td>
+        <td>Pembatalan Reservasi</td>
+        <td>Memilih pesanan aktif yang belum check-in, klik Batalkan, dan masukkan alasan.</td>
+        <td>Sistem mengubah status pesanan menjadi Dibatalkan dan membuka kembali jadwal kamar.</td>
+        <td>Status pesanan berubah jadi Dibatalkan dan kamar kembali kosong di kalender.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">18</td>
+        <td>Pengajuan Refund</td>
+        <td>Mengisi form refund (rekening bank & bukti) pada pesanan lunas yang dibatalkan.</td>
+        <td>Sistem menyimpan pengajuan refund dan memberi notifikasi bahwa data sedang diperiksa admin.</td>
+        <td>Pengajuan refund tercatat dan status berubah menjadi Menunggu Persetujuan.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">19</td>
+        <td>Memberikan Ulasan & Rating</td>
+        <td>Mengisi rating bintang (1-5) dan komentar ulasan pada pesanan yang sudah selesai (check-out).</td>
+        <td>Sistem menyimpan ulasan untuk diperiksa terlebih dahulu oleh pengelola homestay.</td>
+        <td>Ulasan tersimpan dan muncul notifikasi ulasan menunggu verifikasi.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">20</td>
+        <td>Mengubah Profil Akun</td>
+        <td>Memperbarui nama lengkap, nomor kontak, dan mengganti kata sandi.</td>
+        <td>Sistem memperbarui informasi akun pribadi dengan data baru.</td>
+        <td>Data profil berhasil diperbarui dan tersimpan di database.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ===================== 2. PENGUJIAN FITUR ADMINISTRATOR ===================== -->
+  <div class="category-title">2. Pengujian Fungsionalitas Administrator</div>
+
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th class="col-no">No</th>
+        <th class="col-feature">Fungsi yang Diuji</th>
+        <th class="col-input">Aksi / Data Masukan</th>
+        <th class="col-expected">Hasil yang Diharapkan</th>
+        <th class="col-actual">Hasil Pengamatan</th>
+        <th class="col-status">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-center">21</td>
+        <td>Login Administrator (Kredensial Benar)</td>
+        <td>Memasukkan email dan kata sandi admin yang sah pada halaman login admin.</td>
+        <td>Sistem memverifikasi hak akses admin dan menampilkan dashboard pengelolaan utama.</td>
+        <td>Berhasil masuk ke dashboard panel admin.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">22</td>
+        <td>Login Administrator (Bukan Akun Admin)</td>
+        <td>Memasukkan akun tamu biasa pada halaman login admin.</td>
+        <td>Sistem menolak akses dan memunculkan peringatan hak akses ditolak.</td>
+        <td>Akses ditolak, sistem memberi pesan bahwa akun bukan pengelola.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">23</td>
+        <td>Tambah Data Kamar Baru</td>
+        <td>Mengisi nama kamar, tipe, tarif per malam, kapasitas, fasilitas, dan mengunggah foto kamar.</td>
+        <td>Sistem menyimpan kamar baru ke database dan kamar tampil pada daftar katalog website.</td>
+        <td>Data kamar baru tersimpan dan langsung muncul di halaman kamar website.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">24</td>
+        <td>Edit Data Kamar</td>
+        <td>Mengubah tarif harga per malam dan daftar fasilitas pada salah satu kamar.</td>
+        <td>Sistem memperbarui data kamar tersebut dan menampilkan perubahan harga terbaru.</td>
+        <td>Perubahan tarif dan fasilitas berhasil diperbarui secara instan.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">25</td>
+        <td>Hapus / Nonaktifkan Kamar</td>
+        <td>Menekan tombol hapus/nonaktifkan pada salah satu kamar.</td>
+        <td>Sistem meminta konfirmasi, lalu menyembunyikan kamar dari pilihan pemesanan tamu.</td>
+        <td>Kamar berstatus nonaktif dan tidak lagi muncul di halaman pencarian tamu.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">26</td>
+        <td>Tutup Ketersediaan Kamar (Kalender)</td>
+        <td>Memilih kamar dan menandai tanggal tertentu sebagai "Ditutup / Renovasi".</td>
+        <td>Kalender pemesanan mengunci tanggal tersebut sehingga tamu tidak bisa memesan.</td>
+        <td>Tanggal yang dikunci berwarna abu-abu pada kalender tamu dan tidak dapat diklik.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">27</td>
+        <td>Kelola Kategori Kamar</td>
+        <td>Menambahkan tipe kategori baru (misalnya "Family Suite").</td>
+        <td>Kategori baru tersimpan dan dapat dipilih saat menambah kamar baru.</td>
+        <td>Kategori baru muncul di opsi pilihan kategori kamar.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">28</td>
+        <td>Kelola Fasilitas Homestay</td>
+        <td>Menambahkan nama fasilitas baru (misalnya "Air Panas & Netflix").</td>
+        <td>Fasilitas baru tersimpan dan dapat dicentang pada detail kamar.</td>
+        <td>Fasilitas baru berhasil ditambahkan ke daftar pilihan fasilitas.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">29</td>
+        <td>Melihat & Filter Data Reservasi</td>
+        <td>Membuka data pesanan dan memfilter berdasarkan status "Menunggu Pembayaran".</td>
+        <td>Sistem menampilkan hanya daftar pesanan yang berstatus menunggu pembayaran.</td>
+        <td>Tabel reservasi menampilkan data yang tepat sesuai filter status.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">30</td>
+        <td>Update Status Tamu Check-In</td>
+        <td>Memilih pesanan tamu yang tiba di homestay dan mengubah status ke "Check-In".</td>
+        <td>Sistem memperbarui status pesanan menjadi tamu sedang menginap dan mencatat jam kedatangan.</td>
+        <td>Status pesanan berhasil berubah menjadi Check-In secara real-time.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">31</td>
+        <td>Update Status Tamu Check-Out</td>
+        <td>Memilih pesanan tamu yang telah selesai dan mengubah status ke "Check-Out".</td>
+        <td>Sistem menandai pesanan selesai dan mengaktifkan hak bagi tamu untuk mengisi ulasan.</td>
+        <td>Status pesanan berubah menjadi Selesai dan tombol ulasan aktif pada akun tamu.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">32</td>
+        <td>Proses Persetujuan Refund</td>
+        <td>Membuka permohonan refund, memeriksa rekening tamu, lalu menekan tombol Setujui.</td>
+        <td>Sistem mengubah status refund menjadi Disetujui / Selesai dan memberi kabar ke tamu.</td>
+        <td>Status refund tercatat selesai dan terekam di riwayat keuangan.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">33</td>
+        <td>Kelola Layanan Tambahan (Add-on)</td>
+        <td>Menambahkan layanan tambahan baru beserta tarifnya (misal: "Sewa Sepeda Rp 25.000").</td>
+        <td>Layanan baru tersimpan dan otomatis muncul di formulir pemesanan tamu.</td>
+        <td>Layanan ekstra berhasil tersimpan dan tampil di pilihan pesanan tamu.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">34</td>
+        <td>Membuat Laporan Pendapatan</td>
+        <td>Menentukan tanggal awal dan tanggal akhir bulan berjalan pada menu Laporan.</td>
+        <td>Sistem menghitung total jumlah transaksi, kamar tersewa, dan total penerimaan uang.</td>
+        <td>Angka total reservasi dan pemasukan dihitung akurat sesuai database transaksi.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">35</td>
+        <td>Ekspor Laporan ke PDF / Excel</td>
+        <td>Menekan tombol Unduh PDF pada hasil ringkasan laporan bulanan.</td>
+        <td>Sistem mengunduh berkas laporan rekapitulasi dalam bentuk dokumen PDF siap cetak.</td>
+        <td>File dokumen PDF laporan berhasil terunduh dengan tabel dan data yang rapi.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">36</td>
+        <td>Melihat Data Pelanggan / Tamu</td>
+        <td>Membuka menu Data Tamu untuk melihat riwayat akun pengguna.</td>
+        <td>Sistem menampilkan daftar nama tamu, nomor telepon, email, dan jumlah pesanan yang pernah dibuat.</td>
+        <td>Daftar data seluruh tamu tertampil secara jelas.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">37</td>
+        <td>Moderasi Testimoni (Setujui Ulasan)</td>
+        <td>Membaca ulasan masuk dari tamu dan menekan tombol Setujui.</td>
+        <td>Ulasan tersebut langsung tampil di halaman depan website homestay untuk dilihat umum.</td>
+        <td>Ulasan langsung muncul pada daftar testimoni di beranda.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">38</td>
+        <td>Moderasi Testimoni (Tolak Ulasan)</td>
+        <td>Membaca ulasan yang tidak pantas dan menekan tombol Tolak / Hapus.</td>
+        <td>Ulasan dihapus atau disembunyikan dan tidak akan pernah tampil ke publik.</td>
+        <td>Ulasan ditolak dan tidak tampil di halaman umum website.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ===================== 3. PENGUJIAN SISTEM OTOMATIS ===================== -->
+  <div class="category-title">3. Pengujian Otomatisasi Sistem & Notifikasi Pembayaran</div>
+
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th class="col-no">No</th>
+        <th class="col-feature">Fungsi yang Diuji</th>
+        <th class="col-input">Aksi / Data Masukan</th>
+        <th class="col-expected">Hasil yang Diharapkan</th>
+        <th class="col-actual">Hasil Pengamatan</th>
+        <th class="col-status">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-center">39</td>
+        <td>Penerimaan Notifikasi Bayar Berhasil (Settlement)</td>
+        <td>Midtrans mengirim data status settlement melalui webhook server.</td>
+        <td>Sistem memverifikasi data dan secara otomatis mengubah status pesanan dari "Menunggu Pembayaran" menjadi "Dikonfirmasi".</td>
+        <td>Status pesanan otomatis berubah jadi Dikonfirmasi tanpa perlu tindakan manual admin.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+      <tr>
+        <td class="col-center">40</td>
+        <td>Pemberitahuan Waktu Bayar Habis (Expire)</td>
+        <td>Batas waktu pembayaran habis tanpa ada transfer dana dari tamu.</td>
+        <td>Sistem otomatis membatalkan pesanan (Expired) dan mengembalikan jadwal kamar agar bisa dipesan orang lain.</td>
+        <td>Pesanan otomatis Dibatalkan dan tanggal kamar di kalender langsung terbuka kembali.</td>
+        <td class="col-center">Sesuai</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- KESIMPULAN AKHIR -->
+  <div class="summary-box">
+    <h2>Kesimpulan Hasil Pengujian</h2>
+    <p style="font-size: 13px; line-height: 1.6;">
+      Berdasarkan pengujian black box yang dilakukan pada 40 skenario pengujian yang mencakup fungsionalitas Tamu, fungsionalitas Administrator, serta integrasi otomatisasi gerbang pembayaran Midtrans:
+      <br /><br />
+      <strong>1. Seluruh 40 skenario pengujian menghasilkan status "Sesuai" (Valid).</strong><br />
+      <strong>2. Tidak ditemukan kegagalan logika sistem, kebocoran data akses, maupun kesalahan kalkulasi harga.</strong><br />
+      <strong>3. Sistem Reservasi Rama Homestay telah memenuhi seluruh kebutuhan fungsional dan siap dioperasikan secara penuh.</strong>
+    </p>
+  </div>
+
+</div>
+
+<!-- SCRIPT UNTUK DOWNLOAD DOKUMEN -->
+<script>
+  // Fungsi untuk download ke format file Microsoft Word (.doc)
+  function downloadWord() {
+    var content = document.getElementById('documentContent').innerHTML;
+    // Hapus tombol aksi dari konten ekspor
+    var cleanContent = content.replace(/<div class="action-bar">[\s\S]*?<\/div>/, '');
+    
+    var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                 "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                 "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                 "<head><meta charset='utf-8'><title>Laporan Pengujian Black Box</title>" +
+                 "<style>" +
+                 "body { font-family: 'Times New Roman', serif; color: #000; font-size: 11pt; }" +
+                 "table { border-collapse: collapse; width: 100%; margin-bottom: 12pt; }" +
+                 "th, td { border: 1pt solid #000; padding: 4pt 6pt; font-size: 9.5pt; }" +
+                 "th { background-color: #f2f2f2; text-align: center; }" +
+                 "h1 { text-align: center; font-size: 13pt; margin-bottom: 4pt; }" +
+                 "h2 { font-size: 11pt; margin-top: 10pt; border-bottom: 1pt solid #000; padding-bottom: 3pt; }" +
+                 ".category-title { font-weight: bold; font-size: 11pt; margin-top: 15pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; }" +
+                 "</style></head><body>";
+    var footer = "</body></html>";
+    
+    var sourceHTML = header + cleanContent + footer;
+    var blob = new Blob(['\ufeff' + sourceHTML], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'Laporan_Pengujian_Blackbox_Rama_Homestay.doc';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Fungsi untuk download ke file Markdown (.md)
+  function downloadMarkdown() {
+    var a = document.createElement('a');
+    a.href = '/BLACKBOX.md';
+    a.download = 'Laporan_Pengujian_Blackbox_Rama_Homestay.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>
+
+</body>
+</html>

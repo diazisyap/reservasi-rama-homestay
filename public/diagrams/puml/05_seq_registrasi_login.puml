@@ -1,0 +1,115 @@
+@startuml 05_seq_registrasi_login
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #1: Registrasi & Login Akun
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: REGISTRASI & LOGIN AKUN
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu / Pengguna" as Tamu
+boundary "View Auth\n(auth.blade)" as View
+control "AuthController" as AuthCtrl
+entity "User\n(Model)" as UserModel
+database "Database MySQL" as DB
+
+== Alur Registrasi Akun Baru ==
+
+Tamu -> View : Buka halaman pendaftaran (/register)
+activate View
+View --> Tamu : Tampilkan formulir registrasi
+deactivate View
+
+Tamu -> View : Input (name, email, phone, password)
+activate View
+View -> AuthCtrl : POST /register
+activate AuthCtrl
+
+AuthCtrl -> AuthCtrl : validate(name, email, phone, password)
+AuthCtrl -> UserModel : create([name, email, phone, password, role='tamu'])
+activate UserModel
+
+UserModel -> DB : INSERT INTO users (...)
+activate DB
+DB --> UserModel : Kembalikan record pengguna baru
+deactivate DB
+
+UserModel --> AuthCtrl : Objek User baru
+deactivate UserModel
+
+AuthCtrl -> AuthCtrl : Auth::login($user)
+AuthCtrl --> View : Redirect ke route('tamu.dashboard')
+deactivate AuthCtrl
+activate View
+
+View --> Tamu : Tampilkan dasbor tamu & pesan selamat datang
+deactivate View
+
+== Alur Login Pengguna (Tamu & Admin) ==
+
+Tamu -> View : Buka halaman masuk (/login)
+activate View
+View --> Tamu : Tampilkan form login (email, password)
+deactivate View
+
+Tamu -> View : Input email & password, submit form
+activate View
+View -> AuthCtrl : POST /login
+activate AuthCtrl
+
+AuthCtrl -> AuthCtrl : Auth::attempt(credentials)
+
+alt #White [Kredensial Valid]
+    AuthCtrl -> UserModel : Cek role pengguna (Auth::user()->role)
+    activate UserModel
+    UserModel --> AuthCtrl : role = 'admin' | 'tamu'
+    deactivate UserModel
+
+    alt #White [Role == 'admin']
+        AuthCtrl --> View : Redirect ke route('admin.dashboard')
+        activate View
+        View --> Tamu : Tampilkan Dasbor Administrator
+        deactivate View
+    else [Role == 'tamu']
+        AuthCtrl --> View : Redirect ke route('tamu.dashboard')
+        activate View
+        View --> Tamu : Tampilkan Dasbor Pelanggan / Tamu
+        deactivate View
+    end
+
+else #White [Kredensial Tidak Cocok / Gagal]
+    AuthCtrl --> View : Kembalikan back() withErrors('Email atau password salah')
+    activate View
+    View --> Tamu : Tampilkan notifikasi kesalahan login
+    deactivate View
+end
+
+deactivate AuthCtrl
+
+@enduml

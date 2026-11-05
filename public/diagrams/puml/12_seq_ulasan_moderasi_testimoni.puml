@@ -1,0 +1,119 @@
+@startuml 12_seq_ulasan_moderasi_testimoni
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #8: Pemberian Ulasan & Moderasi Testimoni
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PEMBERIAN ULASAN & MODERASI TESTIMONI
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu" as Tamu
+boundary "View Dasbor Tamu\n(tamu/dashboard)" as TamuView
+control "TestimonialController" as TestiCtrl
+entity "Testimonial\n(Model)" as TestiModel
+database "Database MySQL" as DB
+actor "Admin Homestay" as Admin
+boundary "View Testimoni Admin\n(admin/testimonials)" as AdminView
+control "AdminController" as AdminCtrl
+
+== Alur Pengiriman Ulasan oleh Tamu ==
+
+Tamu -> TamuView : Buka form review pada reservasi berstatus selesai
+activate TamuView
+
+TamuView --> Tamu : Tampilkan rating bintang (1-5) & kolom pesan ulasan
+Tamu -> TamuView : Berikan rating, ketik ulasan, dan klik "Kirim Testimoni"
+TamuView -> TestiCtrl : POST /tamu/review (reservation_id, rating, review)
+activate TestiCtrl
+
+TestiCtrl -> TestiCtrl : validate(rating integer between 1-5, review required)
+TestiCtrl -> TestiModel : create([user_id, reservation_id, rating, review, is_approved=false])
+activate TestiModel
+
+TestiModel -> DB : INSERT INTO testimonials (...) VALUES (..., 0)
+activate DB
+DB --> TestiModel : Ulasan tersimpan dalam antrean moderasi
+deactivate DB
+TestiModel --> TestiCtrl : Objek $testimonial
+deactivate TestiModel
+
+TestiCtrl --> TamuView : Redirect back() dengan pesan "Terima kasih, ulasan Anda menunggu persetujuan admin"
+TamuView --> Tamu : Tampilkan konfirmasi pengiriman ulasan berhasil
+deactivate TestiCtrl
+deactivate TamuView
+
+== Alur Moderasi & Publikasi Testimoni oleh Administrator ==
+
+Admin -> AdminView : Buka menu Moderasi Ulasan (/admin/testimonials)
+activate AdminView
+
+AdminView -> AdminCtrl : GET testimonials()
+activate AdminCtrl
+
+AdminCtrl -> TestiModel : with(['user', 'reservation'])->latest()->get()
+activate TestiModel
+TestiModel -> DB : SELECT * FROM testimonials JOIN users ...
+activate DB
+DB --> TestiModel : Seluruh riwayat ulasan masuk
+deactivate DB
+TestiModel --> AdminCtrl : Koleksi testimoni
+deactivate TestiModel
+
+AdminCtrl --> AdminView : Render view daftar ulasan pending & approved
+AdminView --> Admin : Tampilkan kartu ulasan beserta tombol "Publikasikan / Sembunyikan"
+deactivate AdminCtrl
+
+Admin -> AdminView : Klik tombol "Setujui / Publish" pada ulasan yang pantas
+AdminView -> AdminCtrl : POST /admin/testimonials/{id}/toggle
+activate AdminCtrl
+
+AdminCtrl -> TestiModel : findOrFail($id)
+activate TestiModel
+TestiModel -> DB : SELECT * FROM testimonials WHERE id=?
+activate DB
+DB --> TestiModel : Data testimoni
+deactivate DB
+TestiModel --> AdminCtrl : Objek testimoni
+deactivate TestiModel
+
+AdminCtrl -> TestiModel : update(['is_approved' => !is_approved])
+activate TestiModel
+TestiModel -> DB : UPDATE testimonials SET is_approved = 1 WHERE id=?
+activate DB
+DB --> TestiModel : Status publikasi terupdate
+deactivate DB
+TestiModel --> AdminCtrl : Sukses publikasi
+deactivate TestiModel
+
+AdminCtrl --> AdminView : Redirect back() dengan pesan "Status ulasan berhasil diperbarui"
+AdminView --> Admin : Status ulasan berganti menjadi AKTIF (tampil di beranda publik)
+deactivate AdminCtrl
+deactivate AdminView
+
+@enduml

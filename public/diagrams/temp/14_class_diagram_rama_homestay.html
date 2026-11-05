@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram Kelas: Arsitektur Sistem Rama Homestay</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram Kelas: Arsitektur Sistem Rama Homestay</h1>
+      <p>Diagram Kelas Model, Controller, dan Service pada Arsitektur Laravel Rama Homestay</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+classDiagram
+    class User {
+        - id : bigint
+        - name : string
+        - email : string
+        - phone : string
+        - password : string
+        - role : string
+        - email_verified_at : datetime
+        + reservations() HasMany
+    }
+
+    class Room {
+        - id : bigint
+        - name : string
+        - type : string
+        - description : text
+        - price : decimal
+        - tax_rate : decimal
+        - service_rate : decimal
+        - total_rooms : int
+        - capacity : int
+        - facilities : array
+        - image : string
+        - gallery : array
+        - is_active : boolean
+        + reservations() HasMany
+        + getAvailableCount(checkIn, checkOut) int
+        + isAvailable(checkIn, checkOut) bool
+        + calculateTax(basePrice) float
+        + calculateService(basePrice) float
+        + getFacilitiesListAttribute() array
+        + getTypeLabelAttribute() string
+    }
+
+    class Reservation {
+        - id : bigint
+        - booking_code : string
+        - user_id : bigint
+        - room_id : bigint
+        - guest_name : string
+        - guest_email : string
+        - guest_phone : string
+        - check_in : date
+        - check_out : date
+        - nights : int
+        - guest_count : int
+        - base_price : decimal
+        - tax_amount : decimal
+        - service_amount : decimal
+        - total_price : decimal
+        - payment_method : string
+        - snap_token : string
+        - midtrans_transaction_id : string
+        - midtrans_payment_type : string
+        - status : string
+        - special_requests : text
+        - paid_at : datetime
+        - expires_at : datetime
+        + releaseExpiredReservations() int
+        + isExpired() bool
+        + getRemainingSecondsAttribute() int
+        + getStatusLabelAttribute() string
+        + getDurationAttribute() int
+        + user() BelongsTo
+        + room() BelongsTo
+        + testimonial() HasOne
+    }
+
+    class Testimonial {
+        - id : bigint
+        - user_id : bigint
+        - reservation_id : bigint
+        - guest_name : string
+        - guest_origin : string
+        - rating : int
+        - review : text
+        - is_approved : boolean
+        + user() BelongsTo
+        + reservation() BelongsTo
+    }
+
+    class MidtransService {
+        - serverKey : string
+        - clientKey : string
+        - isProduction : boolean
+        + createSnapToken(reservation) string
+        + handleNotification(payload) bool
+        + checkStatus(orderId) object
+        + applyPaymentStatus(reservation, status, fraud, type, txId) void
+    }
+
+    class AuthController {
+        + showLogin() View
+        + login(request) Redirect
+        + showRegister() View
+        + register(request) Redirect
+        + logout(request) Redirect
+    }
+
+    class RoomController {
+        + index() View
+        + create() View
+        + store(request) Redirect
+        + edit(room) View
+        + update(request, room) Redirect
+        + destroy(room) Redirect
+        + indexClient(request) View
+        + show(room) View
+    }
+
+    class ReservationController {
+        + index(request) View
+        + showBookingForm(request, room) View
+        + checkAvailability(request) JsonResponse
+        + processBooking(request) Redirect
+        + bookingSuccess() View
+        + updateStatus(request, reservation) Redirect
+        + show(reservation) View
+        + cancel(reservation) Redirect
+    }
+
+    class MidtransController {
+        - midtransService : MidtransService
+        + notification(request) JsonResponse
+        + finish(request) Redirect
+        + payPage(reservation) View
+        + getToken(reservation) JsonResponse
+        + syncStatus(reservation) JsonResponse
+    }
+
+    class AdminController {
+        + dashboard() View
+        + calendar() View
+        + reports(request) View
+        + exportReports(request) View
+        + users() View
+        + testimonials() View
+        + toggleTestimonial(testimonial) Redirect
+    }
+
+    class TestimonialController {
+        + store(request) Redirect
+    }
+
+    User "1" --> "*" Reservation : membuat
+    User "1" --> "*" Testimonial : mengirim
+    Room "1" --> "*" Reservation : memiliki
+    Reservation "1" --> "0..1" Testimonial : menghasilkan
+
+    ReservationController ..> Reservation : mengelola
+    ReservationController ..> Room : memverifikasi
+    ReservationController ..> MidtransService : memanggil
+    MidtransController ..> MidtransService : menggunakan
+    MidtransController ..> Reservation : memperbarui
+    RoomController ..> Room : mengelola
+    TestimonialController ..> Testimonial : membuat
+    AdminController ..> Reservation : menganalisis
+    AdminController ..> Testimonial : memoderasi
+    AdminController ..> Room : mengawasi
+    AuthController ..> User : mengautentikasi
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

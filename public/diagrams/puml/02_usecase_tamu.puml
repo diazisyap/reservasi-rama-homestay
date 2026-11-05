@@ -1,0 +1,118 @@
+@startuml 02_usecase_tamu
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Use Case #2 - Alur Layanan Tamu
+' Standar  : UML 2.5 (OMG Specification)
+' Tema     : Hitam Putih (Monochrome) Bersih & Standar Formal
+' ============================================================
+
+left to right direction
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam wrapWidth 145
+skinparam monochrome true
+skinparam shadowing false
+
+skinparam actor {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        12
+}
+
+skinparam usecase {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontSize        10.5
+    BorderThickness 1.2
+}
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        13
+    BorderThickness 1.8
+}
+
+skinparam arrow {
+    Color     #000000
+    FontSize  9.5
+}
+
+:Tamu: as Tamu
+:Midtrans\n(Payment Gateway): as Midtrans
+
+rectangle "Area Layanan Tamu (Rama Homestay)" {
+
+    together {
+        (Registrasi Akun Tamu)                       as UC01
+        (Login Tamu)                                 as UC02
+        (Mengelola Profil Tamu)                      as UC03
+        (Melihat Katalog dan\nFilter Kamar)          as UC04
+        (Melakukan Reservasi\nKamar)                 as UC05
+        (Melihat E-Tiket dan\nRiwayat Reservasi)     as UC06
+        (Membayar Transaksi\nOnline)                 as UC07
+        (Membatalkan Reservasi\n[status: pending])   as UC08
+        (Memberi Ulasan &\nTestimoni)                as UC09
+    }
+
+    together {
+        (Memeriksa Ketersediaan\nKamar Real-Time)    as UC10
+        (Memvalidasi Tanggal\nCheck-In/Check-Out)    as UC11
+        (Menghitung Rincian Biaya\n[Pajak & Layanan])as UC12
+        (Memproses Pembayaran\nMidtrans Snap)        as UC13
+        (Menerima Notifikasi\nStatus Pembayaran)     as UC14
+    }
+
+    ' Penataan Vertikal
+    UC01 -[hidden]right-> UC02
+    UC02 -[hidden]right-> UC03
+    UC03 -[hidden]right-> UC04
+    UC04 -[hidden]right-> UC05
+    UC05 -[hidden]right-> UC06
+    UC06 -[hidden]right-> UC07
+    UC07 -[hidden]right-> UC08
+    UC08 -[hidden]right-> UC09
+
+    UC10 -[hidden]right-> UC11
+    UC11 -[hidden]right-> UC12
+    UC12 -[hidden]right-> UC13
+    UC13 -[hidden]right-> UC14
+
+    ' Penataan Horisontal
+    UC01 -[hidden]down-> UC10
+    UC05 -[hidden]down-> UC12
+    UC07 -[hidden]down-> UC13
+}
+
+' Asosiasi Tamu
+Tamu -- UC01
+Tamu -- UC02
+Tamu -- UC03
+Tamu -- UC04
+Tamu -- UC05
+Tamu -- UC06
+Tamu -- UC07
+Tamu -- UC08
+Tamu -- UC09
+
+' Asosiasi Midtrans
+UC13 -- Midtrans
+UC14 -- Midtrans
+
+' Relasi Include (Base .> Included)
+UC05 .> UC10 : <<include>>
+UC05 .> UC11 : <<include>>
+UC05 .> UC12 : <<include>>
+UC07 .> UC13 : <<include>>
+UC13 .> UC14 : <<include>>
+
+' Relasi Extend (Extension .> Base)
+UC08 .> UC06 : <<extend>>
+UC09 .> UC06 : <<extend>>
+
+@enduml

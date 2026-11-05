@@ -1,0 +1,98 @@
+@startuml 06_seq_cek_ketersediaan_kamar
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #2: Pengecekan Ketersediaan Kamar Real-time
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PENGECEKAN KETERSEDIAAN KAMAR (REAL-TIME AJAX)
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu" as Tamu
+boundary "View Form Booking\n(booking_form.blade)" as View
+control "ReservationController" as ResCtrl
+entity "Reservation\n(Model)" as ResModel
+entity "Room\n(Model)" as RoomModel
+database "Database MySQL" as DB
+
+Tamu -> View : Pilih tanggal Check-in & Check-out pada kalender
+activate View
+
+View -> ResCtrl : AJAX POST /api/check-availability (room_id, check_in, check_out)
+activate ResCtrl
+
+ResCtrl -> ResCtrl : validate(room_id, check_in, check_out)
+
+ResCtrl -> ResModel : releaseExpiredReservations()
+activate ResModel
+ResModel -> DB : UPDATE reservations SET status='cancelled' WHERE status='pending' AND expires_at <= NOW()
+activate DB
+DB --> ResModel : Kuota kadaluarsa dibersihkan
+deactivate DB
+ResModel --> ResCtrl : Jumlah data expired terupdate
+deactivate ResModel
+
+ResCtrl -> RoomModel : findOrFail(room_id)
+activate RoomModel
+RoomModel -> DB : SELECT * FROM rooms WHERE id = ?
+activate DB
+DB --> RoomModel : Data detail kamar & total_rooms
+deactivate DB
+
+ResCtrl -> RoomModel : isAvailable(check_in, check_out)
+RoomModel -> RoomModel : getAvailableCount(check_in, check_out)
+RoomModel -> DB : Hitung reservasi aktif pada rentang tanggal
+activate DB
+DB --> RoomModel : Sisa kuota unit kamar
+deactivate DB
+RoomModel --> ResCtrl : return boolean isAvailable & sisa kuota
+deactivate RoomModel
+
+alt #White [Kamar Masih Tersedia (available == true)]
+    ResCtrl -> RoomModel : calculateTax(base_price)
+    activate RoomModel
+    RoomModel --> ResCtrl : tax_amount (10%)
+    deactivate RoomModel
+
+    ResCtrl -> RoomModel : calculateService(base_price)
+    activate RoomModel
+    RoomModel --> ResCtrl : service_amount (5%)
+    deactivate RoomModel
+
+    ResCtrl --> View : JSON {available: true, available_count: N, nights: N, base_price, tax, service, total}
+    View --> Tamu : Tampilkan status TERSEDIA, rincian biaya, dan tombol 'Lanjutkan Pemesanan'
+
+else #White [Kamar Penuh / Tidak Tersedia (available == false)]
+    ResCtrl --> View : JSON {available: false, message: 'Kamar tidak tersedia pada tanggal tersebut'}
+    View --> Tamu : Tampilkan pesan peringatan kamar penuh & nonaktifkan tombol pemesanan
+end
+
+deactivate ResCtrl
+deactivate View
+
+@enduml

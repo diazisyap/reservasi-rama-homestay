@@ -1,0 +1,2579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe Arsitektur Sistem – Rama Homestay Dieng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       RESET & BASE WIREFRAME SYSTEM (PURE BLACK & WHITE / MONOCHROME)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #ededed;
+      color: #000;
+      font-size: 12px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, pre, .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    a {
+      color: #000;
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       SINGLE UNIFIED TOP BAR (NO DUPLICATE NAVIGATION)
+       ========================================================================== */
+    .top-bar {
+      background: #000;
+      color: #fff;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      border-bottom: 2px solid #222;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      background: #fff;
+      color: #000;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .top-bar-meta {
+      font-size: 10px;
+      color: #888;
+      padding-left: 8px;
+      border-left: 1px solid #444;
+      white-space: nowrap;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #888;
+      margin-right: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-pill {
+      background: transparent;
+      border: 1px solid #555;
+      color: #ccc;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .filter-pill:hover {
+      background: #222;
+      border-color: #888;
+      color: #fff;
+    }
+
+    .filter-pill.active {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .action-tools {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ==========================================================================
+       CONTAINER & SECTION TITLES
+       ========================================================================== */
+    .container {
+      max-width: 1180px;
+      margin: 24px auto;
+      padding: 0 20px 80px;
+    }
+
+    .section-heading {
+      margin: 36px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .section-heading h2 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .section-heading span {
+      font-size: 11px;
+      color: #555;
+    }
+
+    /* ==========================================================================
+       WIREFRAME CARD & METADATA
+       ========================================================================== */
+    .wf-card {
+      background: #fff;
+      border: 2px solid #000;
+      margin-bottom: 36px;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    .wf-header {
+      background: #000;
+      color: #fff;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .wf-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wf-badge {
+      background: #fff;
+      color: #000;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .wf-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .wf-meta {
+      display: flex;
+      gap: 14px;
+      font-size: 10px;
+      color: #aaa;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .wf-route {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .wf-canvas {
+      padding: 18px;
+      background: #fbfbfb;
+    }
+
+    /* ==========================================================================
+       SCREEN WINDOW SIMULATION (REAL APP NAVBAR)
+       ========================================================================== */
+    .screen {
+      background: #fff;
+      border: 1.5px solid #000;
+      position: relative;
+    }
+
+    .screen-topbar-contact {
+      background: #000;
+      color: #fff;
+      padding: 5px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      border-bottom: 1px solid #222;
+    }
+
+    .screen-nav {
+      background: #fff;
+      border-bottom: 1.5px solid #000;
+      padding: 9px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .nav-brand {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-brand-logo {
+      background: #000;
+      color: #fff;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 11px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 14px;
+      font-weight: 600;
+    }
+
+    .nav-menu span {
+      cursor: pointer;
+      padding-bottom: 2px;
+    }
+
+    .nav-menu span.active {
+      border-bottom: 2px solid #000;
+      font-weight: 700;
+    }
+
+    .nav-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* ==========================================================================
+       WIREFRAME ATOMS & COMPONENTS
+       ========================================================================== */
+    .wf-img {
+      background: #ececec;
+      border: 1px dashed #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wf-img::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 49.5%, #ddd 49.5%, #ddd 50.5%, transparent 50.5%),
+                  linear-gradient(45deg, transparent 49.5%, #ddd 49.5%, #ddd 50.5%, transparent 50.5%);
+      pointer-events: none;
+    }
+
+    .wf-img span {
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      padding: 2px 6px;
+      border: 1px solid #888;
+      font-weight: 600;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1.5px solid #000;
+      background: #fff;
+      color: #000;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-fill {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-sm {
+      padding: 3px 8px;
+      font-size: 10px;
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid #000;
+    }
+
+    .badge-fill {
+      background: #000;
+      color: #fff;
+    }
+
+    .badge-outline {
+      background: #fff;
+      color: #000;
+    }
+
+    .badge-gray {
+      background: #e2e2e2;
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: #222;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1.5px solid #000;
+      background: #fff;
+      font-size: 11px;
+      font-family: inherit;
+      color: #000;
+    }
+
+    .form-input-readonly {
+      background: #f1f1f1;
+      color: #555;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .wf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .wf-table th, .wf-table td {
+      border: 1px solid #000;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    .wf-table th {
+      background: #f0f0f0;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .wf-table tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .card-box {
+      border: 1.5px solid #000;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-body {
+      padding: 10px;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .card-text {
+      font-size: 11px;
+      color: #444;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .card-price {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .card-footer {
+      border-top: 1px solid #000;
+      padding: 8px 10px;
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card {
+      border: 1.5px solid #000;
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .stat-num {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #555;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       REAL SYSTEM ADMIN LAYOUT (MATCHING admin.blade.php)
+       ========================================================================== */
+    .admin-frame {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      min-height: 480px;
+    }
+
+    .admin-aside {
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      border-right: 1.5px solid #000;
+    }
+
+    .admin-aside-brand {
+      padding: 14px;
+      border-bottom: 1px solid #222;
+    }
+
+    .admin-menu-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #777;
+      font-weight: 700;
+      padding: 12px 14px 4px;
+    }
+
+    .admin-menu {
+      list-style: none;
+      flex: 1;
+    }
+
+    .admin-menu-item {
+      padding: 9px 14px;
+      font-size: 11px;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .admin-menu-item:hover {
+      background: #181818;
+      color: #fff;
+    }
+
+    .admin-menu-item.active {
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+    }
+
+    .admin-aside-footer {
+      padding: 12px 14px;
+      border-top: 1px solid #222;
+      font-size: 11px;
+      color: #bbb;
+    }
+
+    .admin-main {
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-top {
+      background: #fff;
+      border-bottom: 1.5px solid #000;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 16px;
+      flex: 1;
+    }
+
+    .screen-footer {
+      border-top: 1.5px solid #000;
+      background: #fff;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 16px;
+      font-size: 11px;
+    }
+
+    .footer-col-title {
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #000;
+      padding-bottom: 3px;
+    }
+
+    .footer-item {
+      color: #444;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    /* Print adjustments */
+    @media print {
+      body { background: #fff; }
+      .top-bar { display: none !important; }
+      .wf-card { page-break-after: always; box-shadow: none; border-width: 1px; }
+      .container { padding: 0; max-width: 100%; }
+      .wf-canvas { background: #fff; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SINGLE UNIFIED TOP BAR -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <div class="top-bar-brand">
+      <span class="brand-badge">R</span>
+      <span class="brand-title">RAMA HOMESTAY DIENG</span>
+    </div>
+    <div class="top-bar-meta">
+      <span>Jl. Telaga Warna, Dieng Wetan, Wonosobo</span> &bull; 
+      <span>Sistem Kamar 1 s/d Kamar 8 (Tarif Rp 300.000 / malam &bull; Kapasitas 3 Tamu)</span>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <span class="filter-label">Kategori:</span>
+    <button class="filter-pill active" onclick="setCategory('all', this)">Semua Tampilan (16)</button>
+    <button class="filter-pill" onclick="setCategory('public', this)">1. Publik & Tamu (6)</button>
+    <button class="filter-pill" onclick="setCategory('tamu', this)">2. Alur Booking & Akun (5)</button>
+    <button class="filter-pill" onclick="setCategory('admin', this)">3. Panel Admin (5)</button>
+  </div>
+
+  <div class="action-tools" style="display:flex; align-items:center; gap:8px;">
+    <div class="lang-switch-group" style="display:inline-flex; border:1px solid #444; border-radius:3px; overflow:hidden;">
+      <button class="btn-lang active" id="wfLangId" onclick="switchWireframeLang('id')" style="background:#fff; color:#000; border:none; padding:4px 9px; font-size:10px; font-weight:700; cursor:pointer;">ID (Bahasa)</button>
+      <button class="btn-lang" id="wfLangEn" onclick="switchWireframeLang('en')" style="background:#000; color:#888; border:none; padding:4px 9px; font-size:10px; font-weight:700; cursor:pointer;">EN (English)</button>
+    </div>
+    <button class="btn btn-sm btn-fill" id="btnPrint" onclick="window.print()">Cetak / Simpan PDF</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- =========================================================================
+       BAGIAN 1: HALAMAN PUBLIK (SESUAI SISTEM NYATA)
+       ========================================================================= -->
+  <div class="section-heading" data-cat="public">
+    <h2>1. Halaman Publik & Tamu Pengunjung</h2>
+    <span>Navigasi: Beranda &bull; Kamar &bull; Fasilitas &bull; Ulasan &bull; Kontak</span>
+  </div>
+
+  <!-- WF-01: BERANDA -->
+  <article class="wf-card" data-cat="public" id="wf-01">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-01</span>
+        <span class="wf-name">Beranda (Landing Page)</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET / (welcome.blade.php)</span>
+        <span>Aktor: Pengunjung & Calon Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <!-- Top contact strip -->
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <!-- Navbar -->
+        <div class="screen-nav">
+          <div class="nav-brand">
+            <span class="nav-brand-logo">R</span> Rama Homestay
+          </div>
+          <div class="nav-menu">
+            <span class="active">Beranda</span>
+            <span>Kamar</span>
+            <span>Fasilitas</span>
+            <span>Ulasan</span>
+            <span>Kontak</span>
+          </div>
+          <div class="nav-btns">
+            <button class="btn btn-sm">Login</button>
+            <button class="btn btn-sm btn-fill">Register</button>
+          </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div style="padding:28px 20px;text-align:center;background:#f5f5f5;border-bottom:1.5px solid #000;">
+          <h1 style="font-size:18px;font-weight:700;margin-bottom:6px;">Kenyamanan & Kehangatan Menginap di Dataran Tinggi Dieng</h1>
+          <p style="font-size:11px;color:#444;max-width:560px;margin:0 auto 14px;">Nikmati suasana sejuk pegunungan di Rama Homestay Dieng Wetan dengan fasilitas lengkap air hangat 24 jam, kamar bersih, dan pelayanan ramah keluarga.</p>
+          <div style="display:flex;gap:8px;justify-content:center;">
+            <button class="btn btn-fill">Pesan Kamar Sekarang</button>
+            <button class="btn">Lihat Pilihan Kamar</button>
+          </div>
+        </div>
+
+        <!-- Cek Ketersediaan Kamar -->
+        <div style="border-bottom:1.5px solid #000;background:#fff;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr 1fr 130px;gap:12px;align-items:end;">
+          <div>
+            <label class="form-label">Tanggal Check-In</label>
+            <div class="form-input">28/10/2026 [v]</div>
+          </div>
+          <div>
+            <label class="form-label">Tanggal Check-Out</label>
+            <div class="form-input">30/10/2026 [v]</div>
+          </div>
+          <div>
+            <label class="form-label">Jumlah Tamu</label>
+            <div class="form-input">3 Orang Tamu [v]</div>
+          </div>
+          <button class="btn btn-fill" style="height:31px;">Cari Kamar</button>
+        </div>
+
+        <!-- Kamar Pilihan Unggulan (Kamar 1, Kamar 2, Kamar 3) -->
+        <div style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-weight:700;font-size:13px;">Pilihan Kamar Rama Homestay (Total 8 Kamar)</div>
+            <a href="#" style="font-size:11px;font-weight:600;">Lihat Semua Kamar &rarr;</a>
+          </div>
+          <div class="grid-3">
+            <div class="card-box">
+              <div class="wf-img" style="height:90px;"><span>Foto Kamar 1</span></div>
+              <div class="card-body">
+                <div class="card-title">Kamar 1</div>
+                <div class="card-text">Kapasitas Maks. 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi Cepat &bull; TV &bull; Kamar Mandi Dalam</div>
+                <div class="card-price">Rp 300.000 <span style="font-weight:400;font-size:10px;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <span class="badge badge-fill">Tersedia</span>
+                <button class="btn btn-sm btn-fill">Pesan</button>
+              </div>
+            </div>
+            <div class="card-box">
+              <div class="wf-img" style="height:90px;"><span>Foto Kamar 2</span></div>
+              <div class="card-body">
+                <div class="card-title">Kamar 2</div>
+                <div class="card-text">Kapasitas Maks. 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi Cepat &bull; TV &bull; Kamar Mandi Dalam</div>
+                <div class="card-price">Rp 300.000 <span style="font-weight:400;font-size:10px;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <span class="badge badge-fill">Tersedia</span>
+                <button class="btn btn-sm btn-fill">Pesan</button>
+              </div>
+            </div>
+            <div class="card-box">
+              <div class="wf-img" style="height:90px;"><span>Foto Kamar 3</span></div>
+              <div class="card-body">
+                <div class="card-title">Kamar 3</div>
+                <div class="card-text">Kapasitas Maks. 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi Cepat &bull; TV &bull; Kamar Mandi Dalam</div>
+                <div class="card-price">Rp 300.000 <span style="font-weight:400;font-size:10px;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <span class="badge badge-fill">Tersedia</span>
+                <button class="btn btn-sm btn-fill">Pesan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fasilitas Utama -->
+        <div style="background:#f8f8f8;border-top:1.5px solid #000;border-bottom:1.5px solid #000;padding:16px;">
+          <div style="font-weight:700;font-size:12px;margin-bottom:10px;text-align:center;">Fasilitas Utama Rama Homestay</div>
+          <div class="grid-4">
+            <div style="border:1px solid #000;padding:10px;background:#fff;text-align:center;">
+              <div style="font-weight:700;font-size:11px;margin-bottom:3px;">Air Hangat 24 Jam</div>
+              <div style="font-size:10px;color:#555;">Water heater di setiap kamar mandi.</div>
+            </div>
+            <div style="border:1px solid #000;padding:10px;background:#fff;text-align:center;">
+              <div style="font-weight:700;font-size:11px;margin-bottom:3px;">WiFi Berkecepatan Tinggi</div>
+              <div style="font-size:10px;color:#555;">Koneksi internet stabil untuk tamu.</div>
+            </div>
+            <div style="border:1px solid #000;padding:10px;background:#fff;text-align:center;">
+              <div style="font-weight:700;font-size:11px;margin-bottom:3px;">Parkir Mobil & Motor</div>
+              <div style="font-size:10px;color:#555;">Area parkir aman di depan homestay.</div>
+            </div>
+            <div style="border:1px solid #000;padding:10px;background:#fff;text-align:center;">
+              <div style="font-weight:700;font-size:11px;margin-bottom:3px;">Dekat Telaga Warna</div>
+              <div style="font-size:10px;color:#555;">Lokasi strategis di Dieng Wetan.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="screen-footer">
+          <div>
+            <div class="nav-brand" style="margin-bottom:6px;"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+            <div class="footer-item"><strong>Alamat:</strong> Jl. Telaga Warna, RT.02 RW.01, Dieng Wetan, Kec. Kejajar, Kabupaten Wonosobo, Jawa Tengah 56354</div>
+            <div class="footer-item"><strong>Telepon/WA:</strong> +62 812-3456-7890</div>
+            <div class="footer-item"><strong>Email:</strong> info@ramahomestay.com</div>
+          </div>
+          <div>
+            <div class="footer-col-title">Navigasi</div>
+            <div class="footer-item">Beranda</div>
+            <div class="footer-item">Kamar & Tarif</div>
+            <div class="footer-item">Fasilitas</div>
+            <div class="footer-item">Ulasan Tamu</div>
+            <div class="footer-item">Kontak</div>
+          </div>
+          <div>
+            <div class="footer-col-title">Aturan Menginap</div>
+            <div class="footer-item">Check-In: 14.00 WIB</div>
+            <div class="footer-item">Check-Out: 12.00 WIB</div>
+            <div class="footer-item">Kapasitas: 3 Orang / Kamar</div>
+            <div class="footer-item">Bebas Asap Rokok</div>
+          </div>
+          <div>
+            <div class="footer-col-title">Lokasi Homestay</div>
+            <div class="wf-img" style="height:60px;"><span>Peta Dieng Wetan</span></div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-02: DAFTAR KAMAR -->
+  <article class="wf-card" data-cat="public" id="wf-02">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-02</span>
+        <span class="wf-name">Katalog Kamar (Rooms Listing)</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /rooms (rooms/index.blade.php)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span class="active">Kamar</span>
+            <span>Fasilitas</span>
+            <span>Ulasan</span>
+            <span>Kontak</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm">Login</button></div>
+        </div>
+
+        <!-- Filter Panel Sesuai Form Nyata di rooms/index.blade.php -->
+        <div style="padding:16px;background:#f5f5f5;border-bottom:1.5px solid #000;display:grid;grid-template-columns:1fr 1fr 140px;gap:16px;align-items:end;">
+          <div>
+            <label class="form-label">Tanggal Check-In</label>
+            <input type="date" class="form-input" value="2026-10-28">
+          </div>
+          <div>
+            <label class="form-label">Tanggal Check-Out</label>
+            <input type="date" class="form-input" value="2026-10-30">
+          </div>
+          <button class="btn btn-fill" style="height:31px;">Cari Kamar</button>
+        </div>
+
+        <div style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div>
+              <h2 style="font-size:14px;font-weight:700;">Daftar Kamar Homestay (8 Kamar)</h2>
+              <div style="font-size:10px;color:#555;">Kapasitas per kamar 3 orang &bull; Fasilitas air hangat 24 jam &bull; Tarif Rp 300.000 / malam</div>
+            </div>
+            <div style="font-size:11px;">Status: <strong>8 Kamar Aktif</strong></div>
+          </div>
+
+          <!-- Grid Kamar 1 s/d Kamar 4 -->
+          <div class="grid-2">
+            <!-- Kamar 1 -->
+            <div class="card-box">
+              <div class="wf-img" style="height:100px;"><span>Foto Kamar 1</span></div>
+              <div class="card-body">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span class="card-title">Kamar 1</span>
+                  <span class="badge badge-fill">Tersedia</span>
+                </div>
+                <div class="card-text">Kapasitas 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi &bull; TV &bull; Kamar Mandi Dalam &bull; Sarapan</div>
+                <div class="card-price">Rp 300.000 <span style="font-size:10px;font-weight:400;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-sm">Lihat Detail</button>
+                <button class="btn btn-sm btn-fill">Pesan Kamar</button>
+              </div>
+            </div>
+
+            <!-- Kamar 2 -->
+            <div class="card-box">
+              <div class="wf-img" style="height:100px;"><span>Foto Kamar 2</span></div>
+              <div class="card-body">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span class="card-title">Kamar 2</span>
+                  <span class="badge badge-fill">Tersedia</span>
+                </div>
+                <div class="card-text">Kapasitas 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi &bull; TV &bull; Kamar Mandi Dalam &bull; Sarapan</div>
+                <div class="card-price">Rp 300.000 <span style="font-size:10px;font-weight:400;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-sm">Lihat Detail</button>
+                <button class="btn btn-sm btn-fill">Pesan Kamar</button>
+              </div>
+            </div>
+
+            <!-- Kamar 3 -->
+            <div class="card-box">
+              <div class="wf-img" style="height:100px;"><span>Foto Kamar 3</span></div>
+              <div class="card-body">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span class="card-title">Kamar 3</span>
+                  <span class="badge badge-fill">Tersedia</span>
+                </div>
+                <div class="card-text">Kapasitas 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi &bull; TV &bull; Kamar Mandi Dalam &bull; Sarapan</div>
+                <div class="card-price">Rp 300.000 <span style="font-size:10px;font-weight:400;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-sm">Lihat Detail</button>
+                <button class="btn btn-sm btn-fill">Pesan Kamar</button>
+              </div>
+            </div>
+
+            <!-- Kamar 4 -->
+            <div class="card-box">
+              <div class="wf-img" style="height:100px;"><span>Foto Kamar 4</span></div>
+              <div class="card-body">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span class="card-title">Kamar 4</span>
+                  <span class="badge badge-fill">Tersedia</span>
+                </div>
+                <div class="card-text">Kapasitas 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi &bull; TV &bull; Kamar Mandi Dalam &bull; Sarapan</div>
+                <div class="card-price">Rp 300.000 <span style="font-size:10px;font-weight:400;color:#555;">/ malam</span></div>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-sm">Lihat Detail</button>
+                <button class="btn btn-sm btn-fill">Pesan Kamar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-03: DETAIL KAMAR -->
+  <article class="wf-card" data-cat="public" id="wf-03">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-03</span>
+        <span class="wf-name">Detail Kamar & Widget Pemesanan</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /rooms/{room} (rooms/show.blade.php)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span class="active">Kamar</span>
+            <span>Fasilitas</span>
+            <span>Ulasan</span>
+            <span>Kontak</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm">Login</button></div>
+        </div>
+
+        <div style="padding:14px;display:grid;grid-template-columns:1fr 300px;gap:16px;">
+          <!-- Galeri & Detail Kamar -->
+          <div>
+            <div class="wf-img" style="height:170px;margin-bottom:8px;"><span>Foto Utama Kamar 1</span></div>
+            <div class="grid-3" style="margin-bottom:12px;">
+              <div class="wf-img" style="height:55px;"><span>Kamar Mandi Air Hangat</span></div>
+              <div class="wf-img" style="height:55px;"><span>Tempat Tidur Kamar 1</span></div>
+              <div class="wf-img" style="height:55px;"><span>Pemandangan Dieng Wetan</span></div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+              <h2 style="font-size:16px;font-weight:700;">Kamar 1 - Rama Homestay</h2>
+              <span class="badge badge-fill">Kapasitas: Maks. 3 Tamu</span>
+            </div>
+            <div style="font-size:11px;color:#555;margin-bottom:12px;">Jl. Telaga Warna, Dieng Wetan, Kec. Kejajar, Wonosobo</div>
+
+            <div style="font-weight:700;font-size:12px;border-bottom:1.5px solid #000;padding-bottom:4px;margin-bottom:8px;">Deskripsi Kamar</div>
+            <p style="font-size:11px;color:#333;line-height:1.6;margin-bottom:14px;">Kamar 1 menawarkan suasana tenang dan hangat di Dataran Tinggi Dieng Wetan. Dilengkapi fasilitas water heater 24 jam untuk mandi hangat, tempat tidur nyaman, TV, serta akses WiFi cepat.</p>
+
+            <div style="font-weight:700;font-size:12px;border-bottom:1.5px solid #000;padding-bottom:4px;margin-bottom:8px;">Fasilitas Kamar Ini</div>
+            <div class="grid-3" style="margin-bottom:14px;">
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">Water Heater (Air Hangat)</div>
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">WiFi Berkecepatan Tinggi</div>
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">Smart TV / Televisi</div>
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">Kamar Mandi Dalam</div>
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">Sarapan Pagi</div>
+              <div style="border:1px solid #000;padding:6px 8px;font-size:10px;font-weight:600;">Teh & Kopi Hangat</div>
+            </div>
+          </div>
+
+          <!-- Sticky Form Booking Widget -->
+          <div>
+            <div style="border:2px solid #000;background:#fff;padding:14px;">
+              <div style="font-size:14px;font-weight:700;margin-bottom:2px;">Rp 300.000</div>
+              <div style="font-size:10px;color:#555;margin-bottom:12px;">Tarif per malam (Termasuk sarapan)</div>
+
+              <div class="form-group">
+                <label class="form-label">Check-In</label>
+                <div class="form-input">28/10/2026 [v]</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Check-Out</label>
+                <div class="form-input">30/10/2026 [v]</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Jumlah Tamu</label>
+                <div class="form-input">3 Orang Tamu [v]</div>
+              </div>
+
+              <div style="border-top:1px solid #000;border-bottom:1px solid #000;padding:8px 0;margin:12px 0;">
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
+                  <span>Rp 300.000 x 2 malam</span>
+                  <span>Rp 600.000</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:6px;border-top:1px dashed #000;padding-top:6px;">
+                  <span>Total Tagihan</span>
+                  <span>Rp 600.000</span>
+                </div>
+              </div>
+
+              <button class="btn btn-fill btn-block" style="padding:9px;">Pesan Kamar Ini &rarr;</button>
+              <div style="font-size:9px;text-align:center;color:#666;margin-top:8px;">Pembayaran aman otomatis via Midtrans Snap</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-04: FASILITAS -->
+  <article class="wf-card" data-cat="public" id="wf-04">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-04</span>
+        <span class="wf-name">Fasilitas Homestay</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /facilities (navs/facilities.blade.php)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span>Kamar</span>
+            <span class="active">Fasilitas</span>
+            <span>Ulasan</span>
+            <span>Kontak</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm btn-fill">Pesan</button></div>
+        </div>
+
+        <div style="padding:16px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Fasilitas Homestay Rama Dieng</div>
+          <div style="font-size:11px;color:#555;margin-bottom:14px;">Kami menyediakan fasilitas lengkap untuk memastikan kenyamanan istirahat Anda di hawa dingin Dieng Wetan.</div>
+
+          <div class="grid-3">
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>Water Heater 24 Jam</span></div>
+              <div class="card-body">
+                <div class="card-title">Air Hangat (Water Heater) 24 Jam</div>
+                <div class="card-text">Mandi hangat kapan saja tanpa khawatir hawa dingin menusuk di pagi atau malam hari di Dieng.</div>
+              </div>
+            </div>
+
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>WiFi & Internet Stabil</span></div>
+              <div class="card-body">
+                <div class="card-title">WiFi Berkecepatan Tinggi</div>
+                <div class="card-text">Akses internet cepat dan gratis di seluruh area kamar dan ruang bersama untuk seluruh tamu.</div>
+              </div>
+            </div>
+
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>Parkir Mobil & Motor</span></div>
+              <div class="card-body">
+                <div class="card-title">Area Parkir Luas & Aman</div>
+                <div class="card-text">Tersedia area parkir tepat di depan penginapan yang dapat menampung mobil pribadi dan sepeda motor.</div>
+              </div>
+            </div>
+
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>Dapur Bersama & Dispenser</span></div>
+              <div class="card-body">
+                <div class="card-title">Dapur Bersama & Alat Masak</div>
+                <div class="card-text">Dapur bersama dilengkapi dispenser air panas/dingin, kompor gas, dan peralatan makan lengkap.</div>
+              </div>
+            </div>
+
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>Ruang Keluarga Santai</span></div>
+              <div class="card-body">
+                <div class="card-title">Ruang Duduk Keluarga Santai</div>
+                <div class="card-text">Area bersantai bersama keluarga atau rombongan dengan sofa nyaman dan suguhan teh/kopi hangat.</div>
+              </div>
+            </div>
+
+            <div class="card-box">
+              <div class="wf-img" style="height:80px;"><span>Sarapan & Teh Dieng</span></div>
+              <div class="card-body">
+                <div class="card-title">Sarapan Tradisional Hangat</div>
+                <div class="card-text">Sarapan pagi khas yang lezat siap mengawali petualangan Anda menjelajahi kawasan Dieng Plateau.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-05: ULASAN -->
+  <article class="wf-card" data-cat="public" id="wf-05">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-05</span>
+        <span class="wf-name">Ulasan & Testimoni Tamu</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /reviews (navs/reviews.blade.php)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span>Kamar</span>
+            <span>Fasilitas</span>
+            <span class="active">Ulasan</span>
+            <span>Kontak</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm btn-fill">Tulis Ulasan</button></div>
+        </div>
+
+        <div style="padding:16px;">
+          <!-- Summary Rating Box -->
+          <div style="border:1.5px solid #000;padding:14px;background:#f9f9f9;margin-bottom:16px;display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center;">
+            <div style="text-align:center;border-right:1px solid #ccc;">
+              <div style="font-size:32px;font-weight:700;">4.9</div>
+              <div style="font-size:12px;font-weight:600;margin-bottom:4px;">★★★★★</div>
+              <div style="font-size:10px;color:#555;">Berdasarkan ulasan tamu terverifikasi</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:10px;margin-bottom:3px;">
+                <span style="width:50px;">Bintang 5</span>
+                <div style="flex:1;height:6px;background:#ddd;border:1px solid #000;"><div style="width:88%;height:100%;background:#000;"></div></div>
+                <span style="width:30px;">42</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:10px;margin-bottom:3px;">
+                <span style="width:50px;">Bintang 4</span>
+                <div style="flex:1;height:6px;background:#ddd;border:1px solid #000;"><div style="width:10%;height:100%;background:#000;"></div></div>
+                <span style="width:30px;">5</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:10px;margin-bottom:3px;">
+                <span style="width:50px;">Bintang 3</span>
+                <div style="flex:1;height:6px;background:#ddd;border:1px solid #000;"><div style="width:2%;height:100%;background:#000;"></div></div>
+                <span style="width:30px;">1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Rating Pills -->
+          <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;">
+            <span style="font-size:11px;font-weight:700;">Filter Rating:</span>
+            <button class="btn btn-sm btn-fill">Semua</button>
+            <button class="btn btn-sm">Bintang 5</button>
+            <button class="btn btn-sm">Bintang 4</button>
+            <button class="btn btn-sm">Bintang 3</button>
+          </div>
+
+          <!-- Reviews Grid -->
+          <div class="grid-2">
+            <div style="border:1.5px solid #000;padding:12px;background:#fff;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <div>
+                  <strong>Siti Nurhaliza</strong>
+                  <div style="font-size:10px;color:#555;">Kamar 1 &bull; 24 Okt 2026</div>
+                </div>
+                <span class="badge badge-fill">5 / 5 ★</span>
+              </div>
+              <p style="font-size:11px;color:#333;line-height:1.4;">"Tempatnya sangat bersih dan nyaman! Lokasi strategis dekat Telaga Warna. Air hangatnya lancar dan pemanasnya sangat membantu melawan dinginnya malam Dieng."</p>
+            </div>
+
+            <div style="border:1.5px solid #000;padding:12px;background:#fff;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <div>
+                  <strong>Hendro Prasetyo</strong>
+                  <div style="font-size:10px;color:#555;">Kamar 2 &bull; 19 Okt 2026</div>
+                </div>
+                <span class="badge badge-fill">5 / 5 ★</span>
+              </div>
+              <p style="font-size:11px;color:#333;line-height:1.4;">"Sangat cocok untuk liburan keluarga. Kamar luas, sarapan enak, dan tuan rumah sangat membantu memberikan info rute ke Sikunir."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-06: KONTAK -->
+  <article class="wf-card" data-cat="public" id="wf-06">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-06</span>
+        <span class="wf-name">Kontak & Lokasi Homestay</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /contact (navs/contact.blade.php)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span>Kamar</span>
+            <span>Fasilitas</span>
+            <span>Ulasan</span>
+            <span class="active">Kontak</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm">Login</button></div>
+        </div>
+
+        <div style="padding:16px;">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;">Hubungi Rama Homestay</h2>
+          <div style="font-size:11px;color:#555;margin-bottom:14px;">Pertanyaan reservasi kamar atau rute ke Dieng Wetan? Kami siap melayani Anda.</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <!-- Form Kirim Pesan -->
+            <div style="border:1.5px solid #000;padding:14px;background:#fff;">
+              <div style="font-weight:700;font-size:12px;margin-bottom:10px;border-bottom:1px solid #000;padding-bottom:4px;">KIRIM PESAN LANGSUNG</div>
+              <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-input" placeholder="Nama Anda...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email / No. WhatsApp</label>
+                <input type="text" class="form-input" placeholder="Email atau 0812...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pesan / Pertanyaan</label>
+                <textarea class="form-input" style="height:60px;" placeholder="Tuliskan pertanyaan Anda..."></textarea>
+              </div>
+              <button class="btn btn-fill btn-block">Kirim Pesan</button>
+            </div>
+
+            <!-- Info Alamat Resmi -->
+            <div style="border:1.5px solid #000;padding:14px;background:#fff;">
+              <div style="font-weight:700;font-size:12px;margin-bottom:10px;border-bottom:1px solid #000;padding-bottom:4px;">INFORMASI LOKASI HOMESTAY</div>
+              
+              <div style="font-size:11px;margin-bottom:8px;">
+                <strong>Alamat Resmi:</strong><br>
+                Jl. Telaga Warna, RT.02 RW.01, Dieng Wetan, Kec. Kejajar, Kabupaten Wonosobo, Jawa Tengah 56354
+              </div>
+
+              <div style="font-size:11px;margin-bottom:8px;">
+                <strong>WhatsApp / Telepon:</strong><br>
+                +62 812-3456-7890
+              </div>
+
+              <div style="font-size:11px;margin-bottom:12px;">
+                <strong>Jam Operasional:</strong><br>
+                Check-In: 14.00 WIB &bull; Check-Out: 12.00 WIB
+              </div>
+
+              <div class="wf-img" style="height:100px;">
+                <span>[ PETA LOKASI GOOGLE MAPS: DIENG WETAN ]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- =========================================================================
+       BAGIAN 2: ALUR TAMU, BOOKING & MIDTRANS
+       ========================================================================= -->
+  <div class="section-heading" data-cat="tamu">
+    <h2>2. Alur Tamu, Booking & Pembayaran Midtrans</h2>
+    <span>Akses Tamu Terdaftar: Login &bull; Form Booking &bull; Midtrans Snap &bull; Dashboard Tamu &bull; Profil</span>
+  </div>
+
+  <!-- WF-07: LOGIN & REGISTER -->
+  <article class="wf-card" data-cat="tamu" id="wf-07">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-07</span>
+        <span class="wf-name">Login & Registrasi Akun Tamu</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /login & GET /register (auth/)</span>
+        <span>Aktor: Publik & Tamu</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu"><span>Beranda</span><span>Kamar</span></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 20px;">
+          <!-- Box Login -->
+          <div style="border:2px solid #000;padding:20px;background:#fff;">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Masuk ke Akun Anda</div>
+            <div style="font-size:11px;color:#555;margin-bottom:14px;">Gunakan akun terdaftar untuk memesan kamar dan melihat riwayat reservasi.</div>
+
+            <div class="form-group">
+              <label class="form-label">Alamat Email</label>
+              <input type="email" class="form-input" value="tamu@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kata Sandi (Password)</label>
+              <input type="password" class="form-input" value="********">
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:12px;">
+              <label><input type="checkbox"> Ingat saya</label>
+              <a href="#">Lupa password?</a>
+            </div>
+            <button class="btn btn-fill btn-block" style="padding:8px;">Masuk ke Akun</button>
+          </div>
+
+          <!-- Box Register -->
+          <div style="border:2px solid #000;padding:20px;background:#fff;">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Daftar Akun Baru</div>
+            <div style="font-size:11px;color:#555;margin-bottom:14px;">Belum punya akun? Registrasi cepat dalam 1 menit.</div>
+
+            <div class="form-group">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-input" placeholder="Nama Anda...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Alamat Email</label>
+              <input type="email" class="form-input" placeholder="email@domain.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nomor WhatsApp / HP</label>
+              <input type="text" class="form-input" placeholder="0812-XXXX-XXXX">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" placeholder="Min. 8 karakter">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Konfirmasi Password</label>
+                <input type="password" class="form-input" placeholder="Ulangi password">
+              </div>
+            </div>
+            <button class="btn btn-fill btn-block" style="padding:8px;">Daftar Akun Sekarang</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-08: FORM BOOKING -->
+  <article class="wf-card" data-cat="tamu" id="wf-08">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-08</span>
+        <span class="wf-name">Form Pemesanan Kamar (Booking Form)</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /tamu/book/{room} (tamu/booking_form.blade.php)</span>
+        <span>Aktor: Tamu Terotentikasi</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu"><span>Beranda</span><span>Kamar</span><span class="active">Pemesanan</span></div>
+          <div class="nav-btns"><span style="font-size:11px;font-weight:700;">Halo, Siti Rahayu</span></div>
+        </div>
+
+        <div style="padding:16px;display:grid;grid-template-columns:1fr 320px;gap:16px;">
+          <!-- Form Data Pemesanan -->
+          <div>
+            <div style="font-weight:700;font-size:12px;margin-bottom:10px;border-bottom:1.5px solid #000;padding-bottom:4px;">1. DATA PEMESAN & IDENTITAS</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nama Pemesan</label>
+                <input type="text" class="form-input form-input-readonly" value="Siti Rahayu" readonly>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Konfirmasi</label>
+                <input type="email" class="form-input form-input-readonly" value="siti.rahayu@gmail.com" readonly>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">No. WhatsApp / HP</label>
+                <input type="text" class="form-input" value="0812-3456-7890">
+              </div>
+              <div class="form-group">
+                <label class="form-label">No. Identitas (KTP/Paspor)</label>
+                <input type="text" class="form-input" placeholder="3307xxxxxxxxxxxx">
+              </div>
+            </div>
+
+            <div style="font-weight:700;font-size:12px;margin:16px 0 10px;border-bottom:1.5px solid #000;padding-bottom:4px;">2. JADWAL MENGINAP</div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Tanggal Check-In</label>
+                <input type="date" class="form-input" value="2026-10-28">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanggal Check-Out</label>
+                <input type="date" class="form-input" value="2026-10-30">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Catatan Tambahan (Opsional)</label>
+              <textarea class="form-input" style="height:50px;" placeholder="Perkiraan jam tiba di homestay, dll..."></textarea>
+            </div>
+          </div>
+
+          <!-- Ringkasan Kamar & Total Tagihan -->
+          <div>
+            <div style="border:2px solid #000;background:#fff;padding:12px;">
+              <div style="font-weight:700;font-size:12px;border-bottom:1px solid #000;padding-bottom:6px;margin-bottom:8px;">RINGKASAN PESANAN</div>
+              
+              <div class="wf-img" style="height:80px;margin-bottom:8px;"><span>Foto Kamar 1</span></div>
+              <div style="font-weight:700;font-size:13px;">Kamar 1</div>
+              <div style="font-size:10px;color:#555;margin-bottom:8px;">Kapasitas Maks. 3 Tamu &bull; Water Heater 24 Jam &bull; WiFi</div>
+
+              <div style="border-top:1px dashed #000;padding-top:8px;margin-top:8px;font-size:11px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span>Durasi Menginap</span>
+                  <strong>2 Malam</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span>Tarif (Rp 300.000 x 2)</span>
+                  <span>Rp 600.000</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;border-top:1.5px solid #000;padding-top:6px;margin-top:6px;">
+                  <span>Total Tagihan</span>
+                  <span>Rp 600.000</span>
+                </div>
+              </div>
+
+              <button class="btn btn-fill btn-block" style="padding:9px;margin-top:12px;">Lanjut Pembayaran Midtrans &rarr;</button>
+              <div style="font-size:9px;color:#666;text-align:center;margin-top:6px;">*Kamar di-hold sementara selama proses pembayaran</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-09: MIDTRANS SNAP & PEMBAYARAN -->
+  <article class="wf-card" data-cat="tamu" id="wf-09">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-09</span>
+        <span class="wf-name">Pembayaran Midtrans Snap Popup</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /tamu/pay/{reservation} (tamu/pay.blade.php)</span>
+        <span>Aktor: Tamu Terotentikasi</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu"><span>Beranda</span><span>Pembayaran</span></div>
+          <div class="nav-btns"><span class="badge badge-fill">Menunggu Pembayaran</span></div>
+        </div>
+
+        <div style="padding:16px;">
+          <!-- Detail Transaksi Header -->
+          <div style="border:1.5px solid #000;padding:12px;background:#fff;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:10px;color:#555;">KODE BOOKING</div>
+              <div style="font-size:14px;font-weight:700;">RMS-202610-0012</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:#555;">TOTAL TAGIHAN</div>
+              <div style="font-size:16px;font-weight:700;">Rp 600.000</div>
+            </div>
+          </div>
+
+          <!-- Midtrans Snap Modal Similasi -->
+          <div style="border:2px solid #000;background:#fff;max-width:440px;margin:0 auto;box-shadow:4px 4px 0px rgba(0,0,0,0.25);">
+            <div style="background:#000;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:700;font-size:11px;">MIDTRANS SNAP PAYMENT</span>
+              <span style="font-size:10px;">Hold Time: 30:00 mnt</span>
+            </div>
+            
+            <div style="padding:14px;">
+              <div style="font-weight:700;font-size:11px;margin-bottom:8px;">PILIH METODE PEMBAYARAN:</div>
+              
+              <div style="border:1.5px solid #000;padding:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;">
+                <div>
+                  <strong>QRIS (GoPay, OVO, ShopeePay, BCA Mobile)</strong>
+                  <div style="font-size:9px;color:#555;">Scan kode QRIS instan otomatis terverifikasi</div>
+                </div>
+                <span class="badge badge-fill">Instan</span>
+              </div>
+
+              <div style="border:1.5px solid #000;padding:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <strong>Virtual Account (BCA / Mandiri / BRI / BNI)</strong>
+                  <div style="font-size:9px;color:#555;">Transfer nomor VA langsung lunas otomatis</div>
+                </div>
+                <span class="badge badge-outline">VA</span>
+              </div>
+
+              <div style="border:1.5px solid #000;padding:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <strong>Kartu Kredit / Debit Online</strong>
+                  <div style="font-size:9px;color:#555;">Visa / MasterCard / JCB dengan 3D Secure</div>
+                </div>
+                <span class="badge badge-outline">Kartu</span>
+              </div>
+
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-block">Batal Transaksi</button>
+                <button class="btn btn-fill btn-block">Bayar Sekarang &rarr;</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:center;gap:10px;margin-top:14px;">
+            <button class="btn btn-sm">Cek Status (Sync)</button>
+            <button class="btn btn-sm">Ke Dashboard Tamu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-10: DASHBOARD TAMU -->
+  <article class="wf-card" data-cat="tamu" id="wf-10">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-10</span>
+        <span class="wf-name">Dashboard Tamu & Riwayat Reservasi</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /tamu/dashboard (tamu/dashboard.blade.php)</span>
+        <span>Aktor: Tamu Terotentikasi</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span>Kamar</span>
+            <span class="active">Reservasi Saya</span>
+            <span>Profil Saya</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm">Keluar</button></div>
+        </div>
+
+        <div style="padding:16px;">
+          <!-- Welcome Bar -->
+          <div style="border:1.5px solid #000;padding:12px 16px;background:#fff;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:14px;font-weight:700;">Selamat Datang, Siti Rahayu</div>
+              <div style="font-size:10px;color:#555;">siti.rahayu@gmail.com &bull; 0812-3456-7890</div>
+            </div>
+            <button class="btn btn-sm btn-fill">+ Pesan Kamar Baru</button>
+          </div>
+
+          <!-- 4 Stat Status -->
+          <div class="grid-4" style="margin-bottom:14px;">
+            <div class="stat-card">
+              <div class="stat-num">1</div>
+              <div class="stat-label">Menunggu Pembayaran</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">2</div>
+              <div class="stat-label">Terkonfirmasi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">3</div>
+              <div class="stat-label">Selesai Menginap</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">Rp 1.500.000</div>
+              <div class="stat-label">Total Transaksi</div>
+            </div>
+          </div>
+
+          <!-- Tabel Riwayat Reservasi Saya -->
+          <div style="border:1.5px solid #000;background:#fff;">
+            <div style="padding:10px 14px;background:#f5f5f5;border-bottom:1.5px solid #000;font-weight:700;font-size:12px;">RIWAYAT RESERVASI SAYA</div>
+            
+            <table class="wf-table">
+              <thead>
+                <tr>
+                  <th>Kode Booking</th>
+                  <th>Kamar</th>
+                  <th>Check-In</th>
+                  <th>Check-Out</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>RMS-202610-0012</strong></td>
+                  <td>Kamar 1</td>
+                  <td>28 Okt 2026</td>
+                  <td>30 Okt 2026</td>
+                  <td>Rp 600.000</td>
+                  <td><span class="badge badge-outline">Menunggu Bayar</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-fill">Bayar</button>
+                    <button class="btn btn-sm">Batal</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>RMS-202609-0008</strong></td>
+                  <td>Kamar 2</td>
+                  <td>15 Sep 2026</td>
+                  <td>17 Sep 2026</td>
+                  <td>Rp 600.000</td>
+                  <td><span class="badge badge-fill">Terkonfirmasi</span></td>
+                  <td><button class="btn btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><strong>RMS-202608-0003</strong></td>
+                  <td>Kamar 3</td>
+                  <td>10 Agu 2026</td>
+                  <td>11 Agu 2026</td>
+                  <td>Rp 300.000</td>
+                  <td><span class="badge badge-gray">Selesai</span></td>
+                  <td><button class="btn btn-sm">Beri Ulasan</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-11: PROFIL TAMU -->
+  <article class="wf-card" data-cat="tamu" id="wf-11">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-11</span>
+        <span class="wf-name">Profil Tamu & Pengaturan Akun</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /profile (profile.blade.php)</span>
+        <span>Aktor: Tamu Terotentikasi</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="screen-topbar-contact">
+          <span>✉ info@ramahomestay.com</span>
+          <span style="font-weight:700;">[ R ] RAMA HOMESTAY</span>
+          <span>📞 +62 812-3456-7890</span>
+        </div>
+        <div class="screen-nav">
+          <div class="nav-brand"><span class="nav-brand-logo">R</span> Rama Homestay</div>
+          <div class="nav-menu">
+            <span>Beranda</span>
+            <span>Reservasi Saya</span>
+            <span class="active">Profil Saya</span>
+          </div>
+          <div class="nav-btns"><button class="btn btn-sm">Keluar</button></div>
+        </div>
+
+        <div style="padding:16px;max-width:700px;margin:0 auto;">
+          <div style="border:1.5px solid #000;padding:16px;background:#fff;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;border-bottom:1.5px solid #000;padding-bottom:4px;">INFORMASI PROFIL</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-input" value="Siti Rahayu">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input form-input-readonly" value="siti.rahayu@gmail.com" readonly>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nomor WhatsApp / HP</label>
+                <input type="text" class="form-input" value="0812-3456-7890">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Kota Asal</label>
+                <input type="text" class="form-input" value="Semarang">
+              </div>
+            </div>
+
+            <button class="btn btn-fill" style="margin-top:6px;">Simpan Perubahan</button>
+          </div>
+
+          <div style="border:1.5px solid #000;padding:16px;background:#fff;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;border-bottom:1.5px solid #000;padding-bottom:4px;">UBAH PASSWORD</div>
+
+            <div class="form-group">
+              <label class="form-label">Password Saat Ini</label>
+              <input type="password" class="form-input" placeholder="••••••••">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-input" placeholder="Min. 8 karakter">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Konfirmasi Password Baru</label>
+                <input type="password" class="form-input" placeholder="Ulangi password baru">
+              </div>
+            </div>
+
+            <button class="btn btn-fill" style="margin-top:6px;">Perbarui Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- =========================================================================
+       BAGIAN 3: PANEL ADMIN (SESUAI SISTEM NYATA - layouts/admin.blade.php)
+       ========================================================================= -->
+  <div class="section-heading" data-cat="admin">
+    <h2>3. Panel Administrator Rama Homestay</h2>
+    <span>Menu Nyata: Ringkasan &bull; Kelola Kamar &bull; Kelola Reservasi &bull; Laporan &bull; Keluar</span>
+  </div>
+
+  <!-- WF-12: ADMIN - RINGKASAN (DASHBOARD) -->
+  <article class="wf-card" data-cat="admin" id="wf-12">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-12</span>
+        <span class="wf-name">Admin - Ringkasan Sistem (Dashboard)</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /admin/dashboard (admin/dashboard.blade.php)</span>
+        <span>Aktor: Administrator</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="admin-frame">
+          <aside class="admin-aside">
+            <div class="admin-aside-brand">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="nav-brand-logo">R</span>
+                <span style="font-weight:800;font-size:12px;">Rama Homestay</span>
+              </div>
+            </div>
+            <div class="admin-menu-label">Menu Utama</div>
+            <ul class="admin-menu">
+              <li class="admin-menu-item active">▤ Ringkasan</li>
+              <li class="admin-menu-item">🚪 Kelola Kamar</li>
+              <li class="admin-menu-item">📅 Kelola Reservasi</li>
+              <li class="admin-menu-item">📊 Laporan</li>
+            </ul>
+            <div class="admin-aside-footer"><span style="cursor:pointer;">⇥ Keluar</span></div>
+          </aside>
+
+          <!-- Main Content -->
+          <div class="admin-main">
+            <div class="admin-top">
+              <div class="admin-title">Ringkasan Sistem</div>
+              <div style="font-size:11px;">Admin: <strong>Admin Homestay</strong></div>
+            </div>
+
+            <div class="admin-content">
+              <!-- 5 Stat Metrics Real System -->
+              <div class="grid-5" style="margin-bottom:14px;">
+                <div class="stat-card">
+                  <div class="stat-num">8</div>
+                  <div class="stat-label">Total Kamar</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">24</div>
+                  <div class="stat-label">Total Reservasi</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">3</div>
+                  <div class="stat-label">Menunggu Konfirmasi</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">Rp 7.200.000</div>
+                  <div class="stat-label">Total Pendapatan</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">38</div>
+                  <div class="stat-label">Tamu Terdaftar</div>
+                </div>
+              </div>
+
+              <!-- Tabel Pemesanan Terbaru (admin/dashboard.blade.php) -->
+              <div style="border:1.5px solid #000;background:#fff;">
+                <div style="padding:10px 14px;border-bottom:1px solid #000;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-weight:700;font-size:12px;">Pemesanan Terbaru</span>
+                  <a href="#" style="font-size:11px;">Lihat Semua &rarr;</a>
+                </div>
+                <table class="wf-table">
+                  <thead>
+                    <tr>
+                      <th>Tamu</th>
+                      <th>Kamar</th>
+                      <th>Jadwal</th>
+                      <th>Status</th>
+                      <th>Pembayaran</th>
+                      <th style="text-align:right;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <strong>Siti Rahayu</strong><br>
+                        <span style="font-size:10px;color:#555;">siti.rahayu@gmail.com</span>
+                      </td>
+                      <td>Kamar 1</td>
+                      <td>28 Okt 2026<br><span style="font-size:10px;color:#555;">s/d 30 Okt 2026</span></td>
+                      <td><span class="badge badge-outline">Menunggu</span></td>
+                      <td><span class="badge badge-outline">Belum Bayar</span></td>
+                      <td style="text-align:right;"><button class="btn btn-sm">Detail</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Ahmad Fauzan</strong><br>
+                        <span style="font-size:10px;color:#555;">ahmad.f@gmail.com</span>
+                      </td>
+                      <td>Kamar 2</td>
+                      <td>29 Okt 2026<br><span style="font-size:10px;color:#555;">s/d 31 Okt 2026</span></td>
+                      <td><span class="badge badge-fill">Terkonfirmasi</span></td>
+                      <td><span class="badge badge-fill">Lunas</span></td>
+                      <td style="text-align:right;"><button class="btn btn-sm">Detail</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-13: ADMIN - KELOLA KAMAR -->
+  <article class="wf-card" data-cat="admin" id="wf-13">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-13</span>
+        <span class="wf-name">Admin - Kelola Kamar (Rooms Management)</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /admin/rooms (admin/rooms/index.blade.php)</span>
+        <span>Aktor: Administrator</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="admin-frame">
+          <aside class="admin-aside">
+            <div class="admin-aside-brand">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="nav-brand-logo">R</span>
+                <span style="font-weight:800;font-size:12px;">Rama Homestay</span>
+              </div>
+            </div>
+            <div class="admin-menu-label">Menu Utama</div>
+            <ul class="admin-menu">
+              <li class="admin-menu-item">▤ Ringkasan</li>
+              <li class="admin-menu-item active">🚪 Kelola Kamar</li>
+              <li class="admin-menu-item">📅 Kelola Reservasi</li>
+              <li class="admin-menu-item">📊 Laporan</li>
+            </ul>
+            <div class="admin-aside-footer"><span style="cursor:pointer;">⇥ Keluar</span></div>
+          </aside>
+
+          <div class="admin-main">
+            <div class="admin-top">
+              <div class="admin-title">Kelola Kamar Homestay</div>
+              <button class="btn btn-sm btn-fill">+ Tambah Kamar Baru</button>
+            </div>
+
+            <div class="admin-content">
+              <!-- Filter & Search -->
+              <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <input type="text" class="form-input" placeholder="Cari nama kamar (Kamar 1, Kamar 2...)" style="width:250px;">
+                <select class="form-input" style="width:140px;">
+                  <option>Semua Status</option>
+                  <option>Aktif</option>
+                  <option>Nonaktif</option>
+                </select>
+              </div>
+
+              <!-- Tabel CRUD Kamar (Kamar 1 s/d Kamar 4) -->
+              <div style="border:1.5px solid #000;background:#fff;">
+                <table class="wf-table">
+                  <thead>
+                    <tr>
+                      <th style="width:50px;">Foto</th>
+                      <th>Nama Kamar</th>
+                      <th>Kapasitas</th>
+                      <th>Harga / Malam</th>
+                      <th>Status</th>
+                      <th style="text-align:right;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><div class="wf-img" style="height:30px;width:45px;"><span>Gbr</span></div></td>
+                      <td><strong>Kamar 1</strong><br><span style="font-size:10px;color:#555;">Water Heater 24 Jam, TV, WiFi</span></td>
+                      <td>3 Orang</td>
+                      <td>Rp 300.000</td>
+                      <td><span class="badge badge-fill">Aktif</span></td>
+                      <td style="text-align:right;">
+                        <button class="btn btn-sm">Edit</button>
+                        <button class="btn btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="wf-img" style="height:30px;width:45px;"><span>Gbr</span></div></td>
+                      <td><strong>Kamar 2</strong><br><span style="font-size:10px;color:#555;">Water Heater 24 Jam, TV, WiFi</span></td>
+                      <td>3 Orang</td>
+                      <td>Rp 300.000</td>
+                      <td><span class="badge badge-fill">Aktif</span></td>
+                      <td style="text-align:right;">
+                        <button class="btn btn-sm">Edit</button>
+                        <button class="btn btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="wf-img" style="height:30px;width:45px;"><span>Gbr</span></div></td>
+                      <td><strong>Kamar 3</strong><br><span style="font-size:10px;color:#555;">Water Heater 24 Jam, TV, WiFi</span></td>
+                      <td>3 Orang</td>
+                      <td>Rp 300.000</td>
+                      <td><span class="badge badge-fill">Aktif</span></td>
+                      <td style="text-align:right;">
+                        <button class="btn btn-sm">Edit</button>
+                        <button class="btn btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="wf-img" style="height:30px;width:45px;"><span>Gbr</span></div></td>
+                      <td><strong>Kamar 4</strong><br><span style="font-size:10px;color:#555;">Water Heater 24 Jam, TV, WiFi</span></td>
+                      <td>3 Orang</td>
+                      <td>Rp 300.000</td>
+                      <td><span class="badge badge-fill">Aktif</span></td>
+                      <td style="text-align:right;">
+                        <button class="btn btn-sm">Edit</button>
+                        <button class="btn btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-14: ADMIN - MODAL / FORM TAMBAH & EDIT KAMAR -->
+  <article class="wf-card" data-cat="admin" id="wf-14">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-14</span>
+        <span class="wf-name">Admin - Form Modal Tambah / Edit Kamar</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Modal Form (admin/rooms/index.blade.php)</span>
+        <span>Aktor: Administrator</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen" style="padding:20px;background:#f0f0f0;">
+        <div style="max-width:540px;margin:0 auto;background:#fff;border:2px solid #000;box-shadow:4px 4px 0px rgba(0,0,0,0.25);">
+          <div style="background:#000;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:12px;">TAMBAH / EDIT DATA KAMAR</span>
+            <span style="cursor:pointer;font-weight:700;">[X]</span>
+          </div>
+
+          <div style="padding:16px;">
+            <div class="form-group">
+              <label class="form-label">Nama Kamar</label>
+              <input type="text" class="form-input" value="Kamar 1">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Kapasitas Maksimal (Orang)</label>
+                <input type="number" class="form-input" value="3">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Harga per Malam (Rp)</label>
+                <input type="text" class="form-input" value="300000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Deskripsi & Fasilitas Kamar</label>
+              <textarea class="form-input" style="height:60px;">Kamar mandi dalam dengan water heater 24 jam, kasur empuk nyaman, TV layar datar, dan WiFi kencang.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Upload Foto Kamar</label>
+              <div style="border:1.5px dashed #000;padding:12px;text-align:center;background:#fafafa;">
+                <div style="font-size:10px;color:#555;">[ + Pilih Berkas Foto dari Komputer / Drag & Drop ]</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Status Publikasi Kamar</label>
+              <select class="form-input">
+                <option selected>Aktif (Tersedia untuk Dipesan)</option>
+                <option>Nonaktif (Sedang Perbaikan / Tutup)</option>
+              </select>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;border-top:1px solid #ddd;padding-top:12px;">
+              <button class="btn">Batal</button>
+              <button class="btn btn-fill">Simpan Kamar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-15: ADMIN - KELOLA RESERVASI -->
+  <article class="wf-card" data-cat="admin" id="wf-15">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-15</span>
+        <span class="wf-name">Admin - Kelola Reservasi & Status Tamu</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /admin/reservations (admin/reservations/index.blade.php)</span>
+        <span>Aktor: Administrator</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="admin-frame">
+          <aside class="admin-aside">
+            <div class="admin-aside-brand">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="nav-brand-logo">R</span>
+                <span style="font-weight:800;font-size:12px;">Rama Homestay</span>
+              </div>
+            </div>
+            <div class="admin-menu-label">Menu Utama</div>
+            <ul class="admin-menu">
+              <li class="admin-menu-item">▤ Ringkasan</li>
+              <li class="admin-menu-item">🚪 Kelola Kamar</li>
+              <li class="admin-menu-item active">📅 Kelola Reservasi</li>
+              <li class="admin-menu-item">📊 Laporan</li>
+            </ul>
+            <div class="admin-aside-footer"><span style="cursor:pointer;">⇥ Keluar</span></div>
+          </aside>
+
+          <div class="admin-main">
+            <div class="admin-top">
+              <div class="admin-title">Daftar Reservasi Tamu</div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span style="font-size:11px;font-weight:700;">Filter Status:</span>
+                <select class="form-input" style="padding:3px 8px;font-size:11px;width:150px;">
+                  <option>Semua Status</option>
+                  <option>Menunggu (pending)</option>
+                  <option>Terkonfirmasi (confirmed)</option>
+                  <option>Selesai (completed)</option>
+                  <option>Dibatalkan (cancelled)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="admin-content">
+              <div style="border:1.5px solid #000;background:#fff;">
+                <table class="wf-table">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Nama Tamu</th>
+                      <th>Kamar</th>
+                      <th>Check In / Out</th>
+                      <th>Total</th>
+                      <th>Pembayaran</th>
+                      <th>Status</th>
+                      <th style="text-align:right;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <strong>#12</strong><br>
+                        <span style="font-size:10px;color:#555;">RMS-202610-0012</span><br>
+                        <span class="badge badge-fill" style="font-size:8px;">QRIS</span>
+                      </td>
+                      <td>
+                        <strong>Siti Rahayu</strong><br>
+                        <span style="font-size:10px;color:#555;">siti.rahayu@gmail.com</span><br>
+                        <span style="font-size:10px;color:#555;">0812-3456-7890</span>
+                      </td>
+                      <td>Kamar 1</td>
+                      <td>28/10/2026<br><span style="font-size:10px;color:#555;">s/d 30/10/2026 (2 malam)</span></td>
+                      <td><strong>Rp 600.000</strong></td>
+                      <td><span class="badge badge-outline">Belum Bayar</span></td>
+                      <td>
+                        <span class="badge badge-outline">Menunggu</span>
+                        <div style="margin-top:4px;">
+                          <select class="form-input" style="font-size:9px;padding:2px;">
+                            <option>Ubah Status</option>
+                            <option>Konfirmasi</option>
+                            <option>Selesai</option>
+                            <option>Batalkan</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td style="text-align:right;"><button class="btn btn-sm">Detail</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>#11</strong><br>
+                        <span style="font-size:10px;color:#555;">RMS-202610-0011</span><br>
+                        <span class="badge badge-fill" style="font-size:8px;">BCA VA</span>
+                      </td>
+                      <td>
+                        <strong>Ahmad Fauzan</strong><br>
+                        <span style="font-size:10px;color:#555;">ahmad.f@gmail.com</span><br>
+                        <span style="font-size:10px;color:#555;">0857-9876-5432</span>
+                      </td>
+                      <td>Kamar 2</td>
+                      <td>29/10/2026<br><span style="font-size:10px;color:#555;">s/d 31/10/2026 (2 malam)</span></td>
+                      <td><strong>Rp 600.000</strong></td>
+                      <td><span class="badge badge-fill">✓ Lunas</span></td>
+                      <td><span class="badge badge-fill">Terkonfirmasi</span></td>
+                      <td style="text-align:right;"><button class="btn btn-sm">Detail</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- WF-16: ADMIN - LAPORAN -->
+  <article class="wf-card" data-cat="admin" id="wf-16">
+    <header class="wf-header">
+      <div class="wf-header-left">
+        <span class="wf-badge">WF-16</span>
+        <span class="wf-name">Admin - Laporan & Statistik Reservasi</span>
+      </div>
+      <div class="wf-meta">
+        <span class="wf-route">Route: GET /admin/reports (admin/reports.blade.php)</span>
+        <span>Aktor: Administrator</span>
+      </div>
+    </header>
+    <div class="wf-canvas">
+      <div class="screen">
+        <div class="admin-frame">
+          <aside class="admin-aside">
+            <div class="admin-aside-brand">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="nav-brand-logo">R</span>
+                <span style="font-weight:800;font-size:12px;">Rama Homestay</span>
+              </div>
+            </div>
+            <div class="admin-menu-label">Menu Utama</div>
+            <ul class="admin-menu">
+              <li class="admin-menu-item">▤ Ringkasan</li>
+              <li class="admin-menu-item">🚪 Kelola Kamar</li>
+              <li class="admin-menu-item">📅 Kelola Reservasi</li>
+              <li class="admin-menu-item active">📊 Laporan</li>
+            </ul>
+            <div class="admin-aside-footer"><span style="cursor:pointer;">⇥ Keluar</span></div>
+          </aside>
+
+          <div class="admin-main">
+            <div class="admin-top">
+              <div class="admin-title">Laporan & Rekapitulasi Pendapatan</div>
+              <div style="display:flex;gap:6px;">
+                <button class="btn btn-sm btn-fill">Cetak / Ekspor PDF</button>
+              </div>
+            </div>
+
+            <div class="admin-content">
+              <!-- Filter Periode Laporan (admin/reports.blade.php) -->
+              <div style="border:1.5px solid #000;background:#fff;padding:12px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+                <div>
+                  <label class="form-label">Tanggal Dari</label>
+                  <input type="date" class="form-input" value="2026-10-01" style="width:140px;">
+                </div>
+                <div>
+                  <label class="form-label">Tanggal Sampai</label>
+                  <input type="date" class="form-input" value="2026-10-31" style="width:140px;">
+                </div>
+                <div>
+                  <label class="form-label">Filter Status</label>
+                  <select class="form-input" style="width:140px;">
+                    <option>Semua Status</option>
+                    <option>Lunas / Terkonfirmasi</option>
+                    <option>Selesai</option>
+                  </select>
+                </div>
+                <button class="btn btn-fill" style="height:31px;">Tampilkan</button>
+              </div>
+
+              <!-- Stat Ringkasan Laporan -->
+              <div class="grid-4" style="margin-bottom:14px;">
+                <div class="stat-card">
+                  <div class="stat-num">Rp 7.200.000</div>
+                  <div class="stat-label">Total Omzet Pendapatan</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">18</div>
+                  <div class="stat-label">Reservasi Sukses</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">24</div>
+                  <div class="stat-label">Malam Terjual</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-num">Rp 300.000</div>
+                  <div class="stat-label">Tarif Flat / Malam</div>
+                </div>
+              </div>
+
+              <!-- Tabel Rincian Transaksi -->
+              <div style="border:1.5px solid #000;background:#fff;">
+                <table class="wf-table">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Tanggal</th>
+                      <th>Nama Tamu</th>
+                      <th>Kamar</th>
+                      <th>Durasi</th>
+                      <th>Metode Pembayaran</th>
+                      <th style="text-align:right;">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>RMS-202610-0008</td>
+                      <td>20/10/2026</td>
+                      <td>Budi Santoso</td>
+                      <td>Kamar 1</td>
+                      <td>2 Malam</td>
+                      <td>Midtrans (QRIS)</td>
+                      <td style="text-align:right;">Rp 600.000</td>
+                    </tr>
+                    <tr>
+                      <td>RMS-202610-0007</td>
+                      <td>18/10/2026</td>
+                      <td>Dewi Anggraini</td>
+                      <td>Kamar 3</td>
+                      <td>2 Malam</td>
+                      <td>Midtrans (BCA VA)</td>
+                      <td style="text-align:right;">Rp 600.000</td>
+                    </tr>
+                    <tr>
+                      <td>RMS-202610-0006</td>
+                      <td>15/10/2026</td>
+                      <td>Hendra Pratama</td>
+                      <td>Kamar 2</td>
+                      <td>1 Malam</td>
+                      <td>Midtrans (GoPay)</td>
+                      <td style="text-align:right;">Rp 300.000</td>
+                    </tr>
+                    <tr style="font-weight:700;background:#f0f0f0;">
+                      <td colspan="6" style="text-align:right;">TOTAL PENDAPATAN OKTOBER 2026:</td>
+                      <td style="text-align:right;">Rp 7.200.000</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<!-- JAVASCRIPT FILTERING & INTERACTION -->
+<div id="google_translate_element" style="display:none;"></div>
+<style>
+  .goog-te-banner-frame.skiptranslate, .goog-te-banner-frame, iframe.goog-te-banner-frame { display: none !important; }
+  body { top: 0px !important; }
+  .goog-logo-link, .goog-te-gadget span { display: none !important; }
+  .goog-te-gadget { font-size: 0px !important; }
+  #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+  .goog-text-highlight { background: none !important; box-shadow: none !important; }
+</style>
+<script>
+  function setCategory(cat, btn) {
+    document.querySelectorAll('.filter-pill').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.wf-card');
+    cards.forEach(card => {
+      if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const headings = document.querySelectorAll('.section-heading');
+    headings.forEach(heading => {
+      if (cat === 'all' || heading.getAttribute('data-cat') === cat) {
+        heading.style.display = 'flex';
+      } else {
+        heading.style.display = 'none';
+      }
+    });
+  }
+
+  // BILINGUAL TRANSLATION ENGINE (INDONESIAN <-> ENGLISH)
+  const translations = [
+    { id: "Semua Tampilan (16)", en: "All Screens (16)" },
+    { id: "1. Publik & Tamu (6)", en: "1. Public & Guest (6)" },
+    { id: "2. Alur Booking & Akun (5)", en: "2. Booking & Account (5)" },
+    { id: "3. Panel Admin (5)", en: "3. Admin Panel (5)" },
+    { id: "Kategori:", en: "Category:" },
+    { id: "Cetak / Simpan PDF", en: "Print / Save PDF" },
+    { id: "1. Halaman Publik & Tamu Pengunjung", en: "1. Public & Guest Visitor Pages" },
+    { id: "2. Alur Transaksi, Booking & Akun Tamu", en: "2. Transaction, Booking & Guest Account Flow" },
+    { id: "3. Panel Administrasi & Pengelolaan Homestay", en: "3. Homestay Administration & Management Panel" },
+    { id: "Navigasi: Beranda • Kamar • Fasilitas • Ulasan • Kontak", en: "Navigation: Home • Rooms • Facilities • Reviews • Contact" },
+    { id: "Beranda (Landing Page)", en: "Home (Landing Page)" },
+    { id: "Daftar Kamar (Rooms Catalog)", en: "Room Listing (Rooms Catalog)" },
+    { id: "Detail Kamar & Kalender", en: "Room Details & Availability Calendar" },
+    { id: "Fasilitas Homestay", en: "Homestay Facilities" },
+    { id: "Ulasan & Testimoni Tamu", en: "Guest Reviews & Testimonials" },
+    { id: "Kontak & Lokasi Homestay", en: "Contact & Homestay Location" },
+    { id: "Form Booking & Pilih Tanggal", en: "Booking Form & Date Selection" },
+    { id: "Instruksi Pembayaran & Virtual Account", en: "Payment Instructions & Virtual Account" },
+    { id: "Sukses Pembayaran & E-Voucher", en: "Payment Success & E-Voucher" },
+    { id: "Dashboard Tamu & Riwayat Reservasi", en: "Guest Dashboard & Booking History" },
+    { id: "Detail Reservasi Tamu", en: "Guest Reservation Details" },
+    { id: "Dashboard Admin (Ringkasan)", en: "Admin Dashboard (Overview)" },
+    { id: "Kelola Kamar & Status Ketersediaan", en: "Manage Rooms & Availability Status" },
+    { id: "Form Tambah / Edit Kamar", en: "Add / Edit Room Form" },
+    { id: "Kelola Reservasi Tamu", en: "Manage Guest Reservations" },
+    { id: "Laporan Pendapatan & Ekspor", en: "Revenue Report & Export" },
+    { id: "Aktor: Pengunjung & Calon Tamu", en: "Actor: Visitors & Prospective Guests" },
+    { id: "Aktor: Tamu Terdaftar (Customer)", en: "Actor: Registered Guests (Customer)" },
+    { id: "Aktor: Administrator Homestay", en: "Actor: Homestay Administrator" },
+    { id: "Pesan Kamar Sekarang", en: "Book Room Now" },
+    { id: "Lihat Pilihan Kamar", en: "View Room Options" },
+    { id: "Tanggal Check-In", en: "Check-In Date" },
+    { id: "Tanggal Check-Out", en: "Check-Out Date" },
+    { id: "Jumlah Tamu", en: "Number of Guests" },
+    { id: "Cek Ketersediaan", en: "Check Availability" },
+    { id: "Tarif Rp 300.000 / malam", en: "Rate: IDR 300,000 / night" },
+    { id: "Kapasitas 3 Tamu", en: "Capacity: 3 Guests" },
+    { id: "Kenyamanan & Kehangatan Menginap di Dataran Tinggi Dieng", en: "Comfort & Warmth in Dieng Plateau Highlands" },
+    { id: "Total Pendapatan", en: "Total Revenue" },
+    { id: "Total Reservasi", en: "Total Reservations" },
+    { id: "Kamar Tersedia", en: "Available Rooms" },
+    { id: "Tamu Aktif", en: "Active Guests" },
+    { id: "Ringkasan", en: "Overview" },
+    { id: "Kelola Kamar", en: "Manage Rooms" },
+    { id: "Kelola Reservasi", en: "Manage Bookings" },
+    { id: "Laporan", en: "Reports" },
+    { id: "Keluar", en: "Logout" },
+    { id: "Lunas", en: "Paid" },
+    { id: "Belum Lunas", en: "Unpaid" },
+    { id: "Menunggu", en: "Pending" },
+    { id: "Dikonfirmasi", en: "Confirmed" },
+    { id: "Selesai", en: "Completed" },
+    { id: "Dibatalkan", en: "Cancelled" },
+    { id: "Kamar 1", en: "Room 1" },
+    { id: "Kamar 2", en: "Room 2" },
+    { id: "Kamar 3", en: "Room 3" },
+    { id: "Kamar 4", en: "Room 4" },
+    { id: "Kamar 5", en: "Room 5" },
+    { id: "Kamar 6", en: "Room 6" },
+    { id: "Kamar 7", en: "Room 7" },
+    { id: "Kamar 8", en: "Room 8" },
+    { id: "3 Tamu", en: "3 Guests" },
+    { id: "Simpan", en: "Save" },
+    { id: "Batal", en: "Cancel" },
+    { id: "Aksi", en: "Action" }
+  ];
+
+  function switchWireframeLang(lang) {
+    const btnId = document.getElementById('wfLangId');
+    const btnEn = document.getElementById('wfLangEn');
+
+    if (lang === 'en') {
+      btnId.style.background = '#000';
+      btnId.style.color = '#888';
+      btnEn.style.background = '#fff';
+      btnEn.style.color = '#000';
+      localStorage.setItem('wf_lang', 'en');
+      document.cookie = "googtrans=/id/en; path=/";
+      document.cookie = "googtrans=/id/en; domain=" + window.location.hostname + "; path=/";
+
+      // Translate dictionary text nodes
+      replaceTextInDOM(true);
+    } else {
+      btnId.style.background = '#fff';
+      btnId.style.color = '#000';
+      btnEn.style.background = '#000';
+      btnEn.style.color = '#888';
+      localStorage.setItem('wf_lang', 'id');
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+
+      // Restore original Indonesian text
+      replaceTextInDOM(false);
+    }
+  }
+
+  function replaceTextInDOM(toEnglish) {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (!node.parentElement || node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'wfLangId' || node.parentElement.id === 'wfLangEn') {
+        continue;
+      }
+      let text = node.nodeValue;
+      if (!node._originalText) {
+        node._originalText = text;
+      }
+
+      if (toEnglish) {
+        let modified = node._originalText;
+        translations.forEach(item => {
+          if (modified.includes(item.id)) {
+            modified = modified.split(item.id).join(item.en);
+          }
+        });
+        node.nodeValue = modified;
+      } else {
+        node.nodeValue = node._originalText;
+      }
+    }
+  }
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'id',
+      includedLanguages: 'id,en',
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedLang = localStorage.getItem('wf_lang') || (document.cookie.indexOf('googtrans=/id/en') !== -1 ? 'en' : 'id');
+    if (savedLang === 'en') {
+      switchWireframeLang('en');
+    }
+  });
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

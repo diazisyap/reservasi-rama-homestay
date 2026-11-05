@@ -1,0 +1,93 @@
+@startuml 13_seq_laporan_export_admin
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #9: Pembuatan & Ekspor Laporan Pendapatan
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PEMBUATAN & EKSPOR LAPORAN PENDAPATAN (ADMINISTRATOR)
+
+autonumber "<b>[00]</b>"
+
+actor "Admin Homestay" as Admin
+boundary "View Laporan\n(admin/reports.blade)" as View
+control "AdminController" as AdminCtrl
+entity "Reservation\n(Model)" as ResModel
+boundary "Print / PDF Engine\n(reports_print.blade)" as PrintEngine
+database "Database MySQL" as DB
+
+== Alur Filter & Analisis Pendapatan ==
+
+Admin -> View : Akses menu Laporan Keuangan (/admin/reports)
+activate View
+
+Admin -> View : Tentukan filter (start_date, end_date, status='confirmed'|'completed')
+View -> AdminCtrl : GET reports(start_date, end_date, status)
+activate AdminCtrl
+
+AdminCtrl -> ResModel : whereBetween('created_at', [$start, $end])->where('status', $status)->get()
+activate ResModel
+ResModel -> DB : SELECT * FROM reservations WHERE created_at BETWEEN ? AND ?
+activate DB
+DB --> ResModel : Kumpulan data transaksi reservasi
+deactivate DB
+ResModel --> AdminCtrl : Koleksi transaksi terpilih
+deactivate ResModel
+
+AdminCtrl -> AdminCtrl : Hitung sum('total_price'), total_transaksi, rata-rata okupansi
+AdminCtrl --> View : Render view tabel laporan & kartu ringkasan pendapatan
+View --> Admin : Tampilkan statistik omset, grafik bulanan, dan rincian transaksi
+deactivate AdminCtrl
+deactivate View
+
+== Alur Ekspor & Cetak Berkas Laporan PDF ==
+
+Admin -> View : Klik tombol "Cetak Laporan / Unduh PDF"
+activate View
+
+View -> AdminCtrl : GET /admin/reports/export (start_date, end_date, status)
+activate AdminCtrl
+
+AdminCtrl -> ResModel : Ambil data transaksi sesuai rentang parameter
+activate ResModel
+ResModel -> DB : Query data laporan
+activate DB
+DB --> ResModel : Data tervalidasi
+deactivate DB
+ResModel --> AdminCtrl : Data siap cetak
+deactivate ResModel
+
+AdminCtrl -> PrintEngine : Render view('admin.reports_print', compact('data', 'summary'))
+activate PrintEngine
+
+PrintEngine -> PrintEngine : Generate template resmi kop homestay, tabel rekapitulasi & tanda tangan
+PrintEngine --> Admin : Tampilkan dialog window.print() / Download Berkas PDF Laporan Resmi
+deactivate PrintEngine
+deactivate AdminCtrl
+deactivate View
+
+@enduml

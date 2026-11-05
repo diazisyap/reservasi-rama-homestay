@@ -1,0 +1,100 @@
+@startuml 09_seq_pembatalan_reservasi
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #5: Pembatalan Reservasi
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PEMBATALAN RESERVASI (MANDIRI & OTOMATIS EXPIRED)
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu" as Tamu
+boundary "View Dasbor Tamu\n(tamu/dashboard.blade)" as View
+control "ReservationController" as ResCtrl
+entity "Reservation\n(Model)" as ResModel
+database "Database MySQL" as DB
+
+== Skenario 1: Pembatalan Mandiri oleh Tamu ==
+
+Tamu -> View : Klik tombol "Batalkan Pemesanan" pada transaksi berstatus pending
+activate View
+
+View -> ResCtrl : POST /tamu/cancel/{id}
+activate ResCtrl
+
+ResCtrl -> ResModel : where('id', $id)->where('user_id', Auth::id())->firstOrFail()
+activate ResModel
+ResModel -> DB : SELECT * FROM reservations WHERE id=? AND user_id=?
+activate DB
+DB --> ResModel : Data reservasi milik tamu
+deactivate DB
+ResModel --> ResCtrl : Objek $reservation
+deactivate ResModel
+
+alt #White [Status Reservasi == 'pending']
+    ResCtrl -> ResModel : update(['status' => 'cancelled'])
+    activate ResModel
+    ResModel -> DB : UPDATE reservations SET status='cancelled' WHERE id=?
+    activate DB
+    DB --> ResModel : Status berhasil diubah ke cancelled
+    deactivate DB
+    ResModel --> ResCtrl : Sukses dibatalkan
+    deactivate ResModel
+
+    ResCtrl --> View : Redirect back() dengan notifikasi sukses "Reservasi berhasil dibatalkan"
+    View --> Tamu : Tampilkan pesan sukses & perbarui label status menjadi CANCELLED
+
+else #White [Status Reservasi != 'pending' (Misal: Confirmed / Completed)]
+    ResCtrl --> View : Redirect back() withErrors("Pemesanan lunas tidak dapat dibatalkan mandiri")
+    View --> Tamu : Tampilkan pesan peringatan penolakan pembatalan
+end
+
+deactivate ResCtrl
+deactivate View
+
+== Skenario 2: Pembatalan Otomatis oleh Sistem (Auto Expired 30 Menit) ==
+
+note over Tamu, DB : Terpicu otomatis setiap kali ada pengecekan ketersediaan atau akses pemesanan
+Tamu -> ResCtrl : Mengakses katalog / cek ketersediaan kamar
+activate ResCtrl
+
+ResCtrl -> ResModel : releaseExpiredReservations()
+activate ResModel
+
+ResModel -> DB : UPDATE reservations SET status='cancelled' WHERE status='pending' AND expires_at <= NOW()
+activate DB
+DB --> ResModel : N baris data pending kedaluwarsa dibatalkan
+deactivate DB
+
+ResModel --> ResCtrl : return jumlah kuota yang otomatis dibebaskan kembali
+deactivate ResModel
+
+ResCtrl --> Tamu : Sistem siap melayani pemesanan dengan kuota terkini
+deactivate ResCtrl
+
+@enduml

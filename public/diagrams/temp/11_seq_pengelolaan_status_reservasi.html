@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram Sequence: Pengelolaan Status Reservasi oleh Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram Sequence: Pengelolaan Status Reservasi oleh Admin</h1>
+      <p>Alur Pembaruan Status Reservasi (Pending -> Confirmed / Completed / Cancelled)</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.reservations)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+
+    Admin->>View: Buka daftar reservasi (/admin/reservations)
+    View->>ResCtrl: GET index()
+    ResCtrl->>ResModel: with([user, room])->latest()->get()
+    ResModel-->>ResCtrl: Data seluruh reservasi
+    ResCtrl-->>View: Tampilkan tabel reservasi & filter status
+
+    Admin->>View: Pilih aksi ubah status (misal: Confirmed)
+    View->>ResCtrl: POST /admin/reservations/{id}/status
+    ResCtrl->>ResCtrl: Validasi input status baru
+    alt Status diubah ke Confirmed dan belum paid_at
+        ResCtrl->>ResModel: update([status=confirmed, paid_at=now()])
+    else
+        ResCtrl->>ResModel: update([status=status_baru])
+    end
+    ResModel-->>ResCtrl: Berhasil diperbarui
+    ResCtrl-->>View: Kembalikan notifikasi sukses pembaruan
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,3407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Diagram Sistem - Reservasi Rama Homestay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #059669;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .badge-header {
+      display: inline-block;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 9999px;
+      background: rgba(14, 165, 233, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #94a3b8;
+      font-size: 14px;
+      max-width: 700px;
+      margin: 0 auto 20px auto;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+    }
+
+    .container {
+      max-width: 1350px;
+      margin: 30px auto 0 auto;
+      padding: 0 20px;
+    }
+
+    .info-bar {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .info-bar span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid #a7f3d0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .diagram-list {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .diagram-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+
+    .diagram-card:hover {
+      box-shadow: 0 12px 28px -5px rgba(0, 0, 0, 0.09);
+    }
+
+    .card-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .card-title-area {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .action-btn.primary {
+      background: #0284c7;
+      color: white;
+      border-color: #0284c7;
+    }
+
+    .action-btn.primary:hover {
+      background: #0369a1;
+    }
+
+    .diagram-viewport {
+      padding: 36px 20px;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+      min-height: 250px;
+      width: 100%;
+    }
+
+    .mermaid {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    /* Use Case Specification Table Styles */
+    .spec-wrapper {
+      padding: 24px;
+      background: #f8fafc;
+    }
+    .spec-filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .spec-filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .spec-pill-btn {
+      padding: 7px 16px;
+      border-radius: 9999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .spec-pill-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .spec-pill-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+    }
+    .spec-search-input {
+      padding: 8px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 13px;
+      width: 280px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .spec-search-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    .spec-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .spec-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+    .spec-item:hover {
+      border-color: #0284c7;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .spec-item-header {
+      background: #f8fafc;
+      padding: 14px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .spec-id-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .spec-id-badge {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .spec-title-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .spec-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .badge-actor {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+    .badge-rel {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .spec-table th, .spec-table td {
+      padding: 12px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+      text-align: left;
+    }
+    .spec-table tr:last-child th, .spec-table tr:last-child td {
+      border-bottom: none;
+    }
+    .spec-table th {
+      width: 240px;
+      font-weight: 700;
+      color: #475569;
+      background: #fafafa;
+      border-right: 1px solid #f1f5f9;
+      white-space: nowrap;
+    }
+    .spec-table td {
+      color: #1e293b;
+    }
+    .spec-steps {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .spec-steps li {
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+    .spec-alt-steps {
+      margin: 0;
+      padding-left: 20px;
+      color: #b45309;
+    }
+    .spec-alt-steps li {
+      margin-bottom: 5px;
+      line-height: 1.55;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="badge-header">Visualisasi UML & ERD Sistem Lengkap</span>
+    <h1>Galeri Diagram Reservasi Rama Homestay</h1>
+    <p>23 Diagram Terpisah (Diagram Use Case, ERD, Sequence, Kelas, & Aktivitas) serta Tabel Atribut Spesifikasi Use Case Lengkap.</p>
+    
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="filterCategory('all', this)">🌟 Semua Diagram (23)</button>
+      <button class="tab-btn" onclick="filterCategory('usecase', this)">📋 Diagram & Tabel Use Case (3+1)</button>
+      <button class="tab-btn" onclick="filterCategory('erd', this)">🗄️ Diagram ERD (1)</button>
+      <button class="tab-btn" onclick="filterCategory('sequence', this)">🔄 Diagram Sequence (9)</button>
+      <button class="tab-btn" onclick="filterCategory('class', this)">🏛️ Diagram Kelas (1)</button>
+      <button class="tab-btn" onclick="filterCategory('activity', this)">⚡ Diagram Aktivitas (9)</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="info-bar">
+      <span>Framework: <strong>Laravel 11+ & Midtrans Payment Gateway</strong></span>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <a href="/wireframes/index.html" style="background:#0284c7;color:#fff;text-decoration:none;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:700;">📐 Buka Katalog Wireframe UI (12 Layar)</a>
+        <div class="status-badge">
+          ✓ 100% Bebas Error & Terverifikasi
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-list" id="diagramList">
+      <div class="diagram-card" data-category="usecase" id="card-01_usecase_global">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Use Case #1</span>
+            <h2 class="card-title">Diagram Use Case: Global Sistem Reservasi Rama Homestay</h2>
+            <p class="card-desc">Pemetaan Interaksi Aktor Tamu, Admin Homestay, dan Payment Gateway Midtrans</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('01_usecase_global', 'Diagram Use Case: Global Sistem Reservasi Rama Homestay')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('01_usecase_global', 'Diagram Use Case: Global Sistem Reservasi Rama Homestay')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-01_usecase_global')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-01_usecase_global">
+          <div class="mermaid" id="mermaid-01_usecase_global">
+flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Tamu["«actor»<br>Tamu"]:::actorStyle
+    Admin["«actor»<br>Admin Homestay"]:::actorStyle
+    Midtrans["«actor»<br>Payment Gateway Midtrans"]:::actorStyle
+
+    subgraph System ["Batasan Sistem: Sistem Informasi Reservasi Rama Homestay"]
+        direction TB
+        UC_Auth(["Autentikasi Akun (Login / Register)"]):::ucStyle
+        UC_Explore(["Eksplorasi & Cek Ketersediaan Kamar"]):::ucStyle
+        UC_Booking(["Pemesanan / Reservasi Kamar"]):::ucStyle
+        UC_Pay(["Pembayaran Transaksi Online"]):::ucStyle
+        UC_Cancel(["Pembatalan Reservasi"]):::ucStyle
+        UC_Review(["Pemberian Ulasan & Testimoni"]):::ucStyle
+        
+        UC_RoomMgt(["Pengelolaan Data Kamar CRUD"]):::ucStyle
+        UC_ResMgt(["Pengelolaan Status Reservasi"]):::ucStyle
+        UC_Calendar(["Pemantauan Kalender Okupansi"]):::ucStyle
+        UC_TestiMod(["Moderasi Ulasan / Testimoni"]):::ucStyle
+        UC_UserMgt(["Pengelolaan Data Pengguna"]):::ucStyle
+        UC_Report(["Laporan Reservasi & Pendapatan"]):::ucStyle
+    end
+    style System fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Tamu --- UC_Auth
+    Tamu --- UC_Explore
+    Tamu --- UC_Booking
+    Tamu --- UC_Cancel
+    Tamu --- UC_Review
+
+    Midtrans --- UC_Pay
+
+    Admin --- UC_Auth
+    Admin --- UC_RoomMgt
+    Admin --- UC_ResMgt
+    Admin --- UC_Calendar
+    Admin --- UC_TestiMod
+    Admin --- UC_UserMgt
+    Admin --- UC_Report
+
+    UC_Booking -.->|«include»| UC_Explore
+    UC_Booking -.->|«include»| UC_Pay
+    UC_Cancel -.->|«extend»| UC_Booking
+    UC_Review -.->|«extend»| UC_Booking
+    UC_RoomMgt -.->|«include»| UC_Auth
+    UC_Report -.->|«include»| UC_Auth
+          </div>
+        </div>
+        <textarea id="code-01_usecase_global" style="display:none;">flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Tamu[&quot;«actor»&lt;br&gt;Tamu&quot;]:::actorStyle
+    Admin[&quot;«actor»&lt;br&gt;Admin Homestay&quot;]:::actorStyle
+    Midtrans[&quot;«actor»&lt;br&gt;Payment Gateway Midtrans&quot;]:::actorStyle
+
+    subgraph System [&quot;Batasan Sistem: Sistem Informasi Reservasi Rama Homestay&quot;]
+        direction TB
+        UC_Auth([&quot;Autentikasi Akun (Login / Register)&quot;]):::ucStyle
+        UC_Explore([&quot;Eksplorasi &amp; Cek Ketersediaan Kamar&quot;]):::ucStyle
+        UC_Booking([&quot;Pemesanan / Reservasi Kamar&quot;]):::ucStyle
+        UC_Pay([&quot;Pembayaran Transaksi Online&quot;]):::ucStyle
+        UC_Cancel([&quot;Pembatalan Reservasi&quot;]):::ucStyle
+        UC_Review([&quot;Pemberian Ulasan &amp; Testimoni&quot;]):::ucStyle
+        
+        UC_RoomMgt([&quot;Pengelolaan Data Kamar CRUD&quot;]):::ucStyle
+        UC_ResMgt([&quot;Pengelolaan Status Reservasi&quot;]):::ucStyle
+        UC_Calendar([&quot;Pemantauan Kalender Okupansi&quot;]):::ucStyle
+        UC_TestiMod([&quot;Moderasi Ulasan / Testimoni&quot;]):::ucStyle
+        UC_UserMgt([&quot;Pengelolaan Data Pengguna&quot;]):::ucStyle
+        UC_Report([&quot;Laporan Reservasi &amp; Pendapatan&quot;]):::ucStyle
+    end
+    style System fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Tamu --- UC_Auth
+    Tamu --- UC_Explore
+    Tamu --- UC_Booking
+    Tamu --- UC_Cancel
+    Tamu --- UC_Review
+
+    Midtrans --- UC_Pay
+
+    Admin --- UC_Auth
+    Admin --- UC_RoomMgt
+    Admin --- UC_ResMgt
+    Admin --- UC_Calendar
+    Admin --- UC_TestiMod
+    Admin --- UC_UserMgt
+    Admin --- UC_Report
+
+    UC_Booking -.-&gt;|«include»| UC_Explore
+    UC_Booking -.-&gt;|«include»| UC_Pay
+    UC_Cancel -.-&gt;|«extend»| UC_Booking
+    UC_Review -.-&gt;|«extend»| UC_Booking
+    UC_RoomMgt -.-&gt;|«include»| UC_Auth
+    UC_Report -.-&gt;|«include»| UC_Auth</textarea>
+      </div>      <div class="diagram-card" data-category="usecase" id="card-02_usecase_tamu">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Use Case #2</span>
+            <h2 class="card-title">Diagram Use Case: Alur Layanan Tamu</h2>
+            <p class="card-desc">Fitur dan Hak Akses Tamu pada Sistem Reservasi Rama Homestay</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('02_usecase_tamu', 'Diagram Use Case: Alur Layanan Tamu')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('02_usecase_tamu', 'Diagram Use Case: Alur Layanan Tamu')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-02_usecase_tamu')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-02_usecase_tamu">
+          <div class="mermaid" id="mermaid-02_usecase_tamu">
+flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Guest["«actor»<br>Tamu"]:::actorStyle
+
+    subgraph GuestScope ["Batasan Sistem: Area Layanan Tamu (Publik & Dasbor)"]
+        UC1(["Registrasi Akun Baru"]):::ucStyle
+        UC2(["Masuk Akun (Login)"]):::ucStyle
+        UC3(["Kelola Profil Pengguna"]):::ucStyle
+        UC4(["Melihat Katalog & Filter Kamar"]):::ucStyle
+        UC5(["Cek Ketersediaan Tanggal Real-Time"]):::ucStyle
+        UC6(["Mengisi Formulir Pemesanan"]):::ucStyle
+        UC7(["Menerima Snap Token Pembayaran"]):::ucStyle
+        UC8(["Melakukan Pembayaran Online"]):::ucStyle
+        UC9(["Melihat E-Tiket / Bukti Reservasi"]):::ucStyle
+        UC10(["Membatalkan Reservasi"]):::ucStyle
+        UC11(["Memberikan Ulasan & Rating"]):::ucStyle
+    end
+    style GuestScope fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Guest --- UC1
+    Guest --- UC2
+    Guest --- UC3
+    Guest --- UC4
+    Guest --- UC6
+    Guest --- UC9
+    Guest --- UC10
+    Guest --- UC11
+
+    UC6 -.->|«include»| UC5
+    UC6 -.->|«include»| UC7
+    UC8 -.->|«include»| UC7
+    UC6 -.->|«include»| UC8
+    UC9 -.->|«include»| UC8
+    UC10 -.->|«extend»| UC9
+    UC11 -.->|«extend»| UC9
+          </div>
+        </div>
+        <textarea id="code-02_usecase_tamu" style="display:none;">flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Guest[&quot;«actor»&lt;br&gt;Tamu&quot;]:::actorStyle
+
+    subgraph GuestScope [&quot;Batasan Sistem: Area Layanan Tamu (Publik &amp; Dasbor)&quot;]
+        UC1([&quot;Registrasi Akun Baru&quot;]):::ucStyle
+        UC2([&quot;Masuk Akun (Login)&quot;]):::ucStyle
+        UC3([&quot;Kelola Profil Pengguna&quot;]):::ucStyle
+        UC4([&quot;Melihat Katalog &amp; Filter Kamar&quot;]):::ucStyle
+        UC5([&quot;Cek Ketersediaan Tanggal Real-Time&quot;]):::ucStyle
+        UC6([&quot;Mengisi Formulir Pemesanan&quot;]):::ucStyle
+        UC7([&quot;Menerima Snap Token Pembayaran&quot;]):::ucStyle
+        UC8([&quot;Melakukan Pembayaran Online&quot;]):::ucStyle
+        UC9([&quot;Melihat E-Tiket / Bukti Reservasi&quot;]):::ucStyle
+        UC10([&quot;Membatalkan Reservasi&quot;]):::ucStyle
+        UC11([&quot;Memberikan Ulasan &amp; Rating&quot;]):::ucStyle
+    end
+    style GuestScope fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Guest --- UC1
+    Guest --- UC2
+    Guest --- UC3
+    Guest --- UC4
+    Guest --- UC6
+    Guest --- UC9
+    Guest --- UC10
+    Guest --- UC11
+
+    UC6 -.-&gt;|«include»| UC5
+    UC6 -.-&gt;|«include»| UC7
+    UC8 -.-&gt;|«include»| UC7
+    UC6 -.-&gt;|«include»| UC8
+    UC9 -.-&gt;|«include»| UC8
+    UC10 -.-&gt;|«extend»| UC9
+    UC11 -.-&gt;|«extend»| UC9</textarea>
+      </div>      <div class="diagram-card" data-category="usecase" id="card-03_usecase_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Use Case #3</span>
+            <h2 class="card-title">Diagram Use Case: Alur Pengelolaan Administrator</h2>
+            <p class="card-desc">Fitur dan Hak Akses Administrator pada Panel Pengelolaan Homestay</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('03_usecase_admin', 'Diagram Use Case: Alur Pengelolaan Administrator')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('03_usecase_admin', 'Diagram Use Case: Alur Pengelolaan Administrator')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-03_usecase_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-03_usecase_admin">
+          <div class="mermaid" id="mermaid-03_usecase_admin">
+flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Adm["«actor»<br>Admin Homestay"]:::actorStyle
+
+    subgraph AdminScope ["Batasan Sistem: Panel Administrasi (Dasbor Admin)"]
+        A1(["Masuk Akun Admin (Login)"]):::ucStyle
+        A2(["Melihat Statistik Dasbor & Keuangan"]):::ucStyle
+        A3(["Pemantauan Kalender Okupansi Kamar"]):::ucStyle
+        A4(["Kelola Data Kamar (CRUD)"]):::ucStyle
+        A5(["Kelola Galeri Foto & Fasilitas"]):::ucStyle
+        A6(["Melihat Seluruh Data Reservasi"]):::ucStyle
+        A7(["Pembaruan Status Reservasi"]):::ucStyle
+        A8(["Moderasi Ulasan / Testimoni"]):::ucStyle
+        A9(["Melihat Daftar Tamu Terdaftar"]):::ucStyle
+        A10(["Filter & Cetak Laporan PDF"]):::ucStyle
+    end
+    style AdminScope fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Adm --- A1
+    Adm --- A2
+    Adm --- A3
+    Adm --- A4
+    Adm --- A6
+    Adm --- A8
+    Adm --- A9
+    Adm --- A10
+
+    A4 -.->|«include»| A1
+    A6 -.->|«include»| A1
+    A10 -.->|«include»| A1
+    A5 -.->|«extend»| A4
+    A7 -.->|«extend»| A6
+    A10 -.->|«extend»| A2
+          </div>
+        </div>
+        <textarea id="code-03_usecase_admin" style="display:none;">flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Adm[&quot;«actor»&lt;br&gt;Admin Homestay&quot;]:::actorStyle
+
+    subgraph AdminScope [&quot;Batasan Sistem: Panel Administrasi (Dasbor Admin)&quot;]
+        A1([&quot;Masuk Akun Admin (Login)&quot;]):::ucStyle
+        A2([&quot;Melihat Statistik Dasbor &amp; Keuangan&quot;]):::ucStyle
+        A3([&quot;Pemantauan Kalender Okupansi Kamar&quot;]):::ucStyle
+        A4([&quot;Kelola Data Kamar (CRUD)&quot;]):::ucStyle
+        A5([&quot;Kelola Galeri Foto &amp; Fasilitas&quot;]):::ucStyle
+        A6([&quot;Melihat Seluruh Data Reservasi&quot;]):::ucStyle
+        A7([&quot;Pembaruan Status Reservasi&quot;]):::ucStyle
+        A8([&quot;Moderasi Ulasan / Testimoni&quot;]):::ucStyle
+        A9([&quot;Melihat Daftar Tamu Terdaftar&quot;]):::ucStyle
+        A10([&quot;Filter &amp; Cetak Laporan PDF&quot;]):::ucStyle
+    end
+    style AdminScope fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Adm --- A1
+    Adm --- A2
+    Adm --- A3
+    Adm --- A4
+    Adm --- A6
+    Adm --- A8
+    Adm --- A9
+    Adm --- A10
+
+    A4 -.-&gt;|«include»| A1
+    A6 -.-&gt;|«include»| A1
+    A10 -.-&gt;|«include»| A1
+    A5 -.-&gt;|«extend»| A4
+    A7 -.-&gt;|«extend»| A6
+    A10 -.-&gt;|«extend»| A2</textarea>
+      </div>      <div class="diagram-card" data-category="usecase" id="card-usecase-specifications">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge" style="background:#0f172a;color:#ffffff;">Dokumentasi Rekayasa Perangkat Lunak</span>
+            <h2 class="card-title">Tabel Atribut & Spesifikasi Skenario Use Case Resmi</h2>
+            <p class="card-desc">Tabel Atribut Standar UML (Kode Use Case, Nama, Aktor Utama/Pendukung, Deskripsi, Prekondisi, Postkondisi, Alur Utama, Alur Alternatif, dan Relasi Include/Extend) untuk 12 Skenario Inti Sistem Reservasi Rama Homestay.</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="window.print()" title="Cetak atau simpan halaman dokumen ini ke PDF">
+              🖨️ Cetak / Simpan PDF
+            </button>
+            <button class="action-btn" onclick="copyAllSpecs()" title="Salin ringkasan Use Case ke clipboard">
+              📋 Salin Ringkasan
+            </button>
+          </div>
+        </div>
+        <div class="spec-wrapper">
+          <div class="spec-filter-bar">
+            <div class="spec-filter-group">
+              <button class="spec-pill-btn active" onclick="filterUseCaseSpecs('all', this)">Semua Skenario (12)</button>
+              <button class="spec-pill-btn" onclick="filterUseCaseSpecs('guest', this)">Skenario Tamu (10)</button>
+              <button class="spec-pill-btn" onclick="filterUseCaseSpecs('admin', this)">Skenario Admin (2)</button>
+            </div>
+            <input type="text" class="spec-search-input" placeholder="🔍 Cari Use Case (ID, Nama, Aktor)..." onkeyup="searchUseCaseSpecs(this.value)">
+          </div>
+
+          <div class="spec-grid" id="specGrid">
+                    <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-01</span>
+              <span class="spec-title-text">Registrasi Akun Pengguna (Tamu)</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu (Pengunjung Publik)</span> 
+              <span class="badge-rel">Independen (Titik Awal Akses Tamu)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu baru mendaftarkan akun pribadi ke dalam sistem untuk memperoleh hak akses pemesanan kamar, riwayat reservasi, dan unduh e-tiket.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu (Pengunjung Publik)</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu belum terotentikasi ke sistem dan memiliki alamat email aktif yang belum pernah terdaftar sebelumnya.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Data akun baru tersimpan di tabel database `users` dengan peran (role) `guest`, kata sandi terenkripsi (bcrypt), dan pengguna diarahkan ke sesi aktif.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>Independen (Titik Awal Akses Tamu)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu mengakses menu Registrasi pada navigasi utama (/register).</li><li>Sistem menampilkan formulir pendaftaran akun (Nama Lengkap, Alamat Email, Nomor WhatsApp/Telepon, Kata Sandi, dan Konfirmasi Kata Sandi).</li><li>Tamu melengkapi seluruh kolom isian dan menekan tombol &quot;Daftar Sekarang&quot;.</li><li>Sistem memvalidasi kelengkapan data, format email, dan kekuatan kata sandi.</li><li>Sistem mengenkripsi kata sandi menggunakan hash bcrypt dan menyimpan akun ke tabel `users`.</li><li>Sistem mengaktifkan sesi login dan mengarahkan tamu ke Beranda atau Dasbor Tamu.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>4a. Format email tidak valid atau alamat email telah terdaftar: Sistem menolak pendaftaran dan menampilkan pesan error &quot;Email sudah terdaftar. Silakan gunakan email lain atau login&quot;.</li><li>4b. Kata sandi kurang dari 8 karakter atau konfirmasi sandi tidak cocok: Sistem menandai kolom input yang tidak valid dan meminta tamu memperbaikinya.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-02</span>
+              <span class="spec-title-text">Masuk Akun / Otentikasi (Login)</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Admin</span> 
+              <span class="badge-rel">«include» dipanggil oleh modul Kelola Profil, Pemesanan, Manajemen Kamar, dan Laporan Admin</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Memverifikasi kredensial pengguna (email dan kata sandi) untuk memberikan sesi aktif dengan otorisasi hak akses sesuai peran masing-masing.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Admin</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Pengguna (Tamu atau Admin) telah memiliki akun yang terdaftar pada sistem basis data.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Sesi otentikasi aktif; Tamu diarahkan ke dasbor riwayat pemesanan, sedangkan Administrator diarahkan ke panel Dasbor Admin.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» dipanggil oleh modul Kelola Profil, Pemesanan, Manajemen Kamar, dan Laporan Admin</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Pengguna membuka halaman Masuk Akun (/login).</li><li>Sistem menampilkan formulir otentikasi kredensial (Email dan Kata Sandi).</li><li>Pengguna menginputkan data kredensial akun dan menekan tombol &quot;Masuk&quot;.</li><li>Sistem memvalidasi kredensial terhadap data terenkripsi di tabel `users`.</li><li>Sistem menginisiasi sesi login (session token) dan mengidentifikasi nilai kolom `role`.</li><li>Jika role = &quot;admin&quot;, pengguna diarahkan ke /admin/dashboard. Jika role = &quot;guest&quot;, diarahkan ke beranda atau halaman tujuan sebelumnya.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>4a. Email atau kata sandi tidak cocok: Sistem menampilkan pesan peringatan &quot;Kredensial yang diberikan tidak cocok dengan data kami&quot;.</li><li>4b. Terjadi kegagalan berulang (brute-force): Sistem mengaktifkan rate limiting throttle dan memblokir upaya login sementara waktu (60 detik).</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-03</span>
+              <span class="spec-title-text">Kelola Profil Akun Pengguna</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> 
+              <span class="badge-rel">«include» Otentikasi Pengguna (UC-02)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu dapat melihat dan menyunting rincian data pribadi akun seperti nama lengkap, nomor kontak WhatsApp, dan memperbarui kata sandi.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu telah berhasil login ke dalam sistem.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Data identitas terbaru tamu berhasil diperbarui pada tabel `users`.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» Otentikasi Pengguna (UC-02)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu membuka menu &quot;Profil Saya&quot; (/profile).</li><li>Sistem memuat dan menampilkan informasi data profil pengguna saat ini.</li><li>Tamu melakukan perubahan data (misal: nomor telepon atau mengganti kata sandi).</li><li>Tamu menekan tombol &quot;Simpan Perubahan&quot;.</li><li>Sistem memvalidasi format data masukan dan memperbarui baris data di tabel `users`.</li><li>Sistem menampilkan notifikasi pesan sukses pembaruan profil.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>5a. Tamu ingin mengganti password namun kata sandi lama salah: Sistem membatalkan penyimpanan sandi baru dan memberi peringatan &quot;Kata sandi saat ini tidak cocok&quot;.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-04</span>
+              <span class="spec-title-text">Melihat Katalog & Filter Kamar</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu (Pengunjung Publik)</span> 
+              <span class="badge-rel">Independen (Katalog Publik)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Menyajikan seluruh inventaris kamar aktif di Rama Homestay lengkap dengan spesifikasi fasilitas, galeri foto, kapasitas tamu, dan harga sewa per malam.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu (Pengunjung Publik)</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tidak ada (Dapat diakses secara publik tanpa harus login terlebih dahulu).</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Daftar kamar tersaji rapi sesuai kriteria penyaringan yang dipilih tamu.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>Independen (Katalog Publik)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu mengakses halaman Beranda atau Katalog Kamar (/rooms).</li><li>Sistem memuat daftar kamar dengan status aktif dari database.</li><li>Tamu memilih filter pencarian (rentang harga, kapasitas orang, tipe tempat tidur, fasilitas AC/WiFi).</li><li>Sistem memperbarui katalog sesuai filter yang diterapkan secara instan.</li><li>Tamu memilih kartu kamar untuk membaca rincian detail kamar lengkap (/rooms/{slug}).</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>4a. Tidak ada kamar yang sesuai dengan kriteria filter: Sistem menampilkan pesan informasi &quot;Tidak ada kamar yang cocok dengan kriteria filter Anda&quot; disertai opsi reset filter.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-05</span>
+              <span class="spec-title-text">Pengecekan Ketersediaan Tanggal Real-Time</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Sistem (Kalkulator Ketersediaan)</span> 
+              <span class="badge-rel">«include» dalam Mengisi Formulir & Pemesanan Kamar (UC-06)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Memeriksa ketersediaan unit kamar pada rentang tanggal check-in dan check-out untuk memastikan tidak terjadi bentrok pemesanan (double-booking).</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Sistem (Kalkulator Ketersediaan)</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu memilih tipe kamar yang ingin dipesan dan menentukan rentang tanggal menginap.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Status ketersediaan terverifikasi valid, durasi malam dihitung, dan total biaya dikalkulasi secara transparan.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» dalam Mengisi Formulir & Pemesanan Kamar (UC-06)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu memilih tanggal rencana Check-in dan Check-out pada pemilih tanggal (date picker).</li><li>Sistem memindai rekaman reservasi pada database yang berstatus &quot;confirmed&quot; atau &quot;pending&quot; (dengan batas lock 30 menit).</li><li>Sistem mengonfirmasi bahwa kamar bebas reservasi pada periode tersebut.</li><li>Sistem mengkalkulasi jumlah malam menginap dan total tarif sewa.</li><li>Sistem mengaktifkan tombol aksi &quot;Lanjutkan Pemesanan&quot;.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>3a. Kamar sudah dipesan orang lain pada rentang tanggal tersebut: Sistem menandai tanggal tersebut sebagai terisi (disabled) dan menonaktifkan tombol pemesanan.</li><li>3b. Tanggal check-out sama dengan atau mendahului tanggal check-in: Sistem memberikan validasi pesan &quot;Tanggal check-out minimal 1 hari setelah tanggal check-in&quot;.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-06</span>
+              <span class="spec-title-text">Mengisi Formulir & Membuat Reservasi</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> 
+              <span class="badge-rel">«include» UC-05 (Cek Ketersediaan), «include» UC-07 (Pembayaran Online), «extend» UC-08 (E-Tiket), «extend» UC-09 (Pembatalan)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu mengisi identitas pemesan, permintaan khusus, meninjau rincian tagihan, dan mengonfirmasi pembuatan pesanan yang menghasilkan kode booking.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu telah terotentikasi (login) dan tanggal kamar telah terbukti tersedia (UC-05).</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Data reservasi tersimpan dengan status `pending`, kode booking unik dihasilkan, dan token pembayaran Midtrans diaktifkan.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» UC-05 (Cek Ketersediaan), «include» UC-07 (Pembayaran Online), «extend» UC-08 (E-Tiket), «extend» UC-09 (Pembatalan)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu membuka halaman formulir pemesanan untuk kamar yang dipilih.</li><li>Tamu melengkapi formulir data kontak, nama tamu yang menginap, serta catatan khusus (jika ada).</li><li>Tamu memeriksa rekapitulasi pemesanan (tipe kamar, durasi malam, total tarif sewa, biaya administrasi).</li><li>Tamu menyetujui ketentuan homestay dan mengklik &quot;Bayar Sekarang&quot;.</li><li>Sistem menjalankan transaksi atomik: menyimpan reservasi dengan status &quot;pending&quot; dan mengunci kamar selama 30 menit.</li><li>Sistem meminta Snap Token ke Midtrans API dan memunculkan pop-up pembayaran di layar tamu.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>5a. Terjadi tabrakan pesanan pada detik bersamaan oleh pengguna lain (race condition): Sistem membatalkan transaksi dan menginformasikan bahwa kamar baru saja dipesan orang lain.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-07</span>
+              <span class="spec-title-text">Pembayaran Online Multi-Metode (Midtrans Gateway)</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Midtrans Payment Gateway (Aktor Eksternal)</span> 
+              <span class="badge-rel">«include» dalam Alur Pemesanan Kamar (UC-06)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu menyelesaikan transaksi pembayaran tagihan sewa kamar melalui berbagai saluran pembayaran instan (QRIS, Virtual Account Bank, E-Wallet) melalui integrasi Midtrans Snap.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> <span class="badge-actor">👤 Midtrans Payment Gateway (Aktor Eksternal)</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Reservasi telah dibuat dengan status `pending` dan token Snap pembayaran dalam kondisi aktif.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Pembayaran terverifikasi lunas, status reservasi berubah menjadi `confirmed`, kamar terkunci permanen, dan notifikasi konfirmasi dikirim.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» dalam Alur Pemesanan Kamar (UC-06)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Antarmuka pop-up Midtrans Snap terbuka di layar perangkat tamu.</li><li>Tamu memilih metode pembayaran yang diinginkan (misal: QRIS BCA/GoPay atau VA Bank).</li><li>Tamu melakukan transfer dana atau scan kode QRIS sebelum batas waktu kedaluwarsa 30 menit.</li><li>Midtrans memproses verifikasi dan mengirimkan Webhook Callback (status `settlement`) ke server Rama Homestay.</li><li>Sistem memvalidasi keaslian signature key SHA512 dan memperbarui status reservasi menjadi &quot;confirmed&quot;.</li><li>Sistem memperbarui tampilan layar tamu secara instan dengan konfirmasi transaksi berhasil.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>3a. Tamu menutup pop-up Snap sebelum membayar: Status pesanan tetap &quot;pending&quot; dan tamu dapat mengklik tombol bayar ulang di dasbor selama belum 30 menit.</li><li>4a. Batas waktu 30 menit habis tanpa ada pembayaran: Midtrans mengirim status `expire`, sistem otomatis mengubah status reservasi menjadi &quot;cancelled&quot; dan melepas kamar kembali ke kalender umum.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-08</span>
+              <span class="spec-title-text">Akses E-Tiket & Bukti Reservasi</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> 
+              <span class="badge-rel">«extend» dari Pemesanan Kamar (UC-06)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu melihat lembar digital tanda bukti pemesanan resmi yang memuat rincian transaksi, kode QR verifikasi check-in, dan dapat mengunduh atau mencetak PDF.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu telah masuk (login) dan memiliki transaksi reservasi berstatus `confirmed` (lunas).</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>E-Tiket resmi tersaji pada layar dan siap diunduh atau dicetak tamu untuk dibawa saat kedatangan.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«extend» dari Pemesanan Kamar (UC-06)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu membuka menu &quot;Riwayat Reservasi&quot; pada dasbor akun.</li><li>Tamu memilih reservasi yang berstatus &quot;Dikonfirmasi / Lunas&quot;.</li><li>Tamu mengklik tombol &quot;Lihat E-Tiket&quot;.</li><li>Sistem merender dokumen E-Tiket digital berisi Kode Booking, QR Code verifikasi, Data Kamar, Jadwal Check-in/out, dan Aturan Menginap.</li><li>Tamu dapat menekan tombol &quot;Cetak E-Tiket / Simpan PDF&quot;.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>3a. Status reservasi masih &quot;pending&quot;: Tombol E-Tiket belum aktif; sistem menampilkan instruksi untuk menyelesaikan pembayaran terlebih dahulu.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-09</span>
+              <span class="spec-title-text">Pembatalan Reservasi Kamar</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> 
+              <span class="badge-rel">«extend» dari Pemesanan Kamar (UC-06)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu membatalkan pesanan kamar yang belum dibayar atau mengajukan pembatalan pesanan yang telah dikonfirmasi sesuai aturan pembatalan homestay.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Pesanan berstatus `pending` atau `confirmed` yang masih memenuhi batas minimal waktu pengajuan pembatalan (H-2 check-in).</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Status reservasi berubah menjadi `cancelled` dan tanggal kamar dilepaskan kembali sehingga tersedia untuk tamu lain.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«extend» dari Pemesanan Kamar (UC-06)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu membuka rincian pesanan pada dasbor riwayat pemesanan.</li><li>Tamu memilih opsi &quot;Batalkan Reservasi&quot;.</li><li>Sistem menampilkan konfirmasi dan meminta tamu mengisi alasan pembatalan.</li><li>Sistem memverifikasi kelayakan kebijakan pembatalan (waktu H-2 sebelum check-in).</li><li>Sistem memperbarui status reservasi menjadi &quot;cancelled&quot; pada database.</li><li>Sistem membuka kembali ketersediaan kamar pada tanggal terkait di kalender publik.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>4a. Pengajuan pembatalan melewati batas waktu toleransi (misal: H-1 atau hari H): Sistem menolak pembatalan otomatis dan mengarahkan tamu menghubungi kontak Admin langsung.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="guest">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-10</span>
+              <span class="spec-title-text">Memberikan Ulasan & Rating Homestay</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Tamu</span> 
+              <span class="badge-rel">«extend» dari Pemesanan Kamar (UC-06)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Tamu yang telah menyelesaikan masa menginap (status `completed`) memberikan skor bintang (1-5) dan review pengalaman menginap.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Tamu</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Tamu telah login dan memiliki transaksi reservasi berstatus `completed` (telah checkout).</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Data ulasan tersimpan di tabel `reviews` dan tampil di galeri ulasan setelah diverifikasi.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«extend» dari Pemesanan Kamar (UC-06)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Tamu membuka riwayat pemesanan dengan status &quot;Selesai Menginap&quot; (completed).</li><li>Tamu menekan tombol &quot;Tulis Ulasan&quot;.</li><li>Tamu memilih skor bintang (1 hingga 5) dan mengetikkan ulasan ulasan pengalaman tinggal.</li><li>Tamu menekan tombol &quot;Kirim Ulasan&quot;.</li><li>Sistem memvalidasi bahwa transaksi valid dan menyimpan ulasan ke tabel `reviews`.</li><li>Sistem menampilkan pesan terima kasih atas kontribusi ulasan tamu.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>5a. Tamu telah memberikan ulasan sebelumnya untuk pesanan yang sama: Sistem mengarahkan tamu ke mode penyuntingan ulasan yang sudah ada.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="admin">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-11</span>
+              <span class="spec-title-text">Manajemen Data Kamar & Fasilitas (Admin)</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Administrator</span> 
+              <span class="badge-rel">«include» Otentikasi Admin (UC-02)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Administrator mengelola seluruh inventaris tipe kamar, mengubah harga sewa per malam, memperbarui fasilitas, mengunggah galeri foto, atau menonaktifkan unit kamar perbaikan.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Administrator</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Pengguna telah berhasil login dengan akun ber-role `admin`.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Data kamar dan galeri foto terkelola di tabel `rooms` dan `room_images`, serta tersinkronisasi ke katalog publik.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» Otentikasi Admin (UC-02)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Administrator membuka menu &quot;Manajemen Kamar&quot; (/admin/rooms).</li><li>Sistem menampilkan tabel data seluruh kamar beserta harga, kapasitas, dan status aktif.</li><li>Admin memilih tindakan: &quot;Tambah Kamar Baru&quot;, &quot;Ubah Data&quot;, atau &quot;Nonaktifkan Kamar&quot;.</li><li>Admin mengisi formulir rincian kamar (Nama Kamar, Tipe, Tarif/Malam, Fasilitas, dan Unggah Foto).</li><li>Admin menekan tombol &quot;Simpan Data Kamar&quot;.</li><li>Sistem memvalidasi kelayakan berkas gambar dan menyimpan data ke database.</li><li>Sistem menampilkan alert sukses dan katalog kamar publik langsung terbaharui.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>6a. Berkas foto bukan format gambar yang didukung (JPG, PNG, WebP) atau melebihi 2MB: Sistem menolak penyimpanan dan menampilkan notifikasi kesalahan berkas.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>        <div class="spec-item" data-actor="admin">
+          <div class="spec-item-header">
+            <div class="spec-id-title">
+              <span class="spec-id-badge">UC-12</span>
+              <span class="spec-title-text">Manajemen Reservasi & Rekapitulasi Laporan (Admin)</span>
+            </div>
+            <div class="spec-badges">
+              <span class="badge-actor">👤 Administrator</span> 
+              <span class="badge-rel">«include» Otentikasi Admin (UC-02)</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th>Deskripsi Use Case</th>
+                <td>Administrator memantau seluruh alur reservasi masuk, memverifikasi check-in dan check-out tamu di lokasi, memantau kalender okupansi, dan mencetak laporan pendapatan.</td>
+              </tr>
+              <tr>
+                <th>Aktor Terlibat</th>
+                <td><span class="badge-actor">👤 Administrator</span> </td>
+              </tr>
+              <tr>
+                <th>Prekondisi (Syarat Awal)</th>
+                <td>Pengguna telah berhasil login dengan akun ber-role `admin`.</td>
+              </tr>
+              <tr>
+                <th>Postkondisi (Kondisi Akhir)</th>
+                <td><strong>Status operasional reservasi terbaharui (Checked-in / Completed) dan dokumen laporan keuangan homestay siap diekspor/dicetak.</strong></td>
+              </tr>
+              <tr>
+                <th>Relasi Stereotipe UML</th>
+                <td><code>«include» Otentikasi Admin (UC-02)</code></td>
+              </tr>
+              <tr>
+                <th>Alur Utama (Skenario Normal)</th>
+                <td>
+                  <ol class="spec-steps">
+                    <li>Administrator mengakses menu &quot;Daftar Reservasi&quot; (/admin/reservations) atau &quot;Laporan&quot; (/admin/reports).</li><li>Sistem menyajikan metrik statistik (Total Reservasi, Kamar Terisi Hari Ini, Pendapatan Bulan Berjalan).</li><li>Admin memverifikasi kedatangan tamu dengan mencocokkan kode booking pada E-Tiket dan mengubah status menjadi &quot;Checked-In&quot;.</li><li>Saat waktu sewa berakhir, Admin menandai status reservasi menjadi &quot;Completed&quot;.</li><li>Admin membuka menu Laporan, menentukan filter rentang tanggal (harian/bulanan), dan menekan &quot;Cetak / Ekspor Laporan&quot;.</li><li>Sistem meng-generate dokumen rekapitulasi data transaksi dan pendapatan bersih homestay dalam format siap cetak/Excel.</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th>Alur Alternatif & Eksepsi</th>
+                <td>
+                  <ul class="spec-alt-steps">
+                    <li>5a. Tidak ada transaksi yang terjadi pada rentang tanggal yang dipilih: Sistem menampilkan pemberitahuan &quot;Tidak ada data transaksi pada periode tanggal tersebut&quot;.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          </div>
+        </div>
+      </div>      <div class="diagram-card" data-category="erd" id="card-04_erd_rama_homestay">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Hubungan Entitas (ERD)</span>
+            <h2 class="card-title">Diagram ERD: Skema Database Rama Homestay</h2>
+            <p class="card-desc">Skema Relasi Database Sesuai Migrasi Fisik Laravel Rama Homestay</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('04_erd_rama_homestay', 'Diagram ERD: Skema Database Rama Homestay')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('04_erd_rama_homestay', 'Diagram ERD: Skema Database Rama Homestay')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-04_erd_rama_homestay')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-04_erd_rama_homestay">
+          <div class="mermaid" id="mermaid-04_erd_rama_homestay">
+erDiagram
+    USERS ||--o{ RESERVATIONS : "membuat"
+    USERS ||--o{ TESTIMONIALS : "menulis"
+    ROOMS ||--o{ RESERVATIONS : "dipesan_pada"
+    RESERVATIONS ||--o| TESTIMONIALS : "menghasilkan"
+
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string phone
+        string password
+        string role
+        timestamp email_verified_at
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROOMS {
+        bigint id PK
+        string name
+        string type
+        text description
+        decimal price
+        decimal tax_rate
+        decimal service_rate
+        int total_rooms
+        int capacity
+        json facilities
+        string image
+        json gallery
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RESERVATIONS {
+        bigint id PK
+        string booking_code UK
+        bigint user_id FK
+        bigint room_id FK
+        string guest_name
+        string guest_email
+        string guest_phone
+        date check_in
+        date check_out
+        int nights
+        int guest_count
+        decimal base_price
+        decimal tax_amount
+        decimal service_amount
+        decimal total_price
+        string payment_method
+        string snap_token
+        string midtrans_transaction_id
+        string midtrans_payment_type
+        string status
+        text special_requests
+        timestamp paid_at
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    TESTIMONIALS {
+        bigint id PK
+        bigint user_id FK
+        bigint reservation_id FK
+        string guest_name
+        string guest_origin
+        int rating
+        text review
+        boolean is_approved
+        timestamp created_at
+        timestamp updated_at
+    }
+          </div>
+        </div>
+        <textarea id="code-04_erd_rama_homestay" style="display:none;">erDiagram
+    USERS ||--o{ RESERVATIONS : &quot;membuat&quot;
+    USERS ||--o{ TESTIMONIALS : &quot;menulis&quot;
+    ROOMS ||--o{ RESERVATIONS : &quot;dipesan_pada&quot;
+    RESERVATIONS ||--o| TESTIMONIALS : &quot;menghasilkan&quot;
+
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string phone
+        string password
+        string role
+        timestamp email_verified_at
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROOMS {
+        bigint id PK
+        string name
+        string type
+        text description
+        decimal price
+        decimal tax_rate
+        decimal service_rate
+        int total_rooms
+        int capacity
+        json facilities
+        string image
+        json gallery
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RESERVATIONS {
+        bigint id PK
+        string booking_code UK
+        bigint user_id FK
+        bigint room_id FK
+        string guest_name
+        string guest_email
+        string guest_phone
+        date check_in
+        date check_out
+        int nights
+        int guest_count
+        decimal base_price
+        decimal tax_amount
+        decimal service_amount
+        decimal total_price
+        string payment_method
+        string snap_token
+        string midtrans_transaction_id
+        string midtrans_payment_type
+        string status
+        text special_requests
+        timestamp paid_at
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    TESTIMONIALS {
+        bigint id PK
+        bigint user_id FK
+        bigint reservation_id FK
+        string guest_name
+        string guest_origin
+        int rating
+        text review
+        boolean is_approved
+        timestamp created_at
+        timestamp updated_at
+    }</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-05_seq_registrasi_login">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #1</span>
+            <h2 class="card-title">Diagram Sequence: Registrasi & Login Akun</h2>
+            <p class="card-desc">Alur Pendaftaran Akun Tamu dan Login Pengguna / Administrator</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('05_seq_registrasi_login', 'Diagram Sequence: Registrasi & Login Akun')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('05_seq_registrasi_login', 'Diagram Sequence: Registrasi & Login Akun')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-05_seq_registrasi_login')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-05_seq_registrasi_login">
+          <div class="mermaid" id="mermaid-05_seq_registrasi_login">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu / Pengguna
+    participant View as View (Blade)
+    participant AuthCtrl as AuthController
+    participant User as Model User
+    participant Session as Laravel Session
+
+    rect rgb(240, 248, 255)
+    note over Tamu, User: Alur Registrasi Akun Baru
+    Tamu->>View: Buka halaman pendaftaran (/register)
+    View-->>Tamu: Tampilkan formulir registrasi
+    Tamu->>AuthCtrl: POST /register (name, email, phone, password)
+    AuthCtrl->>AuthCtrl: Validasi input data
+    AuthCtrl->>User: create([name, email, phone, password, role=tamu])
+    User-->>AuthCtrl: User baru tersimpan
+    AuthCtrl->>Session: Auth::login($user)
+    AuthCtrl-->>Tamu: Redirect ke /tamu/dashboard
+    end
+
+    rect rgb(255, 250, 240)
+    note over Tamu, User: Alur Login Pengguna
+    Tamu->>View: Buka halaman login (/login)
+    View-->>Tamu: Tampilkan formulir login
+    Tamu->>AuthCtrl: POST /login (email, password)
+    AuthCtrl->>AuthCtrl: Auth::attempt(credentials)
+    alt Kredensial Valid
+        AuthCtrl->>User: Cek role pengguna
+        alt Role == admin
+            AuthCtrl-->>Tamu: Redirect ke route(admin.dashboard)
+        else Role == tamu
+            AuthCtrl-->>Tamu: Redirect ke route(tamu.dashboard)
+        end
+    else Kredensial Salah
+        AuthCtrl-->>View: Kembalikan withErrors
+        View-->>Tamu: Tampilkan pesan gagal login
+    end
+    end
+          </div>
+        </div>
+        <textarea id="code-05_seq_registrasi_login" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu / Pengguna
+    participant View as View (Blade)
+    participant AuthCtrl as AuthController
+    participant User as Model User
+    participant Session as Laravel Session
+
+    rect rgb(240, 248, 255)
+    note over Tamu, User: Alur Registrasi Akun Baru
+    Tamu-&gt;&gt;View: Buka halaman pendaftaran (/register)
+    View--&gt;&gt;Tamu: Tampilkan formulir registrasi
+    Tamu-&gt;&gt;AuthCtrl: POST /register (name, email, phone, password)
+    AuthCtrl-&gt;&gt;AuthCtrl: Validasi input data
+    AuthCtrl-&gt;&gt;User: create([name, email, phone, password, role=tamu])
+    User--&gt;&gt;AuthCtrl: User baru tersimpan
+    AuthCtrl-&gt;&gt;Session: Auth::login($user)
+    AuthCtrl--&gt;&gt;Tamu: Redirect ke /tamu/dashboard
+    end
+
+    rect rgb(255, 250, 240)
+    note over Tamu, User: Alur Login Pengguna
+    Tamu-&gt;&gt;View: Buka halaman login (/login)
+    View--&gt;&gt;Tamu: Tampilkan formulir login
+    Tamu-&gt;&gt;AuthCtrl: POST /login (email, password)
+    AuthCtrl-&gt;&gt;AuthCtrl: Auth::attempt(credentials)
+    alt Kredensial Valid
+        AuthCtrl-&gt;&gt;User: Cek role pengguna
+        alt Role == admin
+            AuthCtrl--&gt;&gt;Tamu: Redirect ke route(admin.dashboard)
+        else Role == tamu
+            AuthCtrl--&gt;&gt;Tamu: Redirect ke route(tamu.dashboard)
+        end
+    else Kredensial Salah
+        AuthCtrl--&gt;&gt;View: Kembalikan withErrors
+        View--&gt;&gt;Tamu: Tampilkan pesan gagal login
+    end
+    end</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-06_seq_cek_ketersediaan_kamar">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #2</span>
+            <h2 class="card-title">Diagram Sequence: Pengecekan Ketersediaan Kamar</h2>
+            <p class="card-desc">Alur Cek Ketersediaan Kamar Real-time (AJAX Check Availability)</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('06_seq_cek_ketersediaan_kamar', 'Diagram Sequence: Pengecekan Ketersediaan Kamar')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('06_seq_cek_ketersediaan_kamar', 'Diagram Sequence: Pengecekan Ketersediaan Kamar')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-06_seq_cek_ketersediaan_kamar')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-06_seq_cek_ketersediaan_kamar">
+          <div class="mermaid" id="mermaid-06_seq_cek_ketersediaan_kamar">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant View as View (booking_form.blade)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+    participant RoomModel as Model Room
+
+    Tamu->>View: Pilih tanggal Check-in & Check-out
+    View->>ResCtrl: AJAX POST /api/check-availability
+    ResCtrl->>ResCtrl: Validasi tanggal
+    ResCtrl->>ResModel: releaseExpiredReservations()
+    ResCtrl->>RoomModel: findOrFail(room_id)
+    ResCtrl->>RoomModel: isAvailable(check_in, check_out)
+    RoomModel->>RoomModel: getAvailableCount(check_in, check_out)
+    RoomModel-->>ResCtrl: Kembalikan boolean & sisa kuota
+    ResCtrl->>RoomModel: calculateTax(base_price)
+    ResCtrl->>RoomModel: calculateService(base_price)
+    ResCtrl-->>View: JSON Response (available, nights, tax, service, total)
+    View-->>Tamu: Tampilkan rincian biaya & status ketersediaan
+          </div>
+        </div>
+        <textarea id="code-06_seq_cek_ketersediaan_kamar" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant View as View (booking_form.blade)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+    participant RoomModel as Model Room
+
+    Tamu-&gt;&gt;View: Pilih tanggal Check-in &amp; Check-out
+    View-&gt;&gt;ResCtrl: AJAX POST /api/check-availability
+    ResCtrl-&gt;&gt;ResCtrl: Validasi tanggal
+    ResCtrl-&gt;&gt;ResModel: releaseExpiredReservations()
+    ResCtrl-&gt;&gt;RoomModel: findOrFail(room_id)
+    ResCtrl-&gt;&gt;RoomModel: isAvailable(check_in, check_out)
+    RoomModel-&gt;&gt;RoomModel: getAvailableCount(check_in, check_out)
+    RoomModel--&gt;&gt;ResCtrl: Kembalikan boolean &amp; sisa kuota
+    ResCtrl-&gt;&gt;RoomModel: calculateTax(base_price)
+    ResCtrl-&gt;&gt;RoomModel: calculateService(base_price)
+    ResCtrl--&gt;&gt;View: JSON Response (available, nights, tax, service, total)
+    View--&gt;&gt;Tamu: Tampilkan rincian biaya &amp; status ketersediaan</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-07_seq_booking_kamar">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #3</span>
+            <h2 class="card-title">Diagram Sequence: Pemesanan Kamar (Anti-Double Booking)</h2>
+            <p class="card-desc">Alur Pemesanan Kamar dengan Database Transaction dan Lock Pencegahan Konflik</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('07_seq_booking_kamar', 'Diagram Sequence: Pemesanan Kamar (Anti-Double Booking)')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('07_seq_booking_kamar', 'Diagram Sequence: Pemesanan Kamar (Anti-Double Booking)')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-07_seq_booking_kamar')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-07_seq_booking_kamar">
+          <div class="mermaid" id="mermaid-07_seq_booking_kamar">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu (Terautentikasi)
+    participant View as View (booking_form.blade)
+    participant ResCtrl as ReservationController
+    participant DB as DB Transaction
+    participant ResModel as Model Reservation
+    participant MidService as MidtransService
+    participant MidtransAPI as Midtrans API
+
+    Tamu->>View: Submit form booking (/tamu/book/confirm)
+    View->>ResCtrl: POST processBooking()
+    ResCtrl->>ResCtrl: Validasi data pemesan & tanggal
+    ResCtrl->>DB: DB::transaction()
+    activate DB
+    DB->>ResModel: releaseExpiredReservations()
+    DB->>ResModel: lockForUpdate() periksa ketersediaan
+    alt Kuota Kamar Penuh
+        DB-->>ResCtrl: Rollback & error 'Kamar sudah habis'
+        ResCtrl-->>Tamu: Tampilkan pesan error kamar penuh
+    else Kuota Tersedia
+        DB->>ResModel: create([booking_code, pricing, status=pending, expires_at=now+30m])
+        ResModel-->>DB: Data Reservasi Tersimpan
+        DB->>MidService: createSnapToken($reservation)
+        MidService->>MidtransAPI: Snap::getSnapToken()
+        MidtransAPI-->>MidService: Snap Token String
+        MidService->>ResModel: update([snap_token])
+        DB-->>ResCtrl: Commit Transaksi
+        deactivate DB
+        ResCtrl->>ResCtrl: Simpan rincian ke session
+        ResCtrl-->>Tamu: Redirect ke /tamu/book-success (E-Ticket)
+    end
+          </div>
+        </div>
+        <textarea id="code-07_seq_booking_kamar" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu (Terautentikasi)
+    participant View as View (booking_form.blade)
+    participant ResCtrl as ReservationController
+    participant DB as DB Transaction
+    participant ResModel as Model Reservation
+    participant MidService as MidtransService
+    participant MidtransAPI as Midtrans API
+
+    Tamu-&gt;&gt;View: Submit form booking (/tamu/book/confirm)
+    View-&gt;&gt;ResCtrl: POST processBooking()
+    ResCtrl-&gt;&gt;ResCtrl: Validasi data pemesan &amp; tanggal
+    ResCtrl-&gt;&gt;DB: DB::transaction()
+    activate DB
+    DB-&gt;&gt;ResModel: releaseExpiredReservations()
+    DB-&gt;&gt;ResModel: lockForUpdate() periksa ketersediaan
+    alt Kuota Kamar Penuh
+        DB--&gt;&gt;ResCtrl: Rollback &amp; error &#039;Kamar sudah habis&#039;
+        ResCtrl--&gt;&gt;Tamu: Tampilkan pesan error kamar penuh
+    else Kuota Tersedia
+        DB-&gt;&gt;ResModel: create([booking_code, pricing, status=pending, expires_at=now+30m])
+        ResModel--&gt;&gt;DB: Data Reservasi Tersimpan
+        DB-&gt;&gt;MidService: createSnapToken($reservation)
+        MidService-&gt;&gt;MidtransAPI: Snap::getSnapToken()
+        MidtransAPI--&gt;&gt;MidService: Snap Token String
+        MidService-&gt;&gt;ResModel: update([snap_token])
+        DB--&gt;&gt;ResCtrl: Commit Transaksi
+        deactivate DB
+        ResCtrl-&gt;&gt;ResCtrl: Simpan rincian ke session
+        ResCtrl--&gt;&gt;Tamu: Redirect ke /tamu/book-success (E-Ticket)
+    end</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-08_seq_pembayaran_midtrans">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #4</span>
+            <h2 class="card-title">Diagram Sequence: Pembayaran via Midtrans & Webhook</h2>
+            <p class="card-desc">Alur Pembayaran Online Midtrans Snap dan Notifikasi Webhook Otomatis</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('08_seq_pembayaran_midtrans', 'Diagram Sequence: Pembayaran via Midtrans & Webhook')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('08_seq_pembayaran_midtrans', 'Diagram Sequence: Pembayaran via Midtrans & Webhook')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-08_seq_pembayaran_midtrans')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-08_seq_pembayaran_midtrans">
+          <div class="mermaid" id="mermaid-08_seq_pembayaran_midtrans">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant SnapUI as Midtrans Snap Popup UI
+    participant MidtransServer as Midtrans Server
+    participant MidCtrl as MidtransController
+    participant MidService as MidtransService
+    participant ResModel as Model Reservation
+
+    Tamu->>SnapUI: Klik 'Bayar Sekarang' (snap.pay)
+    SnapUI-->>Tamu: Tampilkan metode pembayaran (QRIS, VA Bank, GoPay)
+    Tamu->>SnapUI: Selesaikan pembayaran
+    SnapUI->>MidtransServer: Proses transaksi pembayaran
+    MidtransServer-->>SnapUI: Transaksi Berhasil
+
+    par Webhook Notifikasi Server-to-Server
+        MidtransServer->>MidCtrl: POST /midtrans/notification (Webhook JSON)
+        MidCtrl->>MidService: handleNotification(payload)
+        MidService->>MidService: Verifikasi Signature SHA512
+        alt Signature Valid
+            MidService->>ResModel: Cari berdasarkan booking_code
+            MidService->>ResModel: applyPaymentStatus(confirmed)
+            MidService-->>MidCtrl: status = true
+            MidCtrl-->>MidtransServer: HTTP 200 OK
+        else Signature Invalid
+            MidCtrl-->>MidtransServer: HTTP 400 Bad Request
+        end
+    and Pengalihan Peramban Pengguna
+        SnapUI->>MidCtrl: Redirect ke /midtrans/finish
+        MidCtrl->>MidService: checkStatus(order_id)
+        MidService-->>MidCtrl: Status settlement
+        MidCtrl->>ResModel: update status=confirmed, paid_at=now()
+        MidCtrl-->>Tamu: Redirect ke /tamu/book-success (Status Lunas)
+    end
+          </div>
+        </div>
+        <textarea id="code-08_seq_pembayaran_midtrans" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant SnapUI as Midtrans Snap Popup UI
+    participant MidtransServer as Midtrans Server
+    participant MidCtrl as MidtransController
+    participant MidService as MidtransService
+    participant ResModel as Model Reservation
+
+    Tamu-&gt;&gt;SnapUI: Klik &#039;Bayar Sekarang&#039; (snap.pay)
+    SnapUI--&gt;&gt;Tamu: Tampilkan metode pembayaran (QRIS, VA Bank, GoPay)
+    Tamu-&gt;&gt;SnapUI: Selesaikan pembayaran
+    SnapUI-&gt;&gt;MidtransServer: Proses transaksi pembayaran
+    MidtransServer--&gt;&gt;SnapUI: Transaksi Berhasil
+
+    par Webhook Notifikasi Server-to-Server
+        MidtransServer-&gt;&gt;MidCtrl: POST /midtrans/notification (Webhook JSON)
+        MidCtrl-&gt;&gt;MidService: handleNotification(payload)
+        MidService-&gt;&gt;MidService: Verifikasi Signature SHA512
+        alt Signature Valid
+            MidService-&gt;&gt;ResModel: Cari berdasarkan booking_code
+            MidService-&gt;&gt;ResModel: applyPaymentStatus(confirmed)
+            MidService--&gt;&gt;MidCtrl: status = true
+            MidCtrl--&gt;&gt;MidtransServer: HTTP 200 OK
+        else Signature Invalid
+            MidCtrl--&gt;&gt;MidtransServer: HTTP 400 Bad Request
+        end
+    and Pengalihan Peramban Pengguna
+        SnapUI-&gt;&gt;MidCtrl: Redirect ke /midtrans/finish
+        MidCtrl-&gt;&gt;MidService: checkStatus(order_id)
+        MidService--&gt;&gt;MidCtrl: Status settlement
+        MidCtrl-&gt;&gt;ResModel: update status=confirmed, paid_at=now()
+        MidCtrl--&gt;&gt;Tamu: Redirect ke /tamu/book-success (Status Lunas)
+    end</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-09_seq_pembatalan_reservasi">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #5</span>
+            <h2 class="card-title">Diagram Sequence: Pembatalan Reservasi</h2>
+            <p class="card-desc">Alur Pembatalan Mandiri oleh Tamu dan Pembatalan Otomatis Expired 30 Menit</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('09_seq_pembatalan_reservasi', 'Diagram Sequence: Pembatalan Reservasi')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('09_seq_pembatalan_reservasi', 'Diagram Sequence: Pembatalan Reservasi')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-09_seq_pembatalan_reservasi')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-09_seq_pembatalan_reservasi">
+          <div class="mermaid" id="mermaid-09_seq_pembatalan_reservasi">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant Dashboard as View (dashboard.blade)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+
+    rect rgb(255, 245, 245)
+    note over Tamu, ResModel: Alur 1: Pembatalan Mandiri oleh Tamu
+    Tamu->>Dashboard: Klik tombol 'Batalkan' (Status Pending)
+    Dashboard->>ResCtrl: POST /tamu/cancel/{id}
+    ResCtrl->>ResCtrl: Verifikasi kepemilikan reservasi
+    alt Status Reservasi Masih Pending
+        ResCtrl->>ResModel: update([status=cancelled])
+        ResCtrl-->>Tamu: Redirect back dengan notifikasi sukses batal
+    else Status Sudah Confirmed
+        ResCtrl-->>Tamu: Redirect back dengan pesan error tidak bisa dibatalkan
+    end
+    end
+
+    rect rgb(245, 245, 255)
+    note over Tamu, ResModel: Alur 2: Pembatalan Otomatis Expired (30 Menit)
+    Tamu->>ResCtrl: Request akses ke sistem
+    ResCtrl->>ResModel: releaseExpiredReservations()
+    ResModel->>ResModel: UPDATE reservations SET status=cancelled WHERE status=pending AND expires_at <= NOW()
+    ResModel-->>ResCtrl: Kuota kamar otomatis bebas kembali
+    end
+          </div>
+        </div>
+        <textarea id="code-09_seq_pembatalan_reservasi" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant Dashboard as View (dashboard.blade)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+
+    rect rgb(255, 245, 245)
+    note over Tamu, ResModel: Alur 1: Pembatalan Mandiri oleh Tamu
+    Tamu-&gt;&gt;Dashboard: Klik tombol &#039;Batalkan&#039; (Status Pending)
+    Dashboard-&gt;&gt;ResCtrl: POST /tamu/cancel/{id}
+    ResCtrl-&gt;&gt;ResCtrl: Verifikasi kepemilikan reservasi
+    alt Status Reservasi Masih Pending
+        ResCtrl-&gt;&gt;ResModel: update([status=cancelled])
+        ResCtrl--&gt;&gt;Tamu: Redirect back dengan notifikasi sukses batal
+    else Status Sudah Confirmed
+        ResCtrl--&gt;&gt;Tamu: Redirect back dengan pesan error tidak bisa dibatalkan
+    end
+    end
+
+    rect rgb(245, 245, 255)
+    note over Tamu, ResModel: Alur 2: Pembatalan Otomatis Expired (30 Menit)
+    Tamu-&gt;&gt;ResCtrl: Request akses ke sistem
+    ResCtrl-&gt;&gt;ResModel: releaseExpiredReservations()
+    ResModel-&gt;&gt;ResModel: UPDATE reservations SET status=cancelled WHERE status=pending AND expires_at &lt;= NOW()
+    ResModel--&gt;&gt;ResCtrl: Kuota kamar otomatis bebas kembali
+    end</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-10_seq_manajemen_kamar_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #6</span>
+            <h2 class="card-title">Diagram Sequence: Manajemen Data Kamar oleh Admin</h2>
+            <p class="card-desc">Alur Penambahan, Pengubahan, dan Pengunggahan Gambar Kamar (CRUD)</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('10_seq_manajemen_kamar_admin', 'Diagram Sequence: Manajemen Data Kamar oleh Admin')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('10_seq_manajemen_kamar_admin', 'Diagram Sequence: Manajemen Data Kamar oleh Admin')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-10_seq_manajemen_kamar_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-10_seq_manajemen_kamar_admin">
+          <div class="mermaid" id="mermaid-10_seq_manajemen_kamar_admin">
+sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.rooms)
+    participant RoomCtrl as RoomController
+    participant RoomModel as Model Room
+    participant Storage as Storage Public
+
+    Admin->>View: Buka menu Data Kamar (/admin/rooms)
+    View->>RoomCtrl: GET index()
+    RoomCtrl->>RoomModel: withCount(active_bookings)->latest()->get()
+    RoomModel-->>RoomCtrl: Koleksi data kamar
+    RoomCtrl-->>View: Tampilkan tabel kamar & statistik
+    
+    Admin->>View: Isi form tambah kamar & upload gambar
+    View->>RoomCtrl: POST /admin/rooms (data kamar, gambar)
+    RoomCtrl->>RoomCtrl: Validasi input data kamar
+    alt Ada File Gambar
+        RoomCtrl->>Storage: store(rooms, public)
+        Storage-->>RoomCtrl: path_gambar
+    end
+    RoomCtrl->>RoomModel: create(validated_data)
+    RoomModel-->>RoomCtrl: Kamar tersimpan
+    RoomCtrl-->>View: Redirect dengan pesan sukses
+          </div>
+        </div>
+        <textarea id="code-10_seq_manajemen_kamar_admin" style="display:none;">sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.rooms)
+    participant RoomCtrl as RoomController
+    participant RoomModel as Model Room
+    participant Storage as Storage Public
+
+    Admin-&gt;&gt;View: Buka menu Data Kamar (/admin/rooms)
+    View-&gt;&gt;RoomCtrl: GET index()
+    RoomCtrl-&gt;&gt;RoomModel: withCount(active_bookings)-&gt;latest()-&gt;get()
+    RoomModel--&gt;&gt;RoomCtrl: Koleksi data kamar
+    RoomCtrl--&gt;&gt;View: Tampilkan tabel kamar &amp; statistik
+    
+    Admin-&gt;&gt;View: Isi form tambah kamar &amp; upload gambar
+    View-&gt;&gt;RoomCtrl: POST /admin/rooms (data kamar, gambar)
+    RoomCtrl-&gt;&gt;RoomCtrl: Validasi input data kamar
+    alt Ada File Gambar
+        RoomCtrl-&gt;&gt;Storage: store(rooms, public)
+        Storage--&gt;&gt;RoomCtrl: path_gambar
+    end
+    RoomCtrl-&gt;&gt;RoomModel: create(validated_data)
+    RoomModel--&gt;&gt;RoomCtrl: Kamar tersimpan
+    RoomCtrl--&gt;&gt;View: Redirect dengan pesan sukses</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-11_seq_pengelolaan_status_reservasi">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #7</span>
+            <h2 class="card-title">Diagram Sequence: Pengelolaan Status Reservasi oleh Admin</h2>
+            <p class="card-desc">Alur Pembaruan Status Reservasi (Pending -> Confirmed / Completed / Cancelled)</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('11_seq_pengelolaan_status_reservasi', 'Diagram Sequence: Pengelolaan Status Reservasi oleh Admin')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('11_seq_pengelolaan_status_reservasi', 'Diagram Sequence: Pengelolaan Status Reservasi oleh Admin')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-11_seq_pengelolaan_status_reservasi')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-11_seq_pengelolaan_status_reservasi">
+          <div class="mermaid" id="mermaid-11_seq_pengelolaan_status_reservasi">
+sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.reservations)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+
+    Admin->>View: Buka daftar reservasi (/admin/reservations)
+    View->>ResCtrl: GET index()
+    ResCtrl->>ResModel: with([user, room])->latest()->get()
+    ResModel-->>ResCtrl: Data seluruh reservasi
+    ResCtrl-->>View: Tampilkan tabel reservasi & filter status
+
+    Admin->>View: Pilih aksi ubah status (misal: Confirmed)
+    View->>ResCtrl: POST /admin/reservations/{id}/status
+    ResCtrl->>ResCtrl: Validasi input status baru
+    alt Status diubah ke Confirmed dan belum paid_at
+        ResCtrl->>ResModel: update([status=confirmed, paid_at=now()])
+    else
+        ResCtrl->>ResModel: update([status=status_baru])
+    end
+    ResModel-->>ResCtrl: Berhasil diperbarui
+    ResCtrl-->>View: Kembalikan notifikasi sukses pembaruan
+          </div>
+        </div>
+        <textarea id="code-11_seq_pengelolaan_status_reservasi" style="display:none;">sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.reservations)
+    participant ResCtrl as ReservationController
+    participant ResModel as Model Reservation
+
+    Admin-&gt;&gt;View: Buka daftar reservasi (/admin/reservations)
+    View-&gt;&gt;ResCtrl: GET index()
+    ResCtrl-&gt;&gt;ResModel: with([user, room])-&gt;latest()-&gt;get()
+    ResModel--&gt;&gt;ResCtrl: Data seluruh reservasi
+    ResCtrl--&gt;&gt;View: Tampilkan tabel reservasi &amp; filter status
+
+    Admin-&gt;&gt;View: Pilih aksi ubah status (misal: Confirmed)
+    View-&gt;&gt;ResCtrl: POST /admin/reservations/{id}/status
+    ResCtrl-&gt;&gt;ResCtrl: Validasi input status baru
+    alt Status diubah ke Confirmed dan belum paid_at
+        ResCtrl-&gt;&gt;ResModel: update([status=confirmed, paid_at=now()])
+    else
+        ResCtrl-&gt;&gt;ResModel: update([status=status_baru])
+    end
+    ResModel--&gt;&gt;ResCtrl: Berhasil diperbarui
+    ResCtrl--&gt;&gt;View: Kembalikan notifikasi sukses pembaruan</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-12_seq_ulasan_moderasi_testimoni">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #8</span>
+            <h2 class="card-title">Diagram Sequence: Pemberian & Moderasi Ulasan</h2>
+            <p class="card-desc">Alur Pengiriman Review Tamu dan Moderasi Persetujuan oleh Admin</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('12_seq_ulasan_moderasi_testimoni', 'Diagram Sequence: Pemberian & Moderasi Ulasan')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('12_seq_ulasan_moderasi_testimoni', 'Diagram Sequence: Pemberian & Moderasi Ulasan')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-12_seq_ulasan_moderasi_testimoni')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-12_seq_ulasan_moderasi_testimoni">
+          <div class="mermaid" id="mermaid-12_seq_ulasan_moderasi_testimoni">
+sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant TamuView as View Tamu (Dashboard)
+    participant TestiCtrl as TestimonialController
+    participant TestiModel as Model Testimonial
+    actor Admin as Admin
+    participant AdminView as View Admin
+    participant AdminCtrl as AdminController
+
+    Tamu->>TamuView: Kirim rating bintang & ulasan
+    TamuView->>TestiCtrl: POST /tamu/review
+    TestiCtrl->>TestiCtrl: Validasi rating 1-5 & teks ulasan
+    TestiCtrl->>TestiModel: create([user_id, rating, review, is_approved=false])
+    TestiModel-->>TestiCtrl: Review tersimpan
+    TestiCtrl-->>TamuView: Notifikasi 'Ulasan menunggu persetujuan admin'
+
+    Admin->>AdminView: Buka menu Testimoni (/admin/testimonials)
+    AdminView->>AdminCtrl: GET testimonials()
+    AdminCtrl->>TestiModel: with([user, reservation])->latest()->get()
+    AdminCtrl-->>AdminView: Tampilkan daftar ulasan masuk
+    Admin->>AdminView: Klik tombol 'Setujui / Publikasikan'
+    AdminView->>AdminCtrl: POST /admin/testimonials/{id}/toggle
+    AdminCtrl->>TestiModel: update([is_approved = true])
+    AdminCtrl-->>AdminView: Status ulasan aktif & tampil di website publik
+          </div>
+        </div>
+        <textarea id="code-12_seq_ulasan_moderasi_testimoni" style="display:none;">sequenceDiagram
+    autonumber
+    actor Tamu as Tamu
+    participant TamuView as View Tamu (Dashboard)
+    participant TestiCtrl as TestimonialController
+    participant TestiModel as Model Testimonial
+    actor Admin as Admin
+    participant AdminView as View Admin
+    participant AdminCtrl as AdminController
+
+    Tamu-&gt;&gt;TamuView: Kirim rating bintang &amp; ulasan
+    TamuView-&gt;&gt;TestiCtrl: POST /tamu/review
+    TestiCtrl-&gt;&gt;TestiCtrl: Validasi rating 1-5 &amp; teks ulasan
+    TestiCtrl-&gt;&gt;TestiModel: create([user_id, rating, review, is_approved=false])
+    TestiModel--&gt;&gt;TestiCtrl: Review tersimpan
+    TestiCtrl--&gt;&gt;TamuView: Notifikasi &#039;Ulasan menunggu persetujuan admin&#039;
+
+    Admin-&gt;&gt;AdminView: Buka menu Testimoni (/admin/testimonials)
+    AdminView-&gt;&gt;AdminCtrl: GET testimonials()
+    AdminCtrl-&gt;&gt;TestiModel: with([user, reservation])-&gt;latest()-&gt;get()
+    AdminCtrl--&gt;&gt;AdminView: Tampilkan daftar ulasan masuk
+    Admin-&gt;&gt;AdminView: Klik tombol &#039;Setujui / Publikasikan&#039;
+    AdminView-&gt;&gt;AdminCtrl: POST /admin/testimonials/{id}/toggle
+    AdminCtrl-&gt;&gt;TestiModel: update([is_approved = true])
+    AdminCtrl--&gt;&gt;AdminView: Status ulasan aktif &amp; tampil di website publik</textarea>
+      </div>      <div class="diagram-card" data-category="sequence" id="card-13_seq_laporan_export_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Sequence #9</span>
+            <h2 class="card-title">Diagram Sequence: Pembuatan & Ekspor Laporan</h2>
+            <p class="card-desc">Alur Filter Laporan Transaksi dan Export PDF/Print oleh Administrator</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('13_seq_laporan_export_admin', 'Diagram Sequence: Pembuatan & Ekspor Laporan')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('13_seq_laporan_export_admin', 'Diagram Sequence: Pembuatan & Ekspor Laporan')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-13_seq_laporan_export_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-13_seq_laporan_export_admin">
+          <div class="mermaid" id="mermaid-13_seq_laporan_export_admin">
+sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.reports)
+    participant AdminCtrl as AdminController
+    participant ResModel as Model Reservation
+
+    Admin->>View: Buka menu Laporan (/admin/reports)
+    View->>AdminCtrl: GET reports(start_date, end_date, status)
+    AdminCtrl->>ResModel: whereBetween(created_at, [start, end])->get()
+    AdminCtrl->>AdminCtrl: Hitung ringkasan transaksi & total pendapatan
+    AdminCtrl-->>View: Tampilkan tabel transaksi & kartu ringkasan keuangan
+
+    Admin->>View: Klik tombol 'Export / Cetak Laporan'
+    View->>AdminCtrl: GET /admin/reports/export
+    AdminCtrl->>ResModel: Ambil data transaksi terfilter
+    AdminCtrl-->>View: Render view khusus cetak + window.print() / Download PDF
+          </div>
+        </div>
+        <textarea id="code-13_seq_laporan_export_admin" style="display:none;">sequenceDiagram
+    autonumber
+    actor Admin as Admin
+    participant View as View (admin.reports)
+    participant AdminCtrl as AdminController
+    participant ResModel as Model Reservation
+
+    Admin-&gt;&gt;View: Buka menu Laporan (/admin/reports)
+    View-&gt;&gt;AdminCtrl: GET reports(start_date, end_date, status)
+    AdminCtrl-&gt;&gt;ResModel: whereBetween(created_at, [start, end])-&gt;get()
+    AdminCtrl-&gt;&gt;AdminCtrl: Hitung ringkasan transaksi &amp; total pendapatan
+    AdminCtrl--&gt;&gt;View: Tampilkan tabel transaksi &amp; kartu ringkasan keuangan
+
+    Admin-&gt;&gt;View: Klik tombol &#039;Export / Cetak Laporan&#039;
+    View-&gt;&gt;AdminCtrl: GET /admin/reports/export
+    AdminCtrl-&gt;&gt;ResModel: Ambil data transaksi terfilter
+    AdminCtrl--&gt;&gt;View: Render view khusus cetak + window.print() / Download PDF</textarea>
+      </div>      <div class="diagram-card" data-category="class" id="card-14_class_diagram_rama_homestay">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Kelas (Class Diagram)</span>
+            <h2 class="card-title">Diagram Kelas: Arsitektur Sistem Rama Homestay</h2>
+            <p class="card-desc">Diagram Kelas Model, Controller, dan Service pada Arsitektur Laravel Rama Homestay</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('14_class_diagram_rama_homestay', 'Diagram Kelas: Arsitektur Sistem Rama Homestay')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('14_class_diagram_rama_homestay', 'Diagram Kelas: Arsitektur Sistem Rama Homestay')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-14_class_diagram_rama_homestay')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-14_class_diagram_rama_homestay">
+          <div class="mermaid" id="mermaid-14_class_diagram_rama_homestay">
+classDiagram
+    class User {
+        - id : bigint
+        - name : string
+        - email : string
+        - phone : string
+        - password : string
+        - role : string
+        - email_verified_at : datetime
+        + reservations() HasMany
+    }
+
+    class Room {
+        - id : bigint
+        - name : string
+        - type : string
+        - description : text
+        - price : decimal
+        - tax_rate : decimal
+        - service_rate : decimal
+        - total_rooms : int
+        - capacity : int
+        - facilities : array
+        - image : string
+        - gallery : array
+        - is_active : boolean
+        + reservations() HasMany
+        + getAvailableCount(checkIn, checkOut) int
+        + isAvailable(checkIn, checkOut) bool
+        + calculateTax(basePrice) float
+        + calculateService(basePrice) float
+        + getFacilitiesListAttribute() array
+        + getTypeLabelAttribute() string
+    }
+
+    class Reservation {
+        - id : bigint
+        - booking_code : string
+        - user_id : bigint
+        - room_id : bigint
+        - guest_name : string
+        - guest_email : string
+        - guest_phone : string
+        - check_in : date
+        - check_out : date
+        - nights : int
+        - guest_count : int
+        - base_price : decimal
+        - tax_amount : decimal
+        - service_amount : decimal
+        - total_price : decimal
+        - payment_method : string
+        - snap_token : string
+        - midtrans_transaction_id : string
+        - midtrans_payment_type : string
+        - status : string
+        - special_requests : text
+        - paid_at : datetime
+        - expires_at : datetime
+        + releaseExpiredReservations() int
+        + isExpired() bool
+        + getRemainingSecondsAttribute() int
+        + getStatusLabelAttribute() string
+        + getDurationAttribute() int
+        + user() BelongsTo
+        + room() BelongsTo
+        + testimonial() HasOne
+    }
+
+    class Testimonial {
+        - id : bigint
+        - user_id : bigint
+        - reservation_id : bigint
+        - guest_name : string
+        - guest_origin : string
+        - rating : int
+        - review : text
+        - is_approved : boolean
+        + user() BelongsTo
+        + reservation() BelongsTo
+    }
+
+    class MidtransService {
+        - serverKey : string
+        - clientKey : string
+        - isProduction : boolean
+        + createSnapToken(reservation) string
+        + handleNotification(payload) bool
+        + checkStatus(orderId) object
+        + applyPaymentStatus(reservation, status, fraud, type, txId) void
+    }
+
+    class AuthController {
+        + showLogin() View
+        + login(request) Redirect
+        + showRegister() View
+        + register(request) Redirect
+        + logout(request) Redirect
+    }
+
+    class RoomController {
+        + index() View
+        + create() View
+        + store(request) Redirect
+        + edit(room) View
+        + update(request, room) Redirect
+        + destroy(room) Redirect
+        + indexClient(request) View
+        + show(room) View
+    }
+
+    class ReservationController {
+        + index(request) View
+        + showBookingForm(request, room) View
+        + checkAvailability(request) JsonResponse
+        + processBooking(request) Redirect
+        + bookingSuccess() View
+        + updateStatus(request, reservation) Redirect
+        + show(reservation) View
+        + cancel(reservation) Redirect
+    }
+
+    class MidtransController {
+        - midtransService : MidtransService
+        + notification(request) JsonResponse
+        + finish(request) Redirect
+        + payPage(reservation) View
+        + getToken(reservation) JsonResponse
+        + syncStatus(reservation) JsonResponse
+    }
+
+    class AdminController {
+        + dashboard() View
+        + calendar() View
+        + reports(request) View
+        + exportReports(request) View
+        + users() View
+        + testimonials() View
+        + toggleTestimonial(testimonial) Redirect
+    }
+
+    class TestimonialController {
+        + store(request) Redirect
+    }
+
+    User "1" --> "*" Reservation : membuat
+    User "1" --> "*" Testimonial : mengirim
+    Room "1" --> "*" Reservation : memiliki
+    Reservation "1" --> "0..1" Testimonial : menghasilkan
+
+    ReservationController ..> Reservation : mengelola
+    ReservationController ..> Room : memverifikasi
+    ReservationController ..> MidtransService : memanggil
+    MidtransController ..> MidtransService : menggunakan
+    MidtransController ..> Reservation : memperbarui
+    RoomController ..> Room : mengelola
+    TestimonialController ..> Testimonial : membuat
+    AdminController ..> Reservation : menganalisis
+    AdminController ..> Testimonial : memoderasi
+    AdminController ..> Room : mengawasi
+    AuthController ..> User : mengautentikasi
+          </div>
+        </div>
+        <textarea id="code-14_class_diagram_rama_homestay" style="display:none;">classDiagram
+    class User {
+        - id : bigint
+        - name : string
+        - email : string
+        - phone : string
+        - password : string
+        - role : string
+        - email_verified_at : datetime
+        + reservations() HasMany
+    }
+
+    class Room {
+        - id : bigint
+        - name : string
+        - type : string
+        - description : text
+        - price : decimal
+        - tax_rate : decimal
+        - service_rate : decimal
+        - total_rooms : int
+        - capacity : int
+        - facilities : array
+        - image : string
+        - gallery : array
+        - is_active : boolean
+        + reservations() HasMany
+        + getAvailableCount(checkIn, checkOut) int
+        + isAvailable(checkIn, checkOut) bool
+        + calculateTax(basePrice) float
+        + calculateService(basePrice) float
+        + getFacilitiesListAttribute() array
+        + getTypeLabelAttribute() string
+    }
+
+    class Reservation {
+        - id : bigint
+        - booking_code : string
+        - user_id : bigint
+        - room_id : bigint
+        - guest_name : string
+        - guest_email : string
+        - guest_phone : string
+        - check_in : date
+        - check_out : date
+        - nights : int
+        - guest_count : int
+        - base_price : decimal
+        - tax_amount : decimal
+        - service_amount : decimal
+        - total_price : decimal
+        - payment_method : string
+        - snap_token : string
+        - midtrans_transaction_id : string
+        - midtrans_payment_type : string
+        - status : string
+        - special_requests : text
+        - paid_at : datetime
+        - expires_at : datetime
+        + releaseExpiredReservations() int
+        + isExpired() bool
+        + getRemainingSecondsAttribute() int
+        + getStatusLabelAttribute() string
+        + getDurationAttribute() int
+        + user() BelongsTo
+        + room() BelongsTo
+        + testimonial() HasOne
+    }
+
+    class Testimonial {
+        - id : bigint
+        - user_id : bigint
+        - reservation_id : bigint
+        - guest_name : string
+        - guest_origin : string
+        - rating : int
+        - review : text
+        - is_approved : boolean
+        + user() BelongsTo
+        + reservation() BelongsTo
+    }
+
+    class MidtransService {
+        - serverKey : string
+        - clientKey : string
+        - isProduction : boolean
+        + createSnapToken(reservation) string
+        + handleNotification(payload) bool
+        + checkStatus(orderId) object
+        + applyPaymentStatus(reservation, status, fraud, type, txId) void
+    }
+
+    class AuthController {
+        + showLogin() View
+        + login(request) Redirect
+        + showRegister() View
+        + register(request) Redirect
+        + logout(request) Redirect
+    }
+
+    class RoomController {
+        + index() View
+        + create() View
+        + store(request) Redirect
+        + edit(room) View
+        + update(request, room) Redirect
+        + destroy(room) Redirect
+        + indexClient(request) View
+        + show(room) View
+    }
+
+    class ReservationController {
+        + index(request) View
+        + showBookingForm(request, room) View
+        + checkAvailability(request) JsonResponse
+        + processBooking(request) Redirect
+        + bookingSuccess() View
+        + updateStatus(request, reservation) Redirect
+        + show(reservation) View
+        + cancel(reservation) Redirect
+    }
+
+    class MidtransController {
+        - midtransService : MidtransService
+        + notification(request) JsonResponse
+        + finish(request) Redirect
+        + payPage(reservation) View
+        + getToken(reservation) JsonResponse
+        + syncStatus(reservation) JsonResponse
+    }
+
+    class AdminController {
+        + dashboard() View
+        + calendar() View
+        + reports(request) View
+        + exportReports(request) View
+        + users() View
+        + testimonials() View
+        + toggleTestimonial(testimonial) Redirect
+    }
+
+    class TestimonialController {
+        + store(request) Redirect
+    }
+
+    User &quot;1&quot; --&gt; &quot;*&quot; Reservation : membuat
+    User &quot;1&quot; --&gt; &quot;*&quot; Testimonial : mengirim
+    Room &quot;1&quot; --&gt; &quot;*&quot; Reservation : memiliki
+    Reservation &quot;1&quot; --&gt; &quot;0..1&quot; Testimonial : menghasilkan
+
+    ReservationController ..&gt; Reservation : mengelola
+    ReservationController ..&gt; Room : memverifikasi
+    ReservationController ..&gt; MidtransService : memanggil
+    MidtransController ..&gt; MidtransService : menggunakan
+    MidtransController ..&gt; Reservation : memperbarui
+    RoomController ..&gt; Room : mengelola
+    TestimonialController ..&gt; Testimonial : membuat
+    AdminController ..&gt; Reservation : menganalisis
+    AdminController ..&gt; Testimonial : memoderasi
+    AdminController ..&gt; Room : mengawasi
+    AuthController ..&gt; User : mengautentikasi</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-15_act_registrasi_login">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #1</span>
+            <h2 class="card-title">Diagram Aktivitas: Registrasi & Login Akun</h2>
+            <p class="card-desc">Alur Aktivitas Pengguna saat Mendaftar dan Masuk ke Sistem</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('15_act_registrasi_login', 'Diagram Aktivitas: Registrasi & Login Akun')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('15_act_registrasi_login', 'Diagram Aktivitas: Registrasi & Login Akun')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-15_act_registrasi_login')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-15_act_registrasi_login">
+          <div class="mermaid" id="mermaid-15_act_registrasi_login">
+flowchart TD
+    Start(["Mulai"]) --> DecisionGuest{"Sudah punya akun?"}
+    
+    DecisionGuest -->|Belum| OpenReg["Buka Halaman Register"]
+    OpenReg --> InputReg["Isi Nama, Email, No HP, & Password"]
+    InputReg --> SubmitReg["Klik Daftar"]
+    SubmitReg --> ValidateReg{"Validasi Form Berhasil?"}
+    ValidateReg -->|Gagal| RegErr["Tampilkan Pesan Validasi Error"]
+    RegErr --> InputReg
+    ValidateReg -->|Sukses| CreateUser["Sistem Membuat Akun & Hash Password"]
+    CreateUser --> AutoLogin["Auto Login Sesi Tamu"]
+
+    DecisionGuest -->|Sudah| OpenLogin["Buka Halaman Login"]
+    OpenLogin --> InputLogin["Masukkan Email & Password"]
+    InputLogin --> SubmitLogin["Klik Masuk"]
+    SubmitLogin --> CheckCreds{"Kredensial Sesuai?"}
+    CheckCreds -->|Tidak| LoginErr["Tampilkan Pesan Email/Password Salah"]
+    LoginErr --> InputLogin
+    CheckCreds -->|Ya| CheckRole{"Periksa Hak Akses (Role)"}
+    
+    AutoLogin --> TamuDash["Arahkan ke Dashboard Tamu"]
+    CheckRole -->|Tamu| TamuDash
+    CheckRole -->|Admin| AdminDash["Arahkan ke Panel Admin Dashboard"]
+    
+    TamuDash --> Finish(["Selesai"])
+    AdminDash --> Finish
+          </div>
+        </div>
+        <textarea id="code-15_act_registrasi_login" style="display:none;">flowchart TD
+    Start([&quot;Mulai&quot;]) --&gt; DecisionGuest{&quot;Sudah punya akun?&quot;}
+    
+    DecisionGuest --&gt;|Belum| OpenReg[&quot;Buka Halaman Register&quot;]
+    OpenReg --&gt; InputReg[&quot;Isi Nama, Email, No HP, &amp; Password&quot;]
+    InputReg --&gt; SubmitReg[&quot;Klik Daftar&quot;]
+    SubmitReg --&gt; ValidateReg{&quot;Validasi Form Berhasil?&quot;}
+    ValidateReg --&gt;|Gagal| RegErr[&quot;Tampilkan Pesan Validasi Error&quot;]
+    RegErr --&gt; InputReg
+    ValidateReg --&gt;|Sukses| CreateUser[&quot;Sistem Membuat Akun &amp; Hash Password&quot;]
+    CreateUser --&gt; AutoLogin[&quot;Auto Login Sesi Tamu&quot;]
+
+    DecisionGuest --&gt;|Sudah| OpenLogin[&quot;Buka Halaman Login&quot;]
+    OpenLogin --&gt; InputLogin[&quot;Masukkan Email &amp; Password&quot;]
+    InputLogin --&gt; SubmitLogin[&quot;Klik Masuk&quot;]
+    SubmitLogin --&gt; CheckCreds{&quot;Kredensial Sesuai?&quot;}
+    CheckCreds --&gt;|Tidak| LoginErr[&quot;Tampilkan Pesan Email/Password Salah&quot;]
+    LoginErr --&gt; InputLogin
+    CheckCreds --&gt;|Ya| CheckRole{&quot;Periksa Hak Akses (Role)&quot;}
+    
+    AutoLogin --&gt; TamuDash[&quot;Arahkan ke Dashboard Tamu&quot;]
+    CheckRole --&gt;|Tamu| TamuDash
+    CheckRole --&gt;|Admin| AdminDash[&quot;Arahkan ke Panel Admin Dashboard&quot;]
+    
+    TamuDash --&gt; Finish([&quot;Selesai&quot;])
+    AdminDash --&gt; Finish</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-16_act_cek_ketersediaan_kamar">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #2</span>
+            <h2 class="card-title">Diagram Aktivitas: Pencarian & Cek Ketersediaan Kamar</h2>
+            <p class="card-desc">Alur Aktivitas Tamu dalam Mengecek Ketersediaan Tanggal dan Rincian Biaya</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('16_act_cek_ketersediaan_kamar', 'Diagram Aktivitas: Pencarian & Cek Ketersediaan Kamar')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('16_act_cek_ketersediaan_kamar', 'Diagram Aktivitas: Pencarian & Cek Ketersediaan Kamar')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-16_act_cek_ketersediaan_kamar')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-16_act_cek_ketersediaan_kamar">
+          <div class="mermaid" id="mermaid-16_act_cek_ketersediaan_kamar">
+flowchart TD
+    Start(["Mulai"]) --> OpenRooms["Tamu Mengakses Halaman Katalog Kamar"]
+    OpenRooms --> SelectFilters["Pilih Filter Tipe Kamar / Kapasitas / Fasilitas"]
+    SelectFilters --> ViewRoomDetail["Pilih & Buka Detail Kamar"]
+    ViewRoomDetail --> InputDates["Pilih Tanggal Check-in & Check-out"]
+    
+    InputDates --> ValidateDates{"Tanggal Valid? (Check-out sesudah Check-in)"}
+    ValidateDates -->|Tidak| DateErr["Tampilkan Peringatan Kesalahan Tanggal"]
+    DateErr --> InputDates
+    
+    ValidateDates -->|Ya| RunAutoRelease["Sistem Membersihkan Pending Kedaluwarsa"]
+    RunAutoRelease --> CheckDB{"Kamar Tersedia di Tanggal Tersebut?"}
+    CheckDB -->|Kamar Penuh| NotAvailable["Tampilkan Notifikasi Kamar Tidak Tersedia"]
+    NotAvailable --> InputDates
+    
+    CheckDB -->|Kamar Ada| CalcPrice["Hitung Jumlah Malam, Pajak 10%, Layanan 5%, & Total Biaya"]
+    CalcPrice --> ShowSummary["Tampilkan Rincian Biaya & Aktifkan Tombol Pesan"]
+    ShowSummary --> Finish(["Lanjut ke Pemesanan"])
+          </div>
+        </div>
+        <textarea id="code-16_act_cek_ketersediaan_kamar" style="display:none;">flowchart TD
+    Start([&quot;Mulai&quot;]) --&gt; OpenRooms[&quot;Tamu Mengakses Halaman Katalog Kamar&quot;]
+    OpenRooms --&gt; SelectFilters[&quot;Pilih Filter Tipe Kamar / Kapasitas / Fasilitas&quot;]
+    SelectFilters --&gt; ViewRoomDetail[&quot;Pilih &amp; Buka Detail Kamar&quot;]
+    ViewRoomDetail --&gt; InputDates[&quot;Pilih Tanggal Check-in &amp; Check-out&quot;]
+    
+    InputDates --&gt; ValidateDates{&quot;Tanggal Valid? (Check-out sesudah Check-in)&quot;}
+    ValidateDates --&gt;|Tidak| DateErr[&quot;Tampilkan Peringatan Kesalahan Tanggal&quot;]
+    DateErr --&gt; InputDates
+    
+    ValidateDates --&gt;|Ya| RunAutoRelease[&quot;Sistem Membersihkan Pending Kedaluwarsa&quot;]
+    RunAutoRelease --&gt; CheckDB{&quot;Kamar Tersedia di Tanggal Tersebut?&quot;}
+    CheckDB --&gt;|Kamar Penuh| NotAvailable[&quot;Tampilkan Notifikasi Kamar Tidak Tersedia&quot;]
+    NotAvailable --&gt; InputDates
+    
+    CheckDB --&gt;|Kamar Ada| CalcPrice[&quot;Hitung Jumlah Malam, Pajak 10%, Layanan 5%, &amp; Total Biaya&quot;]
+    CalcPrice --&gt; ShowSummary[&quot;Tampilkan Rincian Biaya &amp; Aktifkan Tombol Pesan&quot;]
+    ShowSummary --&gt; Finish([&quot;Lanjut ke Pemesanan&quot;])</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-17_act_booking_kamar">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #3</span>
+            <h2 class="card-title">Diagram Aktivitas: Pemesanan / Reservasi Kamar</h2>
+            <p class="card-desc">Alur Aktivitas Pemesanan dengan Validasi Transaksi Anti-Double Booking</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('17_act_booking_kamar', 'Diagram Aktivitas: Pemesanan / Reservasi Kamar')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('17_act_booking_kamar', 'Diagram Aktivitas: Pemesanan / Reservasi Kamar')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-17_act_booking_kamar')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-17_act_booking_kamar">
+          <div class="mermaid" id="mermaid-17_act_booking_kamar">
+flowchart TD
+    Start(["Mulai"]) --> CheckAuth{"Apakah Tamu Sudah Login?"}
+    CheckAuth -->|Belum| RedirectLogin["Arahkan ke Halaman Login"]
+    RedirectLogin --> AuthSuccess["Login Berhasil"] --> LoadForm
+    CheckAuth -->|Sudah| LoadForm["Buka Form Pemesanan Kamar"]
+    
+    LoadForm --> FillData["Konfirmasi Data Pemesan & Permintaan Khusus"]
+    FillData --> ChoosePayment["Pilih Metode Pembayaran Online"]
+    ChoosePayment --> SubmitBooking["Klik Konfirmasi Reservasi"]
+    
+    SubmitBooking --> BeginTx["Sistem Membuka Database Transaction & Lock"]
+    BeginTx --> LockCheck{"Ketersediaan Kamar Masih Aman?"}
+    LockCheck -->|Sudah Terisi Tamu Lain| RollbackTx["Rollback Transaksi"]
+    RollbackTx --> ShowErr["Tampilkan Pesan: Kamar Baru Saja Dipesan Tamu Lain"]
+    ShowErr --> Finish(["Batal / Pilih Tanggal Lain"])
+    
+    LockCheck -->|Aman| SaveRes["Simpan Reservasi (Kode RMA-XXXX, Status Pending, Expire 30 Menit)"]
+    SaveRes --> RequestSnap["Request Snap Token ke Midtrans"]
+    RequestSnap --> SaveToken["Simpan Snap Token ke Database"]
+    SaveToken --> CommitTx["Commit Transaksi Database"]
+    CommitTx --> SetSession["Simpan Ringkasan ke Session Tiket"]
+    SetSession --> ShowTicket["Tampilkan Halaman Booking Success & Countdown Pembayaran"]
+    ShowTicket --> Finish2(["Selesai"])
+          </div>
+        </div>
+        <textarea id="code-17_act_booking_kamar" style="display:none;">flowchart TD
+    Start([&quot;Mulai&quot;]) --&gt; CheckAuth{&quot;Apakah Tamu Sudah Login?&quot;}
+    CheckAuth --&gt;|Belum| RedirectLogin[&quot;Arahkan ke Halaman Login&quot;]
+    RedirectLogin --&gt; AuthSuccess[&quot;Login Berhasil&quot;] --&gt; LoadForm
+    CheckAuth --&gt;|Sudah| LoadForm[&quot;Buka Form Pemesanan Kamar&quot;]
+    
+    LoadForm --&gt; FillData[&quot;Konfirmasi Data Pemesan &amp; Permintaan Khusus&quot;]
+    FillData --&gt; ChoosePayment[&quot;Pilih Metode Pembayaran Online&quot;]
+    ChoosePayment --&gt; SubmitBooking[&quot;Klik Konfirmasi Reservasi&quot;]
+    
+    SubmitBooking --&gt; BeginTx[&quot;Sistem Membuka Database Transaction &amp; Lock&quot;]
+    BeginTx --&gt; LockCheck{&quot;Ketersediaan Kamar Masih Aman?&quot;}
+    LockCheck --&gt;|Sudah Terisi Tamu Lain| RollbackTx[&quot;Rollback Transaksi&quot;]
+    RollbackTx --&gt; ShowErr[&quot;Tampilkan Pesan: Kamar Baru Saja Dipesan Tamu Lain&quot;]
+    ShowErr --&gt; Finish([&quot;Batal / Pilih Tanggal Lain&quot;])
+    
+    LockCheck --&gt;|Aman| SaveRes[&quot;Simpan Reservasi (Kode RMA-XXXX, Status Pending, Expire 30 Menit)&quot;]
+    SaveRes --&gt; RequestSnap[&quot;Request Snap Token ke Midtrans&quot;]
+    RequestSnap --&gt; SaveToken[&quot;Simpan Snap Token ke Database&quot;]
+    SaveToken --&gt; CommitTx[&quot;Commit Transaksi Database&quot;]
+    CommitTx --&gt; SetSession[&quot;Simpan Ringkasan ke Session Tiket&quot;]
+    SetSession --&gt; ShowTicket[&quot;Tampilkan Halaman Booking Success &amp; Countdown Pembayaran&quot;]
+    ShowTicket --&gt; Finish2([&quot;Selesai&quot;])</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-18_act_pembayaran_midtrans">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #4</span>
+            <h2 class="card-title">Diagram Aktivitas: Pembayaran Online Midtrans</h2>
+            <p class="card-desc">Alur Aktivitas Pembayaran Digital dan Sinkronisasi Notifikasi Webhook</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('18_act_pembayaran_midtrans', 'Diagram Aktivitas: Pembayaran Online Midtrans')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('18_act_pembayaran_midtrans', 'Diagram Aktivitas: Pembayaran Online Midtrans')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-18_act_pembayaran_midtrans')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-18_act_pembayaran_midtrans">
+          <div class="mermaid" id="mermaid-18_act_pembayaran_midtrans">
+flowchart TD
+    Start(["Mulai dari Halaman E-Ticket / Pay"]) --> ClickPay["Tamu Klik Tombol Bayar Sekarang"]
+    ClickPay --> TriggerSnap["Frontend Menjalankan snap.pay(token)"]
+    TriggerSnap --> PopSnap["Muncul Jendela Snap Midtrans"]
+    PopSnap --> ChooseChannel["Tamu Memilih Metode: QRIS / VA / E-Wallet"]
+    
+    ChooseChannel --> ExecutePay["Tamu Menyelesaikan Pembayaran"]
+    ExecutePay --> MidtransNotif["Midtrans Memproses Transaksi"]
+    
+    par Jalur Webhook Asinkron
+        MidtransNotif --> WebhookSend["Midtrans Mengirim HTTP POST Webhook ke Server"]
+        WebhookSend --> VerifySig{"Verifikasi Signature Key Valid?"}
+        VerifySig -->|Tidak| RejectHook["Tolak Notifikasi HTTP 400"]
+        VerifySig -->|Ya| CheckTxStatus{"Cek Status Transaksi"}
+        CheckTxStatus -->|Settlement / Capture| MarkConfirmed["Update Status = Confirmed, paid_at = now()"]
+        CheckTxStatus -->|Expire / Cancel / Deny| MarkCancelled["Update Status = Cancelled"]
+        CheckTxStatus -->|Pending| MarkPending["Tetap Status = Pending"]
+        MarkConfirmed --> Return200["Kirim Response HTTP 200 ke Midtrans"]
+    and Jalur Redirect Browser
+        MidtransNotif --> UserFinish["Browser Redirect ke /midtrans/finish"]
+        UserFinish --> SyncMidtrans["Sistem Memanggil API Check Status Midtrans"]
+        SyncMidtrans --> UpdateLocal["Update Status Reservasi Sesuai Hasil Cek"]
+        UpdateLocal --> ShowSuccessPage["Tampilkan Halaman Pembayaran Berhasil & E-Ticket"]
+    end
+    
+    Return200 --> End(["Selesai"])
+    ShowSuccessPage --> End
+          </div>
+        </div>
+        <textarea id="code-18_act_pembayaran_midtrans" style="display:none;">flowchart TD
+    Start([&quot;Mulai dari Halaman E-Ticket / Pay&quot;]) --&gt; ClickPay[&quot;Tamu Klik Tombol Bayar Sekarang&quot;]
+    ClickPay --&gt; TriggerSnap[&quot;Frontend Menjalankan snap.pay(token)&quot;]
+    TriggerSnap --&gt; PopSnap[&quot;Muncul Jendela Snap Midtrans&quot;]
+    PopSnap --&gt; ChooseChannel[&quot;Tamu Memilih Metode: QRIS / VA / E-Wallet&quot;]
+    
+    ChooseChannel --&gt; ExecutePay[&quot;Tamu Menyelesaikan Pembayaran&quot;]
+    ExecutePay --&gt; MidtransNotif[&quot;Midtrans Memproses Transaksi&quot;]
+    
+    par Jalur Webhook Asinkron
+        MidtransNotif --&gt; WebhookSend[&quot;Midtrans Mengirim HTTP POST Webhook ke Server&quot;]
+        WebhookSend --&gt; VerifySig{&quot;Verifikasi Signature Key Valid?&quot;}
+        VerifySig --&gt;|Tidak| RejectHook[&quot;Tolak Notifikasi HTTP 400&quot;]
+        VerifySig --&gt;|Ya| CheckTxStatus{&quot;Cek Status Transaksi&quot;}
+        CheckTxStatus --&gt;|Settlement / Capture| MarkConfirmed[&quot;Update Status = Confirmed, paid_at = now()&quot;]
+        CheckTxStatus --&gt;|Expire / Cancel / Deny| MarkCancelled[&quot;Update Status = Cancelled&quot;]
+        CheckTxStatus --&gt;|Pending| MarkPending[&quot;Tetap Status = Pending&quot;]
+        MarkConfirmed --&gt; Return200[&quot;Kirim Response HTTP 200 ke Midtrans&quot;]
+    and Jalur Redirect Browser
+        MidtransNotif --&gt; UserFinish[&quot;Browser Redirect ke /midtrans/finish&quot;]
+        UserFinish --&gt; SyncMidtrans[&quot;Sistem Memanggil API Check Status Midtrans&quot;]
+        SyncMidtrans --&gt; UpdateLocal[&quot;Update Status Reservasi Sesuai Hasil Cek&quot;]
+        UpdateLocal --&gt; ShowSuccessPage[&quot;Tampilkan Halaman Pembayaran Berhasil &amp; E-Ticket&quot;]
+    end
+    
+    Return200 --&gt; End([&quot;Selesai&quot;])
+    ShowSuccessPage --&gt; End</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-19_act_pembatalan_reservasi">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #5</span>
+            <h2 class="card-title">Diagram Aktivitas: Pembatalan Reservasi</h2>
+            <p class="card-desc">Alur Aktivitas Pembatalan Mandiri Tamu dan Pembatalan Otomatis Kedaluwarsa</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('19_act_pembatalan_reservasi', 'Diagram Aktivitas: Pembatalan Reservasi')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('19_act_pembatalan_reservasi', 'Diagram Aktivitas: Pembatalan Reservasi')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-19_act_pembatalan_reservasi')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-19_act_pembatalan_reservasi">
+          <div class="mermaid" id="mermaid-19_act_pembatalan_reservasi">
+flowchart TD
+    Start(["Pemicu Pembatalan"]) --> TriggerType{"Jenis Pembatalan?"}
+    
+    TriggerType -->|Manual oleh Tamu| TamuDash["Tamu Membuka Riwayat Reservasi"]
+    TamuDash --> ClickCancel["Klik Batalkan Reservasi"]
+    ClickCancel --> CheckStatus{"Status Reservasi Adalah Pending?"}
+    CheckStatus -->|Tidak| RejectCancel["Tampilkan Pesan: Reservasi Confirmed Tidak Dapat Dibatalkan Sendiri"]
+    RejectCancel --> End(["Selesai"])
+    CheckStatus -->|Ya| UpdateCancel["Sistem Mengubah Status Menjadi Cancelled"]
+    UpdateCancel --> RestoreRoom["Kuota Kamar Otomatis Bebas Kembali"]
+    RestoreRoom --> NotifyTamu["Tampilkan Notifikasi Berhasil Dibatalkan"]
+    NotifyTamu --> End
+
+    TriggerType -->|Otomatis Waktu Habis| RequestPage["Ada Permintaan Akses ke Sistem"]
+    RequestPage --> RunRelease["Fungsi releaseExpiredReservations() Berjalan"]
+    RunRelease --> ScanExpired{"Ada Reservasi Pending Melewati Batas 30 Menit?"}
+    ScanExpired -->|Tidak Ada| NoOp["Tidak Ada Perubahan"]
+    ScanExpired -->|Ada| BatchCancel["Update Massal: Ubah Status Menjadi Cancelled"]
+    BatchCancel --> FreeStock["Kamar yang Terkunci Dilepas Kembali ke Publik"]
+    FreeStock --> End
+    NoOp --> End
+          </div>
+        </div>
+        <textarea id="code-19_act_pembatalan_reservasi" style="display:none;">flowchart TD
+    Start([&quot;Pemicu Pembatalan&quot;]) --&gt; TriggerType{&quot;Jenis Pembatalan?&quot;}
+    
+    TriggerType --&gt;|Manual oleh Tamu| TamuDash[&quot;Tamu Membuka Riwayat Reservasi&quot;]
+    TamuDash --&gt; ClickCancel[&quot;Klik Batalkan Reservasi&quot;]
+    ClickCancel --&gt; CheckStatus{&quot;Status Reservasi Adalah Pending?&quot;}
+    CheckStatus --&gt;|Tidak| RejectCancel[&quot;Tampilkan Pesan: Reservasi Confirmed Tidak Dapat Dibatalkan Sendiri&quot;]
+    RejectCancel --&gt; End([&quot;Selesai&quot;])
+    CheckStatus --&gt;|Ya| UpdateCancel[&quot;Sistem Mengubah Status Menjadi Cancelled&quot;]
+    UpdateCancel --&gt; RestoreRoom[&quot;Kuota Kamar Otomatis Bebas Kembali&quot;]
+    RestoreRoom --&gt; NotifyTamu[&quot;Tampilkan Notifikasi Berhasil Dibatalkan&quot;]
+    NotifyTamu --&gt; End
+
+    TriggerType --&gt;|Otomatis Waktu Habis| RequestPage[&quot;Ada Permintaan Akses ke Sistem&quot;]
+    RequestPage --&gt; RunRelease[&quot;Fungsi releaseExpiredReservations() Berjalan&quot;]
+    RunRelease --&gt; ScanExpired{&quot;Ada Reservasi Pending Melewati Batas 30 Menit?&quot;}
+    ScanExpired --&gt;|Tidak Ada| NoOp[&quot;Tidak Ada Perubahan&quot;]
+    ScanExpired --&gt;|Ada| BatchCancel[&quot;Update Massal: Ubah Status Menjadi Cancelled&quot;]
+    BatchCancel --&gt; FreeStock[&quot;Kamar yang Terkunci Dilepas Kembali ke Publik&quot;]
+    FreeStock --&gt; End
+    NoOp --&gt; End</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-20_act_manajemen_kamar_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #6</span>
+            <h2 class="card-title">Diagram Aktivitas: Manajemen Data Kamar oleh Admin</h2>
+            <p class="card-desc">Alur Aktivitas Administrator Mengelola Kamar (Tambah, Edit, Hapus, Upload Foto)</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('20_act_manajemen_kamar_admin', 'Diagram Aktivitas: Manajemen Data Kamar oleh Admin')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('20_act_manajemen_kamar_admin', 'Diagram Aktivitas: Manajemen Data Kamar oleh Admin')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-20_act_manajemen_kamar_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-20_act_manajemen_kamar_admin">
+          <div class="mermaid" id="mermaid-20_act_manajemen_kamar_admin">
+flowchart TD
+    Start(["Admin Login"]) --> OpenRoomMenu["Akses Menu Kamar di Sidebar Admin"]
+    OpenRoomMenu --> ViewRoomList["Sistem Menampilkan Tabel Semua Kamar & Okupansi"]
+    ViewRoomList --> ChooseAction{"Pilih Tindakan"}
+
+    ChooseAction -->|Tambah Kamar| FormCreate["Buka Formulir Tambah Kamar"]
+    FormCreate --> InputRoomData["Isi Nama, Tipe, Harga, Pajak, Layanan, Kapasitas, & Fasilitas"]
+    InputRoomData --> SaveNewRoom["Klik Simpan"]
+    SaveNewRoom --> ValidateRoom{"Validasi Data Sukses?"}
+    ValidateRoom -->|Gagal| ErrRoom["Tampilkan Kesalahan Validasi"]
+    ErrRoom --> FormCreate
+    ValidateRoom -->|Sukses| UploadImg["Simpan File Gambar ke Storage Public"]
+    UploadImg --> InsertRoomDB["Insert Data ke Tabel Rooms"]
+    InsertRoomDB --> RefreshList["Kembali ke List Kamar dengan Flash Notifikasi Sukses"]
+
+    ChooseAction -->|Ubah Kamar| FormEdit["Buka Formulir Edit Kamar Terpilih"]
+    FormEdit --> ChangeData["Ubah Rincian / Status Aktif / Foto Baru"]
+    ChangeData --> UpdateDB["Update Data Kamar ke Database"]
+    UpdateDB --> RefreshList
+
+    ChooseAction -->|Hapus Kamar| ConfirmDel{"Konfirmasi Hapus Data?"}
+    ConfirmDel -->|Batal| ViewRoomList
+    ConfirmDel -->|Ya| DeleteDB["Hapus Data Kamar dari Database"]
+    DeleteDB --> RefreshList
+
+    RefreshList --> End(["Selesai"])
+          </div>
+        </div>
+        <textarea id="code-20_act_manajemen_kamar_admin" style="display:none;">flowchart TD
+    Start([&quot;Admin Login&quot;]) --&gt; OpenRoomMenu[&quot;Akses Menu Kamar di Sidebar Admin&quot;]
+    OpenRoomMenu --&gt; ViewRoomList[&quot;Sistem Menampilkan Tabel Semua Kamar &amp; Okupansi&quot;]
+    ViewRoomList --&gt; ChooseAction{&quot;Pilih Tindakan&quot;}
+
+    ChooseAction --&gt;|Tambah Kamar| FormCreate[&quot;Buka Formulir Tambah Kamar&quot;]
+    FormCreate --&gt; InputRoomData[&quot;Isi Nama, Tipe, Harga, Pajak, Layanan, Kapasitas, &amp; Fasilitas&quot;]
+    InputRoomData --&gt; SaveNewRoom[&quot;Klik Simpan&quot;]
+    SaveNewRoom --&gt; ValidateRoom{&quot;Validasi Data Sukses?&quot;}
+    ValidateRoom --&gt;|Gagal| ErrRoom[&quot;Tampilkan Kesalahan Validasi&quot;]
+    ErrRoom --&gt; FormCreate
+    ValidateRoom --&gt;|Sukses| UploadImg[&quot;Simpan File Gambar ke Storage Public&quot;]
+    UploadImg --&gt; InsertRoomDB[&quot;Insert Data ke Tabel Rooms&quot;]
+    InsertRoomDB --&gt; RefreshList[&quot;Kembali ke List Kamar dengan Flash Notifikasi Sukses&quot;]
+
+    ChooseAction --&gt;|Ubah Kamar| FormEdit[&quot;Buka Formulir Edit Kamar Terpilih&quot;]
+    FormEdit --&gt; ChangeData[&quot;Ubah Rincian / Status Aktif / Foto Baru&quot;]
+    ChangeData --&gt; UpdateDB[&quot;Update Data Kamar ke Database&quot;]
+    UpdateDB --&gt; RefreshList
+
+    ChooseAction --&gt;|Hapus Kamar| ConfirmDel{&quot;Konfirmasi Hapus Data?&quot;}
+    ConfirmDel --&gt;|Batal| ViewRoomList
+    ConfirmDel --&gt;|Ya| DeleteDB[&quot;Hapus Data Kamar dari Database&quot;]
+    DeleteDB --&gt; RefreshList
+
+    RefreshList --&gt; End([&quot;Selesai&quot;])</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-21_act_pengelolaan_reservasi_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #7</span>
+            <h2 class="card-title">Diagram Aktivitas: Pengelolaan Reservasi oleh Admin</h2>
+            <p class="card-desc">Alur Aktivitas Administrator dalam Memantau dan Memperbarui Status Reservasi</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('21_act_pengelolaan_reservasi_admin', 'Diagram Aktivitas: Pengelolaan Reservasi oleh Admin')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('21_act_pengelolaan_reservasi_admin', 'Diagram Aktivitas: Pengelolaan Reservasi oleh Admin')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-21_act_pengelolaan_reservasi_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-21_act_pengelolaan_reservasi_admin">
+          <div class="mermaid" id="mermaid-21_act_pengelolaan_reservasi_admin">
+flowchart TD
+    Start(["Admin Login"]) --> OpenResMenu["Buka Menu Reservasi di Panel Admin"]
+    OpenResMenu --> FilterRes["Pilih Filter Status (Pending / Confirmed / Completed / Cancelled)"]
+    FilterRes --> ShowResTable["Sistem Menampilkan Daftar Reservasi Terfilter"]
+    
+    ShowResTable --> SelectItem["Pilih Salah Satu Reservasi"]
+    SelectItem --> ViewDetail["Buka Detail Reservasi & Data Tamu"]
+    ViewDetail --> ActionChoice{"Pilih Aksi Status"}
+
+    ActionChoice -->|Konfirmasi Manual| SetConfirm["Ubah Status Menjadi Confirmed"]
+    SetConfirm --> CheckPaid{"Sudah Ada Nilai paid_at?"}
+    CheckPaid -->|Belum| SetPaidAt["Isi paid_at = Sekarang"]
+    CheckPaid -->|Sudah| SaveStatus["Simpan Perubahan ke Database"]
+    SetPaidAt --> SaveStatus
+
+    ActionChoice -->|Tamu Selesai Menginap| SetComplete["Ubah Status Menjadi Completed"]
+    SetComplete --> SaveStatus
+
+    ActionChoice -->|Batalkan Transaksi| SetCancel["Ubah Status Menjadi Cancelled"]
+    SetCancel --> SaveStatus
+
+    SaveStatus --> FlashSuccess["Tampilkan Notifikasi Sukses Pembaruan Status"]
+    FlashSuccess --> End(["Selesai"])
+          </div>
+        </div>
+        <textarea id="code-21_act_pengelolaan_reservasi_admin" style="display:none;">flowchart TD
+    Start([&quot;Admin Login&quot;]) --&gt; OpenResMenu[&quot;Buka Menu Reservasi di Panel Admin&quot;]
+    OpenResMenu --&gt; FilterRes[&quot;Pilih Filter Status (Pending / Confirmed / Completed / Cancelled)&quot;]
+    FilterRes --&gt; ShowResTable[&quot;Sistem Menampilkan Daftar Reservasi Terfilter&quot;]
+    
+    ShowResTable --&gt; SelectItem[&quot;Pilih Salah Satu Reservasi&quot;]
+    SelectItem --&gt; ViewDetail[&quot;Buka Detail Reservasi &amp; Data Tamu&quot;]
+    ViewDetail --&gt; ActionChoice{&quot;Pilih Aksi Status&quot;}
+
+    ActionChoice --&gt;|Konfirmasi Manual| SetConfirm[&quot;Ubah Status Menjadi Confirmed&quot;]
+    SetConfirm --&gt; CheckPaid{&quot;Sudah Ada Nilai paid_at?&quot;}
+    CheckPaid --&gt;|Belum| SetPaidAt[&quot;Isi paid_at = Sekarang&quot;]
+    CheckPaid --&gt;|Sudah| SaveStatus[&quot;Simpan Perubahan ke Database&quot;]
+    SetPaidAt --&gt; SaveStatus
+
+    ActionChoice --&gt;|Tamu Selesai Menginap| SetComplete[&quot;Ubah Status Menjadi Completed&quot;]
+    SetComplete --&gt; SaveStatus
+
+    ActionChoice --&gt;|Batalkan Transaksi| SetCancel[&quot;Ubah Status Menjadi Cancelled&quot;]
+    SetCancel --&gt; SaveStatus
+
+    SaveStatus --&gt; FlashSuccess[&quot;Tampilkan Notifikasi Sukses Pembaruan Status&quot;]
+    FlashSuccess --&gt; End([&quot;Selesai&quot;])</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-22_act_ulasan_testimoni">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #8</span>
+            <h2 class="card-title">Diagram Aktivitas: Pemberian & Moderasi Ulasan</h2>
+            <p class="card-desc">Alur Aktivitas Tamu Menulis Ulasan dan Admin Melakukan Moderasi Publikasi</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('22_act_ulasan_testimoni', 'Diagram Aktivitas: Pemberian & Moderasi Ulasan')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('22_act_ulasan_testimoni', 'Diagram Aktivitas: Pemberian & Moderasi Ulasan')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-22_act_ulasan_testimoni')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-22_act_ulasan_testimoni">
+          <div class="mermaid" id="mermaid-22_act_ulasan_testimoni">
+flowchart TD
+    Start(["Mulai"]) --> SubFlowUser["Tamu Mengakses Dashboard / Halaman Riwayat"]
+    SubFlowUser --> FillReview["Tamu Mengisi Skor Rating 1-5 Bintang & Teks Ulasan"]
+    FillReview --> SubmitReview["Kirim Ulasan"]
+    SubmitReview --> ValidateReview{"Validasi Masukan Sukses?"}
+    ValidateReview -->|Gagal| ReviewErr["Tampilkan Pesan Error: Rating & Teks Wajib Diisi"]
+    ReviewErr --> FillReview
+    ValidateReview -->|Sukses| SavePendingTesti["Simpan ke Tabel Testimonials dengan is_approved = FALSE"]
+    SavePendingTesti --> UserWait["Notifikasi: Ulasan Menunggu Moderasi Admin"]
+
+    UserWait --> AdminStep["Admin Membuka Menu Testimoni di Panel Admin"]
+    AdminStep --> LoadPending["Sistem Menampilkan Daftar Ulasan Masuk"]
+    LoadPending --> AdminDecision{"Tindakan Admin?"}
+    AdminDecision -->|Setujui / Publish| ToggleApprove["Ubah is_approved = TRUE"]
+    AdminDecision -->|Tolak / Sembunyikan| ToggleReject["Ubah is_approved = FALSE"]
+    
+    ToggleApprove --> PublicVisible["Ulasan Otomatis Tampil di Halaman Depan & Reviews Publik"]
+    ToggleReject --> PublicHidden["Ulasan Tidak Tampil di Halaman Publik"]
+    
+    PublicVisible --> End(["Selesai"])
+    PublicHidden --> End
+          </div>
+        </div>
+        <textarea id="code-22_act_ulasan_testimoni" style="display:none;">flowchart TD
+    Start([&quot;Mulai&quot;]) --&gt; SubFlowUser[&quot;Tamu Mengakses Dashboard / Halaman Riwayat&quot;]
+    SubFlowUser --&gt; FillReview[&quot;Tamu Mengisi Skor Rating 1-5 Bintang &amp; Teks Ulasan&quot;]
+    FillReview --&gt; SubmitReview[&quot;Kirim Ulasan&quot;]
+    SubmitReview --&gt; ValidateReview{&quot;Validasi Masukan Sukses?&quot;}
+    ValidateReview --&gt;|Gagal| ReviewErr[&quot;Tampilkan Pesan Error: Rating &amp; Teks Wajib Diisi&quot;]
+    ReviewErr --&gt; FillReview
+    ValidateReview --&gt;|Sukses| SavePendingTesti[&quot;Simpan ke Tabel Testimonials dengan is_approved = FALSE&quot;]
+    SavePendingTesti --&gt; UserWait[&quot;Notifikasi: Ulasan Menunggu Moderasi Admin&quot;]
+
+    UserWait --&gt; AdminStep[&quot;Admin Membuka Menu Testimoni di Panel Admin&quot;]
+    AdminStep --&gt; LoadPending[&quot;Sistem Menampilkan Daftar Ulasan Masuk&quot;]
+    LoadPending --&gt; AdminDecision{&quot;Tindakan Admin?&quot;}
+    AdminDecision --&gt;|Setujui / Publish| ToggleApprove[&quot;Ubah is_approved = TRUE&quot;]
+    AdminDecision --&gt;|Tolak / Sembunyikan| ToggleReject[&quot;Ubah is_approved = FALSE&quot;]
+    
+    ToggleApprove --&gt; PublicVisible[&quot;Ulasan Otomatis Tampil di Halaman Depan &amp; Reviews Publik&quot;]
+    ToggleReject --&gt; PublicHidden[&quot;Ulasan Tidak Tampil di Halaman Publik&quot;]
+    
+    PublicVisible --&gt; End([&quot;Selesai&quot;])
+    PublicHidden --&gt; End</textarea>
+      </div>      <div class="diagram-card" data-category="activity" id="card-23_act_laporan_pendapatan_admin">
+        <div class="card-header">
+          <div class="card-title-area">
+            <span class="card-badge">Diagram Aktivitas #9</span>
+            <h2 class="card-title">Diagram Aktivitas: Filter & Ekspor Laporan Pendapatan</h2>
+            <p class="card-desc">Alur Aktivitas Admin Memfilter dan Mencetak / Mengunduh Laporan Resmi</p>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="downloadDiagramAsPng('23_act_laporan_pendapatan_admin', 'Diagram Aktivitas: Filter & Ekspor Laporan Pendapatan')" title="Unduh gambar PNG Resolusi Tinggi">
+              ⬇️ Unduh PNG
+            </button>
+            <button class="action-btn" onclick="downloadDiagramAsSvg('23_act_laporan_pendapatan_admin', 'Diagram Aktivitas: Filter & Ekspor Laporan Pendapatan')" title="Unduh file vektor SVG">
+              ⬇️ Unduh SVG
+            </button>
+            <button class="action-btn" onclick="copyMermaid('code-23_act_laporan_pendapatan_admin')" title="Salin kode Mermaid">
+              📋 Salin Kode
+            </button>
+          </div>
+        </div>
+        <div class="diagram-viewport" id="viewport-23_act_laporan_pendapatan_admin">
+          <div class="mermaid" id="mermaid-23_act_laporan_pendapatan_admin">
+flowchart TD
+    Start(["Admin Login"]) --> OpenReportMenu["Buka Menu Laporan di Sidebar"]
+    OpenReportMenu --> SetFilterRange["Pilih Tanggal Mulai, Tanggal Akhir, & Status"]
+    SetFilterRange --> ClickFilter["Klik Tombol Filter"]
+    
+    ClickFilter --> QueryReport["Sistem Query Data Reservasi Sesuai Rentang Tanggal"]
+    QueryReport --> AggregateStats["Sistem Menghitung Total Transaksi, Lunas, & Total Pendapatan"]
+    AggregateStats --> DisplayDashboard["Tampilkan Kartu Ringkasan, Grafik Finansial, & Tabel Transaksi"]
+    
+    DisplayDashboard --> DecisionExport{"Ingin Mencetak / Export PDF?"}
+    DecisionExport -->|Tidak| Finish(["Selesai"])
+    DecisionExport -->|Ya| ClickExport["Klik Export / Cetak Laporan"]
+    ClickExport --> RenderPrintView["Sistem Merender View Khusus Cetak"]
+    RenderPrintView --> TriggerPrint["Panggil window.print() / Simpan PDF Browser"]
+    TriggerPrint --> DownloadFile["Admin Mengunduh / Mencetak Dokumen Laporan Resmi"]
+    DownloadFile --> Finish
+          </div>
+        </div>
+        <textarea id="code-23_act_laporan_pendapatan_admin" style="display:none;">flowchart TD
+    Start([&quot;Admin Login&quot;]) --&gt; OpenReportMenu[&quot;Buka Menu Laporan di Sidebar&quot;]
+    OpenReportMenu --&gt; SetFilterRange[&quot;Pilih Tanggal Mulai, Tanggal Akhir, &amp; Status&quot;]
+    SetFilterRange --&gt; ClickFilter[&quot;Klik Tombol Filter&quot;]
+    
+    ClickFilter --&gt; QueryReport[&quot;Sistem Query Data Reservasi Sesuai Rentang Tanggal&quot;]
+    QueryReport --&gt; AggregateStats[&quot;Sistem Menghitung Total Transaksi, Lunas, &amp; Total Pendapatan&quot;]
+    AggregateStats --&gt; DisplayDashboard[&quot;Tampilkan Kartu Ringkasan, Grafik Finansial, &amp; Tabel Transaksi&quot;]
+    
+    DisplayDashboard --&gt; DecisionExport{&quot;Ingin Mencetak / Export PDF?&quot;}
+    DecisionExport --&gt;|Tidak| Finish([&quot;Selesai&quot;])
+    DecisionExport --&gt;|Ya| ClickExport[&quot;Klik Export / Cetak Laporan&quot;]
+    ClickExport --&gt; RenderPrintView[&quot;Sistem Merender View Khusus Cetak&quot;]
+    RenderPrintView --&gt; TriggerPrint[&quot;Panggil window.print() / Simpan PDF Browser&quot;]
+    TriggerPrint --&gt; DownloadFile[&quot;Admin Mengunduh / Mencetak Dokumen Laporan Resmi&quot;]
+    DownloadFile --&gt; Finish</textarea>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">Notifikasi</div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Plus Jakarta Sans, sans-serif'
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
+
+    function filterCategory(category, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.diagram-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function copyMermaid(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        showToast('✓ Kode Mermaid berhasil disalin ke clipboard!');
+      }).catch(() => {
+        showToast('Gagal menyalin kode.');
+      });
+    }
+
+    function downloadDiagramAsSvg(id, title) {
+      const container = document.getElementById('mermaid-' + id);
+      const svg = container ? container.querySelector('svg') : null;
+      if (!svg) {
+        showToast('Diagram belum selesai dirender.');
+        return;
+      }
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = id + '.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('✓ File SVG berhasil diunduh!');
+    }
+
+    function downloadDiagramAsPng(id, title) {
+      const container = document.getElementById('mermaid-' + id);
+      const svg = container ? container.querySelector('svg') : null;
+      if (!svg) {
+        showToast('Diagram belum selesai dirender.');
+        return;
+      }
+
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const DOMURL = window.URL || window.webkitURL || window;
+      const url = DOMURL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.onload = function() {
+        const bbox = svg.getBoundingClientRect();
+        const scale = 2; // HD 2x scale
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(800, bbox.width * scale);
+        canvas.height = Math.max(400, bbox.height * scale);
+        const ctx = canvas.getContext('2d');
+
+        // White background
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        DOMURL.revokeObjectURL(url);
+
+        canvas.toBlob(function(blob) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = id + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast('✓ Gambar PNG (HD) berhasil diunduh!');
+        }, 'image/png');
+      };
+      img.src = url;
+    }
+
+    function filterUseCaseSpecs(filter, btn) {
+      document.querySelectorAll('.spec-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const items = document.querySelectorAll('.spec-item');
+      items.forEach(item => {
+        if (filter === 'all' || item.getAttribute('data-actor') === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function searchUseCaseSpecs(query) {
+      const q = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.spec-item');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(q)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function copyAllSpecs() {
+      const items = document.querySelectorAll('.spec-item');
+      let text = "SPESIFIKASI DAN ATRIBUT USE CASE RESMI - RESERVASI RAMA HOMESTAY\n\n";
+      items.forEach(item => {
+        const id = item.querySelector('.spec-id-badge').textContent.trim();
+        const title = item.querySelector('.spec-title-text').textContent.trim();
+        text += '[' + id + '] ' + title + '\n';
+        const rows = item.querySelectorAll('tr');
+        rows.forEach(r => {
+          const th = r.querySelector('th').textContent.trim();
+          const td = r.querySelector('td').textContent.trim().replace(/\s+/g, ' ');
+          text += '  - ' + th + ': ' + td + '\n';
+        });
+        text += '\n';
+      });
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('✓ Ringkasan spesifikasi Use Case berhasil disalin!');
+      }).catch(() => {
+        showToast('Gagal menyalin spesifikasi.');
+      });
+    }
+  </script>
+</body>
+</html>

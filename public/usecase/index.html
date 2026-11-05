@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabel Use Case - Sistem Reservasi Rama Homestay</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Bagian Kontrol / Tombol Download */
+    .action-bar {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #000000;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: #ffffff;
+      color: #000000;
+      border: 1.5px solid #000000;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* Judul Utama */
+    .document-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px double #000000;
+    }
+
+    .document-header h1 {
+      font-size: 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .document-header p {
+      font-size: 14px;
+    }
+
+    /* Keterangan Atribut */
+    .guide-box {
+      border: 1px solid #000000;
+      padding: 15px 20px;
+      margin-bottom: 30px;
+    }
+
+    .guide-box h2 {
+      font-size: 14px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #000000;
+      padding-bottom: 5px;
+    }
+
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 5px;
+    }
+
+    .guide-table td {
+      padding: 5px 8px;
+      vertical-align: top;
+      font-size: 13px;
+      border-bottom: 1px dotted #888888;
+    }
+
+    .guide-table td:first-child {
+      font-weight: bold;
+      width: 130px;
+    }
+
+    /* Judul Bagian Kelompok */
+    .group-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 35px 0 15px 0;
+      padding-bottom: 5px;
+      border-bottom: 1.5px solid #000000;
+    }
+
+    /* Tabel Use Case */
+    .uc-block {
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+
+    .uc-heading {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #000000;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid #000000;
+      padding: 8px 12px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    .data-table th {
+      width: 160px;
+      background-color: #f2f2f2;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .data-table td {
+      background-color: #ffffff;
+      text-align: justify;
+    }
+
+    /* Media Print untuk Cetak / Unduh PDF */
+    @media print {
+      body {
+        padding: 0;
+      }
+      .action-bar {
+        display: none !important;
+      }
+      .uc-block {
+        page-break-inside: avoid;
+      }
+      .data-table th {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="documentContent">
+
+  <!-- TOMBOL DOWNLOAD DAN CETAK -->
+  <div class="action-bar">
+    <button class="btn" onclick="window.print()">Cetak / Simpan ke PDF</button>
+    <button class="btn" onclick="downloadWord()">Download File Word (.doc)</button>
+    <button class="btn" onclick="downloadMarkdown()">Download File Teks (.md)</button>
+  </div>
+
+  <!-- KOP DOKUMEN -->
+  <div class="document-header">
+    <h1>Tabel Deskripsi Use Case</h1>
+    <h1>Sistem Reservasi Rama Homestay</h1>
+    <p>Standar Dokumentasi Sistem — Format Hitam Putih</p>
+  </div>
+
+  <!-- KETERANGAN ATRIBUT -->
+  <div class="guide-box">
+    <h2>Penjelasan Kolom Atribut</h2>
+    <table class="guide-table">
+      <tr>
+        <td>Pengguna</td>
+        <td>Pihak yang menjalankan atau menggunakan fitur dalam sistem.</td>
+      </tr>
+      <tr>
+        <td>Kegunaan</td>
+        <td>Tujuan serta manfaat utama dari fitur tersebut secara jelas.</td>
+      </tr>
+      <tr>
+        <td>Keterkaitan</td>
+        <td>Hubungan fitur ini dengan fitur lainnya (apakah berdiri sendiri, wajib menyertakan fitur lain, atau fitur tambahan opsional).</td>
+      </tr>
+      <tr>
+        <td>Langkah Kerja</td>
+        <td>Tahapan langkah penggunaan fitur dari awal sampai selesai.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ======================= BAGIAN 1: PENGGUNA TAMU ======================= -->
+  <div class="group-title">Bagian 1: Pengguna Tamu</div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 01 — Login Tamu</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu masuk ke akun miliknya menggunakan alamat email dan kata sandi agar dapat melakukan pemesanan kamar dan memantau riwayat reservasi.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka formulir login -> memasukkan alamat email dan kata sandi -> sistem memeriksa kebenaran data -> jika data cocok, tamu berhasil masuk ke sistem.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 02 — Logout Tamu</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu keluar dari akun aktif agar data akun tetap aman dan tidak dapat digunakan oleh pengguna lain pada perangkat tersebut.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu menekan tombol Keluar -> sistem menghapus status login aktif -> sistem mengarahkan tamu kembali ke halaman beranda.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 03 — Registrasi Akun Tamu</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu baru (belum memiliki akun)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu baru mendaftarkan diri dengan mengisi data identitas agar memiliki akun resmi untuk memesan kamar dan mengunduh bukti reservasi.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka menu pendaftaran -> mengisi nama lengkap, alamat email, nomor WhatsApp, dan kata sandi -> sistem menyimpan data akun baru -> tamu langsung diarahkan ke halaman beranda dalam status login.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 04 — Melihat Katalog dan Memfilter Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (dapat diakses umum tanpa login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu melihat daftar seluruh kamar yang tersedia serta menyaring pilihan kamar berdasarkan kriteria harga, kapasitas, atau fasilitas yang diinginkan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka halaman kamar -> menentukan kriteria penyaringan -> sistem menampilkan daftar kamar yang sesuai -> tamu memilih salah satu kamar untuk melihat informasi detail.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 05 — Melihat Detail Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (dapat diakses umum tanpa login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu melihat informasi lengkap mengenai suatu kamar tertentu, mencakup galeri foto, daftar fasilitas, tarif per malam, kapasitas tamu, dan ketersediaan tanggal.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu memilih salah satu kamar dari daftar katalog -> sistem menampilkan halaman rincian kamar secara lengkap -> tamu dapat melanjutkan ke proses pemesanan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 06 — Melihat Ulasan Tamu</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (dapat diakses umum tanpa login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu membaca penilaian bintang dan pengalaman menginap dari tamu-tamu sebelumnya yang telah disetujui oleh pengelola homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka halaman detail kamar atau beranda -> sistem menampilkan daftar testimoni dan ulasan resmi yang sudah diverifikasi oleh administrator.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 07 — Memeriksa Ketersediaan Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu memeriksa apakah kamar yang dipilih masih berstatus kosong pada rentang tanggal check-in dan check-out yang diinginkan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu memilih tanggal masuk dan tanggal keluar pada kalender pesanan -> sistem memeriksa jadwal kamar -> sistem memberikan konfirmasi ketersediaan kamar.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 08 — Membuat Reservasi Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu mengisi data pemesanan untuk menyewa kamar homestay pada periode tanggal yang dipilih.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Terhubung dengan Use Case 09 (wajib dilanjutkan ke pembayaran) dan Use Case 10 (dapat memilih layanan tambahan jika dikehendaki)</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu memilih kamar dan tanggal sewa -> melengkapi data pemesan -> sistem menghitung total biaya sewa -> sistem menerbitkan kode pesanan dan tagihan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 09 — Melakukan Pembayaran Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu membayar total tagihan reservasi secara online melalui layanan gerbang pembayaran Midtrans.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Wajib dijalankan sebagai kelanjutan dari Use Case 08</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu menekan tombol pembayaran -> memilih metode bayar seperti transfer bank, QRIS, dompet digital, atau kartu kredit -> tamu menyelesaikan transaksi sebelum batas waktu berakhir -> sistem mencatat data pembayaran.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 10 — Memilih Layanan Tambahan (Add-on)</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu memilih fasilitas ekstra di luar sewa kamar, misalnya sarapan pagi, penyewaan sepeda motor, atau kasur tambahan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Fitur pilihan tambahan saat menjalankan Use Case 08</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Pada halaman formulir pemesanan, tamu mencentang layanan tambahan yang diinginkan -> sistem secara otomatis menambahkan biaya layanan tersebut ke total tagihan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 11 — Melihat Riwayat Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu melihat daftar lengkap seluruh pesanan yang pernah dibuat, mencakup pesanan yang sedang aktif, telah selesai, maupun yang dibatalkan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Terhubung dengan Use Case 12, Use Case 13, Use Case 14, Use Case 15, dan Use Case 16</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka menu Riwayat Reservasi -> sistem menampilkan daftar transaksi lengkap dengan nomor pesanan, tanggal menginap, nama kamar, dan status pembayaran.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 12 — Melihat Detail Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu melihat rincian terperinci dari suatu pesanan tertentu, seperti kode tagihan, rincian biaya, jadwal check-in, dan batas waktu pembayaran.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 11</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu memilih salah satu pesanan pada daftar riwayat -> sistem menampilkan halaman rincian transaksi pemesanan secara utuh.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 13 — Mengunduh E-Tiket / Bukti Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu mengunduh bukti pemesanan resmi berformat PDF yang memuat kode QR untuk ditunjukkan kepada petugas saat tiba di homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 11 untuk pesanan yang telah lunas</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka pesanan yang telah berstatus lunas -> menekan tombol Unduh E-Tiket -> sistem menerbitkan dokumen PDF -> berkas bukti reservasi otomatis terunduh ke perangkat tamu.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 14 — Melakukan Pembatalan Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu membatalkan pesanan kamar yang belum jatuh tempo sesuai dengan ketentuan pembatalan yang berlaku di homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 11</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu memilih pesanan yang ingin dibatalkan -> menekan tombol Batalkan Pesanan -> menuliskan alasan pembatalan -> sistem membatalkan pesanan dan mengosongkan kembali jadwal kamar pada kalender.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 15 — Mengajukan Permintaan Refund</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu mengajukan permohonan pengembalian dana atas pesanan yang sudah dibayar tetapi kemudian dibatalkan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan setelah menjalankan Use Case 14</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka formulir pengajuan refund -> mengisikan data rekening bank tujuan pengembalian -> mengirim permohonan -> sistem meneruskan permohonan kepada administrator untuk ditindaklanjuti.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 16 — Memberikan Ulasan dan Penilaian</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu yang telah menyelesaikan masa menginap memberikan nilai rating bintang 1 hingga 5 serta testimoni kepuasan terhadap layanan homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 11 setelah tamu menyelesaikan masa sewa kamar</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka pesanan yang telah berstatus check-out -> menekan tombol Beri Ulasan -> memilih jumlah bintang dan menuliskan komentar pengalaman menginap -> sistem menyimpan ulasan untuk diperiksa administrator.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 17 — Mengelola Profil Akun</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Tamu (wajib dalam kondisi login)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Tamu memperbarui informasi akun pribadinya seperti nama lengkap, nomor telepon, foto profil, atau memperbarui kata sandi.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Tamu membuka menu Pengaturan Profil -> mengubah data yang dibutuhkan -> menekan tombol Simpan Perubahan -> sistem memperbarui data profil akun.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ===================== BAGIAN 2: PENGGUNA ADMINISTRATOR ===================== -->
+  <div class="group-title">Bagian 2: Pengguna Administrator</div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 18 — Login Administrator</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Pengelola homestay masuk ke panel administrasi sistem dengan akun khusus admin untuk mengelola operasional homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka halaman login khusus pengelola -> memasukkan email dan kata sandi admin -> sistem memeriksa hak akses khusus -> admin masuk ke panel kendali utama.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 19 — Logout Administrator</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin mengakhiri sesi kerja pada panel kendali agar data pengelolaan homestay terlindungi setelah operasional selesai.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin menekan tombol Logout -> sistem menghapus sesi login administrator -> tampilan kembali ke halaman login pengelola.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 20 — Mengelola Data Kamar (CRUD)</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin melakukan pengelolaan data kamar homestay, meliputi penambahan kamar baru, pengubahan tarif atau fasilitas, melihat daftar kamar, dan penonaktifan kamar.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Terhubung dengan Use Case 21 (dapat langsung mengatur jadwal ketersediaan kamar)</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Kelola Kamar -> memilih tindakan tambah, edit, atau hapus -> melengkapi formulir informasi kamar -> sistem memperbarui data pada basis data.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 21 — Mengelola Ketersediaan Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin menutup atau membuka tanggal tertentu pada kalender kamar, misalnya ketika kamar sedang direnovasi, dibersihkan, atau disewa langsung secara offline.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 20</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka kalender jadwal kamar -> menentukan tanggal yang hendak diatur -> mengubah status ketersediaan menjadi dibuka atau ditutup -> sistem memperbarui status kalender pemesanan tamu.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 22 — Mengelola Kategori Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin mengelompokkan jenis kamar ke dalam kategori tertentu, misalnya tipe Standar, tipe Superior, atau tipe Keluarga.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Kategori Kamar -> menambahkan tipe baru atau memperbarui tipe yang ada -> sistem menyimpan kategori untuk diterapkan pada kamar yang bersangkutan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 23 — Mengelola Fasilitas Kamar</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin mengatur daftar fasilitas yang disediakan di homestay, seperti pendingin ruangan (AC), sambungan internet (Wi-Fi), pemanas air, dan televisi.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Fasilitas -> menambahkan item fasilitas baru atau memperbarui data fasilitas yang ada -> mengaitkan fasilitas tersebut ke kamar yang sesuai.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 24 — Mengelola Data Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin memantau keseluruhan pesanan masuk dari tamu, menyaring pesanan berdasarkan status transaksi, dan mencatat pemesanan yang dilakukan secara langsung di tempat.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Terhubung dengan Use Case 25 (memperbarui status reservasi manual) dan Use Case 26 (memproses permohonan refund)</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Data Reservasi -> sistem menampilkan seluruh daftar pesanan -> admin memeriksa rincian transaksi serta mengelola operasional pesanan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 25 — Memperbarui Status Reservasi Manual</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin memperbarui status pesanan tamu secara langsung, seperti menandai saat tamu telah tiba di homestay (Check-In) atau saat tamu telah meninggalkan homestay (Check-Out).</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 24</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin mencari data pesanan tamu yang bersangkutan -> memilih status baru (misalnya Tamu Telah Check-In) -> sistem memperbarui status transaksi dan mencatat waktu kedatangan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 26 — Memproses Pengajuan Refund</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin meninjau dan memverifikasi permohonan pengembalian dana dari tamu yang membatalkan pesanan lunas, kemudian menyetujui atau menolak permohonan tersebut.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 24</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka daftar permohonan refund -> memverifikasi rekening tujuan dan alasan pembatalan -> melakukan transfer pengembalian dana jika disetujui -> menandai permohonan telah selesai diproses.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 27 — Mengelola Layanan Tambahan (Add-on)</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin membuat dan mengatur pilihan layanan ekstra yang dapat dipilih tamu saat memesan kamar beserta penentuan tarifnya masing-masing.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Layanan Tambahan -> memasukkan nama layanan, tarif harga per unit, dan deskripsi singkat -> sistem menyimpan data agar dapat dipilih pada formulir reservasi tamu.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 28 — Membuat Laporan Reservasi</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin menyusun ringkasan data transaksi pemesanan dan total penerimaan keuangan homestay dalam rentang waktu harian, mingguan, bulanan, atau tahunan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Terhubung dengan Use Case 29 (dapat diekspor ke dalam bentuk berkas)</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Laporan -> menentukan rentang tanggal pelaporan -> sistem menghitung total kamar yang terisi dan akumulasi pendapatan yang diperoleh.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 29 — Mengekspor Laporan ke PDF / Excel</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin mencetak atau mengunduh rekapan laporan pendapatan dan reservasi ke dalam berkas dokumen PDF atau lembar kerja Excel sebagai arsip pembukuan homestay.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Pilihan lanjutan dari Use Case 28</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka hasil ringkasan laporan -> menekan opsi Ekspor PDF atau Ekspor Excel -> sistem menyusun berkas dokumen dan langsung mengunduhnya ke perangkat komputer admin.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 30 — Melihat Data Tamu</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin melihat daftar data seluruh pelanggan yang terdaftar di homestay, mencakup informasi kontak WhatsApp, alamat email, dan jumlah riwayat kunjungan.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Data Tamu -> sistem menyajikan daftar nama pelanggan beserta informasi kontak dan frekuensi pemesanan yang pernah dilakukan.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 31 — Memoderasi Testimoni dan Ulasan</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Administrator</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Admin menyaring dan meninjau ulasan yang dikirimkan tamu: memberikan persetujuan agar ulasan tampil di website utama, atau menolak ulasan yang bernada tidak pantas.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Berdiri sendiri</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Admin membuka menu Moderasi Ulasan -> memeriksa ulasan yang menunggu persetujuan -> menekan tombol Setujui (agar dapat dibaca publik) atau Tolak (agar tidak ditampilkan).</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ======================= BAGIAN 3: SISTEM OTOMATIS ======================= -->
+  <div class="group-title">Bagian 3: Pengguna Sistem Otomatis</div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 32 — Memperbarui Status Reservasi Otomatis</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Sistem Otomatis</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Sistem secara mandiri memperbarui status pesanan tanpa perlu intervensi manual saat pembayaran telah terkonfirmasi lunas atau saat batas waktu pembayaran telah kedaluwarsa.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Wajib menjalankan Use Case 33 (menerima kabar status dari gerbang pembayaran)</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Sistem menerima pemberitahuan hasil pembayaran dari Use Case 33 -> jika pembayaran lunas, status pesanan otomatis diubah menjadi Dikonfirmasi -> jika batas waktu habis, pesanan otomatis diubah menjadi Dibatalkan dan kamar dibuka kembali.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="uc-block">
+    <div class="uc-heading">Use Case 33 — Menerima Notifikasi Status Pembayaran</div>
+    <table class="data-table">
+      <tr>
+        <th>Atribut</th>
+        <th>Deskripsi</th>
+      </tr>
+      <tr>
+        <th>Pengguna</th>
+        <td>Sistem Otomatis dan Midtrans (Gerbang Pembayaran)</td>
+      </tr>
+      <tr>
+        <th>Kegunaan</th>
+        <td>Sistem menerima data pemberitahuan otomatis resmi dari server Midtrans segera setelah proses transfer pembayaran oleh tamu selesai.</td>
+      </tr>
+      <tr>
+        <th>Keterkaitan</th>
+        <td>Dijalankan bersamaan dengan Use Case 32</td>
+      </tr>
+      <tr>
+        <th>Langkah Kerja</th>
+        <td>Midtrans mengirimkan data transaksi ke sistem homestay -> sistem memvalidasi keaslian tanda tangan data -> sistem meneruskan data hasil transaksi kepada Use Case 32 untuk penyesuaian status reservasi.</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- SCRIPT UNTUK DOWNLOAD DOKUMEN -->
+<script>
+  // Fungsi untuk download ke format file Microsoft Word (.doc)
+  function downloadWord() {
+    var content = document.getElementById('documentContent').innerHTML;
+    // Hapus tombol aksi dari konten yang diekspor
+    var cleanContent = content.replace(/<div class="action-bar">[\s\S]*?<\/div>/, '');
+    
+    var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                 "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                 "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                 "<head><meta charset='utf-8'><title>Tabel Use Case</title>" +
+                 "<style>" +
+                 "body { font-family: 'Times New Roman', serif; color: #000; font-size: 11pt; }" +
+                 "table { border-collapse: collapse; width: 100%; margin-bottom: 15pt; }" +
+                 "th, td { border: 1pt solid #000; padding: 5pt; font-size: 10pt; }" +
+                 "th { background-color: #f2f2f2; text-align: left; }" +
+                 "h1 { text-align: center; font-size: 14pt; margin-bottom: 5pt; }" +
+                 "h2 { font-size: 12pt; margin-top: 15pt; border-bottom: 1pt solid #000; }" +
+                 ".uc-heading { font-weight: bold; font-size: 11pt; margin-top: 10pt; margin-bottom: 4pt; text-transform: uppercase; }" +
+                 "</style></head><body>";
+    var footer = "</body></html>";
+    
+    var sourceHTML = header + cleanContent + footer;
+    var blob = new Blob(['\ufeff' + sourceHTML], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'Tabel_Use_Case_Rama_Homestay.doc';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Fungsi untuk download ke file Markdown (.md)
+  function downloadMarkdown() {
+    var a = document.createElement('a');
+    a.href = '/USECASE.md';
+    a.download = 'Tabel_Use_Case_Rama_Homestay.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram ERD: Skema Database Rama Homestay</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram ERD: Skema Database Rama Homestay</h1>
+      <p>Skema Relasi Database Sesuai Migrasi Fisik Laravel Rama Homestay</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+erDiagram
+    USERS ||--o{ RESERVATIONS : "membuat"
+    USERS ||--o{ TESTIMONIALS : "menulis"
+    ROOMS ||--o{ RESERVATIONS : "dipesan_pada"
+    RESERVATIONS ||--o| TESTIMONIALS : "menghasilkan"
+
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string phone
+        string password
+        string role
+        timestamp email_verified_at
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROOMS {
+        bigint id PK
+        string name
+        string type
+        text description
+        decimal price
+        decimal tax_rate
+        decimal service_rate
+        int total_rooms
+        int capacity
+        json facilities
+        string image
+        json gallery
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RESERVATIONS {
+        bigint id PK
+        string booking_code UK
+        bigint user_id FK
+        bigint room_id FK
+        string guest_name
+        string guest_email
+        string guest_phone
+        date check_in
+        date check_out
+        int nights
+        int guest_count
+        decimal base_price
+        decimal tax_amount
+        decimal service_amount
+        decimal total_price
+        string payment_method
+        string snap_token
+        string midtrans_transaction_id
+        string midtrans_payment_type
+        string status
+        text special_requests
+        timestamp paid_at
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    TESTIMONIALS {
+        bigint id PK
+        bigint user_id FK
+        bigint reservation_id FK
+        string guest_name
+        string guest_origin
+        int rating
+        text review
+        boolean is_approved
+        timestamp created_at
+        timestamp updated_at
+    }
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+@startuml 04_erd_rama_homestay
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Hubungan Entitas (Entity-Relationship Diagram / ERD)
+' Standar  : Crow's Foot Notation / UML Data Modeling
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam linetype ortho
+skinparam dpi 200
+
+skinparam entity {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        12
+    BorderThickness 1.5
+}
+
+skinparam arrow {
+    Color           #000000
+    Thickness       1.2
+    FontSize        10
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM ENTITY RELATIONSHIP (ERD) - SKEMA DATABASE FISIK
+
+entity "users" as users {
+    * **id** : bigint unsigned <<PK, auto_increment>>
+    --
+    * name : varchar(255)
+    * email : varchar(255) <<UK>>
+    phone : varchar(20)
+    * password : varchar(255)
+    * role : varchar(20) <<'admin', 'tamu'>>
+    email_verified_at : timestamp <<nullable>>
+    remember_token : varchar(100) <<nullable>>
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity "rooms" as rooms {
+    * **id** : bigint unsigned <<PK, auto_increment>>
+    --
+    * name : varchar(255)
+    * type : varchar(50) <<'standard', 'deluxe', 'family'>>
+    description : text
+    * price : decimal(12,2)
+    * tax_rate : decimal(5,2) <<default 0.10>>
+    * service_rate : decimal(5,2) <<default 0.05>>
+    * total_rooms : int <<default 1>>
+    * capacity : int <<default 2>>
+    facilities : json <<nullable>>
+    image : varchar(255) <<nullable>>
+    gallery : json <<nullable>>
+    * is_active : boolean <<default true>>
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity "reservations" as reservations {
+    * **id** : bigint unsigned <<PK, auto_increment>>
+    --
+    * **booking_code** : varchar(30) <<UK>>
+    * user_id : bigint unsigned <<FK>>
+    * room_id : bigint unsigned <<FK>>
+    * guest_name : varchar(255)
+    * guest_email : varchar(255)
+    * guest_phone : varchar(50)
+    * check_in : date
+    * check_out : date
+    * nights : int
+    * guest_count : int
+    * base_price : decimal(12,2)
+    * tax_amount : decimal(12,2)
+    * service_amount : decimal(12,2)
+    * total_price : decimal(12,2)
+    * payment_method : varchar(50) <<'midtrans', 'manual'>>
+    snap_token : varchar(255) <<nullable>>
+    midtrans_transaction_id : varchar(255) <<nullable>>
+    midtrans_payment_type : varchar(50) <<nullable>>
+    * status : varchar(30) <<'pending', 'confirmed', 'completed', 'cancelled'>>
+    special_requests : text <<nullable>>
+    paid_at : timestamp <<nullable>>
+    expires_at : timestamp <<nullable>>
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity "testimonials" as testimonials {
+    * **id** : bigint unsigned <<PK, auto_increment>>
+    --
+    * user_id : bigint unsigned <<FK>>
+    * reservation_id : bigint unsigned <<FK>>
+    * guest_name : varchar(255)
+    guest_origin : varchar(100) <<nullable>>
+    * rating : int <<1 - 5>>
+    * review : text
+    * is_approved : boolean <<default false>>
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+users -[hidden]right- rooms
+users -[hidden]down- reservations
+rooms -[hidden]down- testimonials
+reservations -[hidden]right- testimonials
+
+' Relasi Antar Entitas (Crow's Foot Notation)
+users ||--o{ reservations : "1 user membuat\nbanyak reservasi (0..N)"
+rooms ||--o{ reservations : "1 tipe kamar dipesan\npada banyak reservasi (0..N)"
+users ||--o{ testimonials : "1 user menulis\nbanyak testimoni (0..N)"
+reservations ||--o| testimonials : "1 reservasi menghasilkan\nmaksimal 1 ulasan (0..1)"
+
+legend bottom left
+  |= Notasi |= Keterangan |
+  | PK | Primary Key (Kunci Utama) |
+  | FK | Foreign Key (Kunci Asing) |
+  | UK | Unique Key (Nilai Unik) |
+  | Satu ke Banyak (1..N) | Relasi Entitas Satu ke Banyak Opsional |
+  | Satu ke Satu (1..1) | Relasi Entitas Satu ke Satu Opsional |
+endlegend
+
+@enduml

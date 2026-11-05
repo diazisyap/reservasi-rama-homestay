@@ -1,0 +1,109 @@
+@startuml 11_seq_pengelolaan_status_reservasi
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #7: Pengelolaan Status Reservasi oleh Admin
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PENGELOLAAN STATUS RESERVASI OLEH ADMINISTRATOR
+
+autonumber "<b>[00]</b>"
+
+actor "Admin Homestay" as Admin
+boundary "View Data Reservasi\n(admin/reservations.blade)" as View
+control "ReservationController" as ResCtrl
+entity "Reservation\n(Model)" as ResModel
+database "Database MySQL" as DB
+
+== Alur Menampilkan Data Transaksi Masuk ==
+
+Admin -> View : Membuka menu Pengelolaan Reservasi (/admin/reservations)
+activate View
+
+View -> ResCtrl : GET index(request)
+activate ResCtrl
+
+ResCtrl -> ResModel : with(['user', 'room'])->latest()->paginate(15)
+activate ResModel
+ResModel -> DB : SELECT * FROM reservations JOIN users JOIN rooms ...
+activate DB
+DB --> ResModel : Koleksi reservasi beserta relasi tamu & kamar
+deactivate DB
+ResModel --> ResCtrl : Data paginasi reservasi
+deactivate ResModel
+
+ResCtrl --> View : Render view tabel reservasi & filter status
+View --> Admin : Tampilkan daftar kode booking, nama tamu, tanggal, status & tombol aksi
+deactivate ResCtrl
+deactivate View
+
+== Alur Perubahan Status Reservasi (Check-in / Selesai / Pembatalan) ==
+
+Admin -> View : Pilih status baru (misal: 'confirmed' atau 'completed') & klik Simpan
+activate View
+
+View -> ResCtrl : POST /admin/reservations/{id}/status (Request)
+activate ResCtrl
+
+ResCtrl -> ResCtrl : validate(status in 'pending', 'confirmed', 'completed', 'cancelled')
+
+ResCtrl -> ResModel : findOrFail($id)
+activate ResModel
+ResModel -> DB : SELECT * FROM reservations WHERE id=?
+activate DB
+DB --> ResModel : Data reservasi target
+deactivate DB
+ResModel --> ResCtrl : Objek $reservation
+deactivate ResModel
+
+alt #White [Status Baru == 'confirmed' Dan paid_at masih null]
+    ResCtrl -> ResModel : update(['status' => 'confirmed', 'paid_at' => NOW()])
+    activate ResModel
+    ResModel -> DB : UPDATE reservations SET status='confirmed', paid_at=NOW() WHERE id=?
+    activate DB
+    DB --> ResModel : Status dikonfirmasi lunas
+    deactivate DB
+    ResModel --> ResCtrl : Sukses update
+    deactivate ResModel
+
+else #White [Status Lainnya ('completed' / 'cancelled')]
+    ResCtrl -> ResModel : update(['status' => $statusBaru])
+    activate ResModel
+    ResModel -> DB : UPDATE reservations SET status=? WHERE id=?
+    activate DB
+    DB --> ResModel : Status berhasil diperbarui
+    deactivate DB
+    ResModel --> ResCtrl : Sukses update
+    deactivate ResModel
+end
+
+ResCtrl --> View : Redirect back() dengan notifikasi "Status reservasi berhasil diperbarui"
+View --> Admin : Tampilkan notifikasi pembaruan & perbarui badge status pada tabel
+deactivate ResCtrl
+deactivate View
+
+@enduml

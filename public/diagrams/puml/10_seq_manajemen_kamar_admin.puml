@@ -1,0 +1,96 @@
+@startuml 10_seq_manajemen_kamar_admin
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #6: Manajemen Data Kamar oleh Admin (CRUD)
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: MANAJEMEN DATA KAMAR OLEH ADMINISTRATOR (CRUD)
+
+autonumber "<b>[00]</b>"
+
+actor "Admin Homestay" as Admin
+boundary "View Data Kamar\n(admin/rooms.blade)" as View
+control "RoomController" as RoomCtrl
+boundary "Storage File System\n(storage/app/public)" as Storage
+entity "Room\n(Model)" as RoomModel
+database "Database MySQL" as DB
+
+== Alur Melihat Katalog Kamar Administrator ==
+
+Admin -> View : Akses menu Manajemen Kamar (/admin/rooms)
+activate View
+
+View -> RoomCtrl : GET index()
+activate RoomCtrl
+
+RoomCtrl -> RoomModel : withCount('reservations')->latest()->get()
+activate RoomModel
+RoomModel -> DB : SELECT * FROM rooms ORDER BY id DESC
+activate DB
+DB --> RoomModel : Koleksi seluruh tipe kamar & statistik
+deactivate DB
+RoomModel --> RoomCtrl : List kamar
+deactivate RoomModel
+
+RoomCtrl --> View : Render view('admin.rooms.index', compact('rooms'))
+View --> Admin : Tampilkan tabel daftar kamar, harga, status & galeri
+deactivate RoomCtrl
+deactivate View
+
+== Alur Tambah Kamar Baru & Upload Berkas ==
+
+Admin -> View : Isi form tambah (nama, tipe, harga, kapasitas, foto) & submit
+activate View
+
+View -> RoomCtrl : POST /admin/rooms (Request)
+activate RoomCtrl
+
+RoomCtrl -> RoomCtrl : validate(name, type, price, total_rooms, capacity, image)
+
+alt #White [Terdapat Berkas Gambar Diunggah]
+    RoomCtrl -> Storage : $request->file('image')->store('rooms', 'public')
+    activate Storage
+    Storage --> RoomCtrl : path_gambar (contoh: "rooms/deluxe-01.jpg")
+    deactivate Storage
+end
+
+RoomCtrl -> RoomModel : create([name, type, price, total_rooms, capacity, image=path, ...])
+activate RoomModel
+RoomModel -> DB : INSERT INTO rooms (...)
+activate DB
+DB --> RoomModel : Kamar baru berhasil dibuat
+deactivate DB
+RoomModel --> RoomCtrl : Objek $room baru
+deactivate RoomModel
+
+RoomCtrl --> View : Redirect ke route('admin.rooms.index') dengan pesan sukses
+View --> Admin : Tampilkan notifikasi "Data kamar baru berhasil ditambahkan"
+deactivate RoomCtrl
+deactivate View
+
+@enduml

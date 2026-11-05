@@ -1,0 +1,250 @@
+@startuml 14_class_diagram_rama_homestay
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Kelas (Class Diagram) Arsitektur Sistem
+' Standar  : UML 2.5 (OMG Specification)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam dpi 200
+
+skinparam class {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        11
+    BorderThickness 1.3
+}
+
+skinparam arrow {
+    Color     #000000
+    Thickness 1.2
+    FontSize  9.5
+}
+
+skinparam package {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        12
+    BorderThickness 1.5
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM KELAS (CLASS DIAGRAM) - ARSITEKTUR SISTEM RESERVASI RAMA HOMESTAY
+
+package "Lapisan Kontroler (Controller Layer)" as PkgController {
+
+    class AuthController <<controller>> {
+        + showLogin() : View
+        + login(request: Request) : RedirectResponse
+        + showRegister() : View
+        + register(request: Request) : RedirectResponse
+        + logout(request: Request) : RedirectResponse
+    }
+
+    class RoomController <<controller>> {
+        + index() : View
+        + create() : View
+        + store(request: Request) : RedirectResponse
+        + edit(room: Room) : View
+        + update(request: Request, room: Room) : RedirectResponse
+        + destroy(room: Room) : RedirectResponse
+        + indexClient(request: Request) : View
+        + show(room: Room) : View
+    }
+
+    class ReservationController <<controller>> {
+        - midtransService : MidtransService
+        + index(request: Request) : View
+        + showBookingForm(request: Request, room: Room) : View
+        + checkAvailability(request: Request) : JsonResponse
+        + processBooking(request: Request) : RedirectResponse
+        + bookingSuccess() : View
+        + updateStatus(request: Request, reservation: Reservation) : RedirectResponse
+        + show(reservation: Reservation) : View
+        + cancel(reservation: Reservation) : RedirectResponse
+    }
+
+    class MidtransController <<controller>> {
+        - midtransService : MidtransService
+        + notification(request: Request) : JsonResponse
+        + finish(request: Request) : RedirectResponse
+        + payPage(reservation: Reservation) : View
+        + getToken(reservation: Reservation) : JsonResponse
+        + syncStatus(reservation: Reservation) : JsonResponse
+    }
+
+    class AdminController <<controller>> {
+        + dashboard() : View
+        + calendar() : View
+        + reports(request: Request) : View
+        + exportReports(request: Request) : View
+        + users() : View
+        + testimonials() : View
+        + toggleTestimonial(testimonial: Testimonial) : RedirectResponse
+    }
+
+    class TestimonialController <<controller>> {
+        + store(request: Request) : RedirectResponse
+    }
+
+}
+
+package "Lapisan Layanan (Service Layer)" as PkgService {
+
+    class MidtransService <<service>> {
+        - serverKey : string
+        - clientKey : string
+        - isProduction : boolean
+        - isSanitized : boolean
+        - is3ds : boolean
+        + createSnapToken(reservation: Reservation) : string
+        + handleNotification(payload: array) : bool
+        + checkStatus(orderId: string) : object
+        + applyPaymentStatus(reservation: Reservation, status: string, fraud: string, type: string, txId: string) : void
+        + cancelPayment(orderId: string) : bool
+    }
+
+}
+
+package "Lapisan Model (Domain Entities)" as PkgModel {
+
+    class User <<model>> {
+        - id : bigint
+        - name : string
+        - email : string
+        - phone : string
+        - password : string
+        - role : string
+        - email_verified_at : datetime
+        - remember_token : string
+        + reservations() : HasMany
+        + testimonials() : HasMany
+        + isAdmin() : bool
+        + isTamu() : bool
+    }
+
+    class Room <<model>> {
+        - id : bigint
+        - name : string
+        - type : string
+        - description : text
+        - price : decimal
+        - tax_rate : decimal
+        - service_rate : decimal
+        - total_rooms : int
+        - capacity : int
+        - facilities : array
+        - image : string
+        - gallery : array
+        - is_active : boolean
+        + reservations() : HasMany
+        + getAvailableCount(checkIn: date, checkOut: date) : int
+        + isAvailable(checkIn: date, checkOut: date) : bool
+        + calculateTax(basePrice: float) : float
+        + calculateService(basePrice: float) : float
+        + getFacilitiesListAttribute() : array
+        + getTypeLabelAttribute() : string
+    }
+
+    class Reservation <<model>> {
+        - id : bigint
+        - booking_code : string
+        - user_id : bigint
+        - room_id : bigint
+        - guest_name : string
+        - guest_email : string
+        - guest_phone : string
+        - check_in : date
+        - check_out : date
+        - nights : int
+        - guest_count : int
+        - base_price : decimal
+        - tax_amount : decimal
+        - service_amount : decimal
+        - total_price : decimal
+        - payment_method : string
+        - snap_token : string
+        - midtrans_transaction_id : string
+        - midtrans_payment_type : string
+        - status : string
+        - special_requests : text
+        - paid_at : datetime
+        - expires_at : datetime
+        + releaseExpiredReservations() : int
+        + isExpired() : bool
+        + getRemainingSecondsAttribute() : int
+        + getStatusLabelAttribute() : string
+        + getDurationAttribute() : int
+        + user() : BelongsTo
+        + room() : BelongsTo
+        + testimonial() : HasOne
+    }
+
+    class Testimonial <<model>> {
+        - id : bigint
+        - user_id : bigint
+        - reservation_id : bigint
+        - guest_name : string
+        - guest_origin : string
+        - rating : int
+        - review : text
+        - is_approved : boolean
+        + user() : BelongsTo
+        + reservation() : BelongsTo
+        + scopeApproved(query: Builder) : Builder
+    }
+
+}
+
+' Penataan Tata Letak Horisontal/Vertikal
+AuthController -[hidden]right- RoomController
+RoomController -[hidden]right- ReservationController
+AuthController -[hidden]down- MidtransController
+MidtransController -[hidden]right- AdminController
+AdminController -[hidden]right- TestimonialController
+
+User -[hidden]right- Room
+User -[hidden]down- Reservation
+Room -[hidden]down- Testimonial
+Reservation -[hidden]right- Testimonial
+
+' Asosiasi Antar Entitas Domain
+User "1" --> "0..*" Reservation : membuat
+User "1" --> "0..*" Testimonial : menulis
+Room "1" --> "0..*" Reservation : dipesan_pada
+Reservation "1" --> "0..1" Testimonial : menghasilkan
+
+' Ketergantungan Kontroler & Layanan
+ReservationController ..> Reservation : mengelola
+ReservationController ..> Room : ketersediaan
+ReservationController ..> MidtransService : memanggil token
+MidtransController ..> MidtransService : memverifikasi
+MidtransController ..> Reservation : sinkronisasi status
+RoomController ..> Room : mengelola CRUD
+TestimonialController ..> Testimonial : menyimpan ulasan
+AdminController ..> Reservation : laporan pendapatan
+AdminController ..> Testimonial : moderasi ulasan
+AdminController ..> Room : pantau okupansi
+AuthController ..> User : otentikasi akun
+
+legend bottom left
+  |= Simbol |= Keterangan |
+  | + | Public Visibility |
+  | - | Private Visibility |
+  | # | Protected Visibility |
+  | --> | Relasi Asosiasi Bernavigasi dengan Multiplisitas |
+  | ..> | Relasi Ketergantungan (Dependency) |
+endlegend
+
+@enduml

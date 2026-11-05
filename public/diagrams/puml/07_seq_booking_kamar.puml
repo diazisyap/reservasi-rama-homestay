@@ -1,0 +1,109 @@
+@startuml 07_seq_booking_kamar
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Sequence #3: Pemesanan Kamar (Anti-Double Booking)
+' Standar  : UML 2.5 (BCE: Boundary - Control - Entity)
+' Tema     : Hitam Putih (Monochrome) Standar Formal RPL & Skripsi
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 200
+skinparam maxMessageSize 180
+skinparam rightMargin 40
+skinparam leftMargin 30
+skinparam topMargin 25
+skinparam bottomMargin 25
+
+skinparam sequence {
+    ArrowThickness 1.2
+    ActorBorderThickness 1.5
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+    ParticipantBorderThickness 1.2
+    ParticipantPadding 15
+}
+
+header Sistem Informasi Reservasi Rama Homestay
+title DIAGRAM SEQUENCE: PEMESANAN KAMAR (ANTI-DOUBLE BOOKING & SNAP TOKEN)
+
+autonumber "<b>[00]</b>"
+
+actor "Tamu (Terautentikasi)" as Tamu
+boundary "View Form Booking\n(booking_form.blade)" as View
+control "ReservationController" as ResCtrl
+entity "Reservation\n(Model)" as ResModel
+control "MidtransService" as MidService
+boundary "Midtrans Snap API\n(Payment Gateway)" as MidAPI
+database "Database MySQL" as DB
+
+Tamu -> View : Isi data tamu & submit form booking (/tamu/book/confirm)
+activate View
+
+View -> ResCtrl : POST processBooking(request)
+activate ResCtrl
+
+ResCtrl -> ResCtrl : validate(dates, guest_info, pricing)
+
+ResCtrl -> DB : DB::beginTransaction()
+activate DB
+
+ResCtrl -> ResModel : releaseExpiredReservations()
+activate ResModel
+ResModel -> DB : Batalkan reservasi pending yang melewati batas expires_at
+ResModel --> ResCtrl : Status kuota bersih
+deactivate ResModel
+
+ResCtrl -> DB : SELECT * FROM rooms WHERE id = ? FOR UPDATE (Row Locking)
+DB --> ResCtrl : Data kamar terkunci untuk transaksi atomik
+
+ResCtrl -> ResCtrl : Periksa ketersediaan kuota aktual
+
+alt #White [Kamar Sudah Penuh / Kuota Habis]
+    ResCtrl -> DB : DB::rollBack()
+    ResCtrl --> View : Redirect back() withErrors('Maaf, kuota kamar baru saja habis!')
+    View --> Tamu : Tampilkan notifikasi gagal & arahkan memilih tanggal lain
+
+else #White [Kuota Masih Tersedia]
+    ResCtrl -> ResCtrl : generateUniqueBookingCode()
+    ResCtrl -> ResModel : create([booking_code, pricing, status='pending', expires_at=NOW()+30m])
+    activate ResModel
+
+    ResModel -> DB : INSERT INTO reservations (...)
+    DB --> ResModel : Data reservasi baru tersimpan
+    ResModel --> ResCtrl : Objek $reservation
+    deactivate ResModel
+
+    ResCtrl -> MidService : createSnapToken($reservation)
+    activate MidService
+
+    MidService -> MidAPI : Snap::getSnapToken(payload_transaksi)
+    activate MidAPI
+    MidAPI --> MidService : snap_token string
+    deactivate MidAPI
+
+    MidService --> ResCtrl : snap_token
+    deactivate MidService
+
+    ResCtrl -> ResModel : update(['snap_token' => snap_token])
+    activate ResModel
+    ResModel -> DB : UPDATE reservations SET snap_token = ?
+    ResModel --> ResCtrl : Record terupdate
+    deactivate ResModel
+
+    ResCtrl -> DB : DB::commit()
+    deactivate DB
+
+    ResCtrl -> ResCtrl : session()->flash('booking_success', $reservation)
+    ResCtrl --> View : Redirect ke route('tamu.book-success')
+    View --> Tamu : Tampilkan Halaman Tiket/Konfirmasi & Tombol Pembayaran Snap
+end
+
+deactivate ResCtrl
+deactivate View
+
+@enduml

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Diagram Use Case: Alur Layanan Tamu</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif'
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .diagram-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    p {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .footer {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-card">
+    <div class="header">
+      <span class="badge">Arsitektur Rama Homestay</span>
+      <h1>Diagram Use Case: Alur Layanan Tamu</h1>
+      <p>Fitur dan Hak Akses Tamu pada Sistem Reservasi Rama Homestay</p>
+    </div>
+    <div class="mermaid-container">
+      <div class="mermaid">
+flowchart LR
+    classDef actorStyle fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef ucStyle fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    Guest["«actor»<br>Tamu"]:::actorStyle
+
+    subgraph GuestScope ["Batasan Sistem: Area Layanan Tamu (Publik & Dasbor)"]
+        UC1(["Registrasi Akun Baru"]):::ucStyle
+        UC2(["Masuk Akun (Login)"]):::ucStyle
+        UC3(["Kelola Profil Pengguna"]):::ucStyle
+        UC4(["Melihat Katalog & Filter Kamar"]):::ucStyle
+        UC5(["Cek Ketersediaan Tanggal Real-Time"]):::ucStyle
+        UC6(["Mengisi Formulir Pemesanan"]):::ucStyle
+        UC7(["Menerima Snap Token Pembayaran"]):::ucStyle
+        UC8(["Melakukan Pembayaran Online"]):::ucStyle
+        UC9(["Melihat E-Tiket / Bukti Reservasi"]):::ucStyle
+        UC10(["Membatalkan Reservasi"]):::ucStyle
+        UC11(["Memberikan Ulasan & Rating"]):::ucStyle
+    end
+    style GuestScope fill:#ffffff,stroke:#000000,stroke-width:2px;
+
+    Guest --- UC1
+    Guest --- UC2
+    Guest --- UC3
+    Guest --- UC4
+    Guest --- UC6
+    Guest --- UC9
+    Guest --- UC10
+    Guest --- UC11
+
+    UC6 -.->|«include»| UC5
+    UC6 -.->|«include»| UC7
+    UC8 -.->|«include»| UC7
+    UC6 -.->|«include»| UC8
+    UC9 -.->|«include»| UC8
+    UC10 -.->|«extend»| UC9
+    UC11 -.->|«extend»| UC9
+      </div>
+    </div>
+    <div class="footer">
+      <span>Sistem Informasi Reservasi Rama Homestay &bull; Spesifikasi UML & ERD</span>
+      <span>Dihasilkan secara presisi dari arsitektur nyata aplikasi</span>
+    </div>
+  </div>
+</body>
+</html>

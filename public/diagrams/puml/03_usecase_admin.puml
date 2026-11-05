@@ -1,0 +1,113 @@
+@startuml 03_usecase_admin
+
+' ============================================================
+' SISTEM INFORMASI RESERVASI RAMA HOMESTAY
+' Diagram Use Case #3 - Alur Pengelolaan Administrator
+' Standar  : UML 2.5 (OMG Specification)
+' Tema     : Hitam Putih (Monochrome) Bersih & Standar Formal
+' ============================================================
+
+left to right direction
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam wrapWidth 145
+skinparam monochrome true
+skinparam shadowing false
+
+skinparam actor {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        12
+}
+
+skinparam usecase {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontSize        10.5
+    BorderThickness 1.2
+}
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor     #000000
+    FontStyle       bold
+    FontSize        13
+    BorderThickness 1.8
+}
+
+skinparam arrow {
+    Color     #000000
+    FontSize  9.5
+}
+
+:Admin: as Admin
+
+rectangle "Panel Administrasi (Rama Homestay)" {
+
+    together {
+        (Login Admin)                                as A01
+        (Logout Admin)                               as A02
+        (Melihat Dashboard\nStatistik & Keuangan)    as A03
+        (Mengelola Data Kamar)                       as A04
+        (Mengelola Data\nReservasi)                  as A05
+        (Memantau Kalender\nKetersediaan Kamar)      as A06
+        (Melihat Data Tamu)                          as A07
+        (Moderasi Testimoni\n& Rating)               as A08
+        (Membuat Laporan\nReservasi)                 as A09
+    }
+
+    together {
+        (Menambah Data Kamar)                        as A10
+        (Mengubah Data Kamar)                        as A11
+        (Menghapus Data Kamar)                       as A12
+        (Verifikasi Check-In\nTamu di Lokasi)        as A13
+        (Memperbarui Status\nReservasi Tamu)         as A14
+        (Mengekspor Laporan\nke Format PDF)          as A15
+    }
+
+    ' Penataan Vertikal Kolom 1
+    A01 -[hidden]right-> A02
+    A02 -[hidden]right-> A03
+    A03 -[hidden]right-> A04
+    A04 -[hidden]right-> A05
+    A05 -[hidden]right-> A06
+    A06 -[hidden]right-> A07
+    A07 -[hidden]right-> A08
+    A08 -[hidden]right-> A09
+
+    ' Penataan Vertikal Kolom 2
+    A10 -[hidden]right-> A11
+    A11 -[hidden]right-> A12
+    A12 -[hidden]right-> A13
+    A13 -[hidden]right-> A14
+    A14 -[hidden]right-> A15
+
+    ' Penataan Horisontal Antarkolom
+    A04 -[hidden]down-> A10
+    A05 -[hidden]down-> A13
+    A09 -[hidden]down-> A15
+}
+
+' Asosiasi Admin
+Admin -- A01
+Admin -- A02
+Admin -- A03
+Admin -- A04
+Admin -- A05
+Admin -- A06
+Admin -- A07
+Admin -- A08
+Admin -- A09
+
+' Relasi Extend (Kolom 2 ke Kolom 1)
+A10 .up.> A04 : <<extend>>
+A11 .up.> A04 : <<extend>>
+A12 .up.> A04 : <<extend>>
+A13 .up.> A05 : <<extend>>
+A14 .up.> A05 : <<extend>>
+A15 .up.> A09 : <<extend>>
+
+@enduml

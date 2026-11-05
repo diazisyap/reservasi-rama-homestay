@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>WF-01 - Wireframe: Beranda dan Halaman Utama</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+  --wf-bg: #f8f9fa;
+  --wf-paper: #ffffff;
+  --wf-border: #ced4da;
+  --wf-border-dark: #000000;
+  --wf-text: #000000;
+  --wf-text-muted: #495057;
+  --wf-primary: #000000;
+  --wf-primary-hover: #343a40;
+  --wf-accent: #6c757d;
+  --wf-success: #000000;
+  --wf-danger: #000000;
+  --wf-radius: 4px;
+  --wf-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--wf-font);
+  background: #ffffff;
+  color: var(--wf-text);
+  line-height: 1.5;
+  font-size: 13px;
+  padding: 16px;
+}
+
+/* WIREFRAME BASE CONTAINER */
+.wf-screen {
+  background: var(--wf-paper);
+  border: 2px solid #000000;
+  border-radius: var(--wf-radius);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* CALLOUT BADGES (HITAM PUTIH) */
+.wf-callout-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  border: 1px solid #000000;
+}
+
+/* HEADER & NAVBAR */
+.wf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 2px solid #000000;
+  background: #ffffff;
+}
+
+.wf-brand {
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000000;
+}
+
+.wf-logo-box {
+  padding: 4px 8px;
+  border: 1.5px solid #000000;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+.wf-nav-links {
+  display: flex;
+  gap: 20px;
+  font-weight: 700;
+  color: #495057;
+}
+
+.wf-nav-item.active {
+  color: #000000;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 2px;
+}
+
+.wf-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* BUTTONS (HITAM PUTIH MURNI) */
+.wf-btn {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1.5px solid #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.wf-btn-sm { padding: 5px 12px; font-size: 11px; }
+.wf-btn-xs { padding: 3px 8px; font-size: 10px; border-radius: 2px; }
+.wf-btn-lg { padding: 10px 20px; font-size: 13px; }
+.wf-btn-block { width: 100%; display: flex; }
+
+.wf-btn-primary { background: #000000; color: #ffffff; border-color: #000000; }
+.wf-btn-outline { background: #ffffff; color: #000000; border-color: #000000; }
+.wf-btn-amber { background: #ffffff; color: #000000; border-color: #000000; }
+.wf-btn-text { background: transparent; border: none; font-weight: 700; cursor: pointer; color: #000000; text-decoration: underline; }
+
+/* HERO (HITAM PUTIH) */
+.wf-hero {
+  padding: 45px 30px;
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  position: relative;
+  border-bottom: 2px solid #000000;
+}
+
+.wf-hero-content { max-width: 750px; margin: 0 auto; }
+.wf-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: #f1f3f5;
+  color: #000000;
+  border: 1.5px solid #000000;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.wf-hero-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; line-height: 1.3; color: #000000; }
+.wf-hero-sub { color: #495057; font-size: 12px; line-height: 1.6; margin-bottom: 18px; }
+.wf-hero-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* SEARCH WIDGET (HITAM PUTIH) */
+.wf-search-widget {
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  max-width: 900px;
+  margin: -24px auto 26px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.wf-search-col { flex: 1; }
+.wf-search-btn-col { flex: 0.9; }
+.wf-search-divider { width: 1.5px; height: 35px; background: #000000; margin: 0 15px; }
+.wf-label { font-size: 10px; font-weight: 800; color: #000000; text-transform: uppercase; margin-bottom: 4px; display: block; }
+.wf-input-mock { font-weight: 700; color: #000000; font-size: 12px; border: 1px dashed #6c757d; padding: 4px 6px; background: #f8f9fa; }
+
+/* SECTIONS */
+.wf-section { padding: 36px 24px; }
+.wf-bg-alt { background: #f8f9fa; border-top: 1.5px solid #000000; border-bottom: 1.5px solid #000000; }
+.wf-section-header { text-align: center; max-width: 650px; margin: 0 auto 26px; }
+.wf-section-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; color: #000000; }
+.wf-section-sub { color: #495057; font-size: 11.5px; }
+
+/* GRIDS */
+.wf-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.wf-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.wf-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+/* CARDS (HITAM PUTIH) */
+.wf-card {
+  background: #ffffff;
+  border: 1.5px solid #000000;
+  border-radius: 4px;
+  padding: 14px;
+  position: relative;
+}
+
+.wf-card-feature { text-align: center; padding: 18px 12px; }
+.wf-text-icon { font-size: 14px; font-weight: 800; margin-bottom: 8px; border: 1.5px solid #000000; display: inline-block; padding: 2px 8px; background: #f1f3f5; }
+.wf-card-title { font-size: 13px; font-weight: 800; margin-bottom: 4px; color: #000000; }
+.wf-card-desc { color: #495057; font-size: 11px; line-height: 1.5; }
+
+/* IMAGE PLACEHOLDER (DIAGONAL CROSS HITAM PUTIH) */
+.wf-img-placeholder {
+  background: #f8f9fa;
+  border: 1.5px dashed #000000;
+  border-radius: 4px;
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.wf-cross {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.wf-cross::before, .wf-cross::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; width: 100%; height: 1px;
+  background: #adb5bd;
+}
+.wf-cross::before { transform: rotate(18deg); }
+.wf-cross::after { transform: rotate(-18deg); }
+
+/* ROOM BODY */
+.wf-room-card { padding: 0; overflow: hidden; }
+.wf-room-body { padding: 12px; }
+.wf-badge-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.wf-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 2px;
+  background: #f1f3f5;
+  color: #000000;
+  border: 1px solid #000000;
+}
+.wf-badge-paid { background: #000000; color: #ffffff; border: 1px solid #000000; font-weight: 800; }
+.wf-rating { font-size: 10.5px; font-weight: 700; color: #000000; }
+.wf-room-name { font-size: 13.5px; font-weight: 800; margin-bottom: 4px; color: #000000; }
+.wf-room-facilities { font-size: 10.5px; color: #495057; margin-bottom: 10px; }
+.wf-room-price-row { display: flex; justify-content: space-between; align-items: center; }
+.wf-price { font-size: 15px; font-weight: 800; color: #000000; }
+.wf-unit { font-size: 10.5px; color: #495057; font-weight: normal; }
+
+/* TESTIMONIAL */
+.wf-card-testi { background: #ffffff; }
+.wf-rating-text { font-weight: 800; font-size: 11px; margin-bottom: 6px; color: #000000; }
+.wf-testi-text { font-style: italic; color: #212529; font-size: 11px; margin-bottom: 8px; line-height: 1.5; }
+.wf-testi-user { font-size: 10.5px; color: #495057; }
+
+/* FOOTER */
+.wf-footer {
+  background: #ffffff;
+  color: #000000;
+  padding: 30px 24px 16px;
+  border-top: 2px solid #000000;
+}
+.wf-footer-brand { font-size: 15px; font-weight: 800; color: #000000; margin-bottom: 6px; }
+.wf-footer-title { font-size: 12px; font-weight: 800; color: #000000; margin-bottom: 6px; }
+.wf-footer-text { font-size: 10.5px; line-height: 1.6; color: #495057; }
+.wf-map-box { height: 80px; background: #f8f9fa; border: 1.5px dashed #000000; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #000000; }
+.wf-footer-bottom { border-top: 1px solid #ced4da; padding-top: 14px; margin-top: 20px; text-align: center; font-size: 10.5px; color: #6c757d; }
+
+/* BREADCRUMB & BANNER */
+.wf-page-banner { padding: 20px 24px; background: #f8f9fa; border-bottom: 1.5px solid #000000; }
+.wf-breadcrumb { font-size: 10.5px; color: #495057; margin-bottom: 4px; }
+.wf-banner-title { font-size: 20px; font-weight: 800; color: #000000; }
+.wf-banner-sub { color: #495057; font-size: 11.5px; }
+
+/* CATALOG */
+.wf-catalog-layout { display: grid; grid-template-columns: 250px 1fr; gap: 18px; padding: 20px 24px; }
+.wf-sidebar-filter { background: #fff; border: 1.5px solid #000000; border-radius: 4px; padding: 14px; height: fit-content; }
+.wf-filter-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1.5px solid #000000; }
+.wf-filter-title { font-weight: 800; font-size: 12px; }
+.wf-filter-group { margin-bottom: 14px; }
+.wf-checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 11px; margin-bottom: 5px; cursor: pointer; }
+.wf-slider-track { height: 4px; background: #ced4da; border-radius: 2px; position: relative; margin: 8px 0; border: 1px solid #000000; }
+.wf-slider-fill { width: 60%; height: 100%; background: #000000; }
+.wf-range-label { display: flex; justify-content: space-between; font-size: 10px; color: #495057; }
+.wf-sort-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f8f9fa; border: 1.5px solid #000000; border-radius: 4px; margin-bottom: 14px; font-size: 11.5px; }
+.wf-sort-controls { display: flex; align-items: center; gap: 6px; }
+.wf-select-mock { padding: 4px 8px; border: 1.5px solid #000000; border-radius: 2px; background: #fff; font-weight: 700; font-size: 11px; }
+.wf-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
+.wf-btn-page { padding: 5px 10px; border: 1.5px solid #000000; background: #fff; border-radius: 2px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.wf-btn-page.active { background: #000000; color: #fff; }
+
+/* DETAIL ROOM */
+.wf-page-container { padding: 20px 24px; }
+.wf-breadcrumb-row { font-size: 10.5px; color: #495057; margin-bottom: 8px; }
+.wf-detail-title { font-size: 22px; font-weight: 800; color: #000000; }
+.wf-detail-meta { display: flex; gap: 8px; align-items: center; margin-top: 6px; font-size: 11px; }
+.wf-meta-pill { background: #f1f3f5; padding: 2px 6px; border: 1px solid #000000; border-radius: 2px; color: #000000; font-weight: 700; }
+.wf-gallery-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 16px 0 20px; }
+.wf-gallery-main { height: 290px; font-size: 13px; }
+.wf-gallery-side { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.wf-gallery-side .wf-img-placeholder { height: 142px; font-size: 10px; }
+.wf-detail-layout { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.wf-content-block { margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #ced4da; }
+.wf-block-title { font-size: 14.5px; font-weight: 800; margin-bottom: 8px; color: #000000; }
+.wf-block-p { font-size: 11.5px; line-height: 1.6; color: #212529; }
+.wf-amenity-item { font-size: 10.5px; padding: 6px; background: #f8f9fa; border: 1px solid #000000; border-radius: 2px; font-weight: 600; }
+.wf-policy-box { background: #f8f9fa; border: 1.5px solid #000000; border-radius: 4px; padding: 12px; }
+.wf-policy-row { display: flex; gap: 8px; font-size: 11px; margin-bottom: 6px; }
+.wf-policy-icon { font-weight: 800; }
+
+/* BOOKING BOX */
+.wf-booking-box { position: sticky; top: 16px; border: 2px solid #000000; }
+.wf-box-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 10px; }
+.wf-price-lg { font-size: 22px; font-weight: 800; color: #000000; }
+.wf-unit-lg { font-size: 11px; color: #495057; }
+.wf-avail-alert { padding: 6px 10px; border-radius: 2px; font-size: 10.5px; font-weight: 800; margin-bottom: 12px; }
+.wf-avail-success { background: #ffffff; color: #000000; border: 1.5px solid #000000; }
+.wf-date-picker-box { border: 1.5px solid #000000; border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
+.wf-date-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #000000; }
+.wf-date-col { padding: 6px 8px; }
+.wf-guest-col { padding: 6px 8px; }
+.wf-price-breakdown { font-size: 11px; margin-bottom: 14px; }
+.wf-breakdown-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.wf-total-row { font-size: 13.5px; font-weight: 800; color: #000000; margin-top: 6px; }
+.wf-box-guarantee { text-align: center; font-size: 9.5px; color: #495057; margin-top: 8px; }
+.wf-divider { height: 1px; background: #000000; margin: 8px 0; }
+
+/* AUTH */
+.wf-auth-wrapper { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+.wf-auth-box { border: 2px solid #000000; padding: 20px; }
+.wf-auth-header { text-align: center; max-width: 480px; margin: 0 auto 18px; }
+.wf-auth-logo { font-size: 16px; font-weight: 800; margin-bottom: 4px; border: 1.5px solid #000000; display: inline-block; padding: 4px 10px; }
+.wf-auth-title { font-size: 18px; font-weight: 800; }
+.wf-auth-sub { font-size: 11px; color: #495057; }
+.wf-auth-tabs { display: flex; border-bottom: 2px solid #000000; margin-bottom: 18px; }
+.wf-auth-tab { flex: 1; padding: 8px; background: transparent; border: none; font-weight: 800; font-size: 11.5px; cursor: pointer; color: #6c757d; }
+.wf-auth-tab.active { color: #000000; border-bottom: 3px solid #000000; }
+.wf-auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.wf-border-left { border-left: 1.5px solid #000000; padding-left: 20px; }
+.wf-form-group { margin-bottom: 10px; }
+.wf-input-text { border: 1.5px solid #000000; border-radius: 2px; padding: 6px 10px; font-size: 11.5px; background: #fff; }
+.wf-input-password { border: 1.5px solid #000000; border-radius: 2px; padding: 6px 10px; font-size: 11.5px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+.wf-pwd-strength { font-size: 9.5px; color: #495057; margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+.wf-pwd-bar { display: inline-block; width: 20px; height: 3px; background: #ced4da; }
+.wf-pwd-bar.filled { background: #000000; }
+.wf-role-hint { margin-top: 12px; font-size: 9.5px; color: #000000; background: #f8f9fa; padding: 6px; border: 1px dashed #000000; }
+
+/* STEPPER */
+.wf-stepper { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.wf-step { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #6c757d; }
+.wf-step-num { width: 18px; height: 18px; border-radius: 50%; background: #ffffff; border: 1.5px solid #000000; color: #000000; display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 800; }
+.wf-step.active { color: #000000; }
+.wf-step.active .wf-step-num { background: #000000; color: #ffffff; }
+.wf-step.completed .wf-step-num { background: #000000; color: #ffffff; }
+.wf-step-line { width: 35px; height: 1.5px; background: #ced4da; margin: 0 8px; }
+.wf-step-line.active { background: #000000; }
+
+/* BOOKING FORM */
+.wf-booking-layout { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.wf-textarea-mock { border: 1.5px solid #000000; border-radius: 2px; padding: 6px 10px; font-size: 10.5px; height: 50px; color: #495057; }
+.wf-mini-room { display: flex; gap: 10px; align-items: center; margin: 10px 0; }
+.wf-stay-dates { display: flex; align-items: center; justify-content: space-between; font-size: 10.5px; margin: 8px 0; }
+.wf-summary-pricing { font-size: 10.5px; }
+.wf-summary-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.wf-price-large { font-size: 16px; color: #000000; font-weight: 800; }
+.wf-summary-lock { font-size: 9.5px; color: #495057; text-align: center; margin-top: 8px; border: 1px dashed #6c757d; padding: 4px; }
+
+/* PAY MIDTRANS */
+.wf-pay-header-banner { background: #ffffff; border: 2px solid #000000; border-radius: 4px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.wf-pay-timer-digits { font-size: 18px; font-weight: 800; color: #000000; }
+.wf-pay-status-pill { font-size: 9.5px; font-weight: 800; background: #000000; color: #ffffff; padding: 3px 8px; border-radius: 2px; }
+.wf-pay-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.wf-booking-code-box { background: #f8f9fa; border: 1.5px dashed #000000; padding: 8px; border-radius: 2px; text-align: center; margin: 10px 0; }
+.wf-code-val { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; color: #000000; }
+.wf-pay-table { width: 100%; font-size: 11.5px; border-collapse: collapse; margin-bottom: 14px; }
+.wf-pay-table td { padding: 5px 0; border-bottom: 1px solid #ced4da; }
+.wf-pay-total { font-size: 15px; color: #000000; }
+
+/* SNAP SIMULATION (HITAM PUTIH) */
+.wf-snap-modal-frame { border: 2px solid #000000; border-radius: 4px; background: #fff; overflow: hidden; }
+.wf-snap-header { background: #000000; color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.wf-snap-brand { font-weight: 800; font-size: 12px; }
+.wf-snap-body { padding: 14px; }
+.wf-snap-option { border: 1.5px solid #000000; border-radius: 4px; padding: 10px; margin-bottom: 8px; cursor: pointer; }
+.wf-snap-option.active { background: #f1f3f5; }
+.wf-snap-opt-head { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; }
+.wf-snap-badge-popular { background: #000000; color: #ffffff; font-size: 8.5px; font-weight: 800; padding: 1px 5px; border-radius: 2px; }
+.wf-qris-area { margin-top: 10px; display: flex; gap: 14px; align-items: center; }
+.wf-qris-qr-mock { width: 120px; height: 120px; border: 2px dashed #000000; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: 800; position: relative; }
+.wf-qris-instructions ol { padding-left: 14px; font-size: 9.5px; line-height: 1.5; color: #212529; }
+
+/* TICKET (HITAM PUTIH RESMI) */
+.wf-success-banner { background: #ffffff; border: 2px solid #000000; border-radius: 4px; padding: 14px 18px; margin-bottom: 20px; }
+.wf-success-title { font-size: 14px; font-weight: 800; color: #000000; }
+.wf-ticket-wrapper { max-width: 800px; margin: 0 auto; }
+.wf-ticket-card { border: 2px solid #000000; border-radius: 4px; overflow: hidden; padding: 0; }
+.wf-ticket-header { background: #ffffff; color: #000000; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000000; }
+.wf-ticket-logo { font-size: 14px; font-weight: 800; }
+.wf-ticket-body { padding: 20px; }
+.wf-ticket-grid { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+.wf-ticket-qr-box { width: 160px; height: 160px; border: 2px dashed #000000; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 800; background: #f8f9fa; }
+.wf-ticket-code-big { font-size: 15px; font-weight: 800; text-align: center; color: #000000; }
+.wf-ticket-qr-note { font-size: 9px; color: #495057; text-align: center; margin-top: 4px; }
+.wf-ticket-val-large { font-size: 14px; font-weight: 800; }
+.wf-ticket-payment-row { display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 8px; border: 1px solid #000000; border-radius: 2px; }
+.wf-ticket-price { font-size: 15px; font-weight: 800; color: #000000; }
+.wf-ticket-footer { background: #f8f9fa; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #000000; }
+
+/* DASHBOARD TAMU */
+.wf-dash-user-card { background: #ffffff; color: #000000; padding: 20px; border: 2px solid #000000; border-radius: 4px; margin-bottom: 16px; }
+.wf-dash-avatar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.wf-avatar-circle { width: 44px; height: 44px; border-radius: 50%; background: #ffffff; border: 2px solid #000000; color: #000000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; }
+.wf-dash-name { font-size: 16px; font-weight: 800; color: #000000; }
+.wf-dash-info { font-size: 10.5px; color: #495057; }
+.wf-stat-card { background: #f8f9fa; padding: 10px; border: 1.5px solid #000000; border-radius: 2px; text-align: center; }
+.wf-stat-num { font-size: 16px; font-weight: 800; color: #000000; display: block; }
+.wf-stat-lbl { font-size: 9.5px; color: #495057; }
+.wf-dash-tabs { display: flex; gap: 8px; border-bottom: 2px solid #000000; margin-bottom: 14px; }
+.wf-dash-tab { padding: 6px 12px; background: transparent; border: none; font-size: 11.5px; font-weight: 700; cursor: pointer; color: #6c757d; }
+.wf-dash-tab.active { color: #000000; border-bottom: 3px solid #000000; }
+.wf-res-item { padding: 14px; }
+.wf-border-bold { border: 2px solid #000000; }
+.wf-res-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #000000; }
+.wf-code-badge { font-weight: 800; font-size: 11.5px; margin-right: 6px; }
+.wf-res-body { display: flex; gap: 14px; align-items: center; }
+.wf-res-details { flex: 1; }
+.wf-res-title { font-size: 13px; font-weight: 800; margin-bottom: 3px; color: #000000; }
+
+/* ADMIN LAYOUT (HITAM PUTIH) */
+.wf-admin-layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100%; border: 2px solid #000000; }
+.wf-admin-sidebar { background: #ffffff; color: #000000; padding: 16px 12px; border-right: 2px solid #000000; }
+.wf-admin-brand { margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1.5px solid #000000; }
+.wf-brand-logo { font-size: 15px; font-weight: 800; color: #000000; }
+.wf-brand-sub { font-size: 9.5px; color: #495057; }
+.wf-menu-section { font-size: 9px; font-weight: 800; letter-spacing: 0.5px; color: #000000; margin-bottom: 6px; text-transform: uppercase; }
+.wf-menu-item { padding: 6px 8px; border: 1px solid transparent; border-radius: 2px; font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; }
+.wf-menu-item.active { background: #000000; color: #ffffff; }
+.wf-badge-count { background: #ffffff; color: #000000; border: 1px solid #000000; font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 800; }
+.wf-admin-topbar { background: #f8f9fa; border-bottom: 2px solid #000000; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+.wf-admin-body { padding: 20px; background: #ffffff; }
+.wf-kpi-card { display: flex; gap: 10px; align-items: center; }
+.wf-kpi-val { font-size: 16px; font-weight: 800; color: #000000; display: block; }
+.wf-kpi-growth { font-size: 9.5px; color: #000000; font-weight: 700; }
+.wf-admin-row-2 { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 14px; }
+.wf-chart-container { height: 150px; display: flex; align-items: flex-end; padding-top: 16px; }
+.wf-chart-bars { display: flex; justify-content: space-around; width: 100%; height: 100%; align-items: flex-end; border-bottom: 1.5px solid #000000; }
+.wf-bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9.5px; }
+.wf-bar { width: 30px; background: #ced4da; border: 1px solid #000000; border-radius: 2px 2px 0 0; }
+.wf-bar.active { background: #000000; }
+.wf-rooms-status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+.wf-room-dot-card { padding: 6px; border-radius: 2px; text-align: center; font-size: 9.5px; border: 1px solid #000000; }
+.wf-room-dot-card.occupied { background: #f1f3f5; color: #000000; font-weight: 700; }
+.wf-room-dot-card.available { background: #ffffff; color: #000000; }
+.wf-room-dot-card.cleaning { background: #e9ecef; color: #000000; }
+
+/* DATA TABLES (HITAM PUTIH MURNI) */
+.wf-data-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.wf-data-table th { background: #f1f3f5; text-align: left; padding: 8px; border-bottom: 2px solid #000000; font-weight: 800; color: #000000; border-top: 1px solid #000000; }
+.wf-data-table td { padding: 8px; border-bottom: 1px solid #000000; vertical-align: middle; }
+.wf-grand-total-row td { background: #f8f9fa; font-weight: 800; border-top: 2px solid #000000; border-bottom: 2px solid #000000; font-size: 12px; }
+.wf-total-income { color: #000000; font-size: 14px; font-weight: 800; }
+
+/* MODAL MOCK */
+.wf-modal-mock-card { border: 2px solid #000000; background: #ffffff; }
+.wf-modal-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1.5px solid #000000; }
+.wf-modal-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; padding-top: 10px; border-top: 1px solid #000000; }
+.wf-upload-dropzone { border: 2px dashed #000000; border-radius: 4px; padding: 16px; text-align: center; font-size: 10.5px; color: #000000; background: #f8f9fa; }
+.wf-pill-btn { padding: 5px 10px; border-radius: 2px; border: 1.5px solid #000000; background: #fff; font-size: 10.5px; font-weight: 700; cursor: pointer; color: #000000; }
+.wf-pill-btn.active { background: #000000; color: #fff; }
+
+/* MOBILE SCREEN */
+.wf-mobile-screen {
+  width: 375px;
+  min-height: 580px;
+  background: #ffffff;
+  border: 10px solid #000000;
+  border-radius: 28px;
+  margin: 0 auto;
+  overflow: hidden;
+  font-size: 11px;
+}
+.wf-m-header { background: #000000; color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+.wf-m-brand { font-weight: 800; font-size: 11px; }
+.wf-m-body { padding: 12px; }
+.wf-m-hero { background: #f8f9fa; color: #000; border-bottom: 1px solid #000; padding: 16px 12px; text-align: center; }
+.wf-m-title { font-size: 15px; font-weight: 800; margin: 3px 0; }
+.wf-m-sub { color: #495057; font-size: 9.5px; }
+.wf-m-search { padding: 10px; background: #ffffff; border-bottom: 1px solid #000000; }
+.wf-m-input { padding: 6px; background: #fff; border: 1px solid #000000; border-radius: 2px; font-size: 9.5px; margin-bottom: 5px; font-weight: 600; }
+.wf-m-room { margin-bottom: 10px; padding: 8px; border: 1.5px solid #000000; }
+.wf-report-signature-block { display: flex; justify-content: space-between; padding: 18px 8px 8px; margin-top: 12px; border-top: 1px dashed #000000; font-size: 10.5px; }
+.wf-signature-line { margin-top: 40px; border-top: 1px solid #000000; padding-top: 4px; display: inline-block; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wf-screen">
+  <!-- TOPBAR -->
+  <div class="wf-header">
+    <div class="wf-brand"><span class="wf-callout-badge">1</span><span class="wf-logo-box">[LOGO] RAMA HOMESTAY</span></div>
+    <div class="wf-nav-links">
+      <span class="wf-nav-item active">Beranda</span>
+      <span class="wf-nav-item">Kamar</span>
+      <span class="wf-nav-item">Fasilitas</span>
+      <span class="wf-nav-item">Wisata</span>
+      <span class="wf-nav-item">Ulasan</span>
+      <span class="wf-nav-item">Kontak</span>
+    </div>
+    <div class="wf-header-actions">
+      <button class="wf-btn wf-btn-sm wf-btn-outline">Masuk</button>
+      <button class="wf-btn wf-btn-sm wf-btn-primary">Daftar Akun</button>
+    </div>
+  </div>
+
+  <!-- HERO BANNER -->
+  <div class="wf-hero">
+    <div class="wf-hero-content">
+      <span class="wf-callout-badge">2</span>
+      <div class="wf-chip">HOMESTAY KELUARGA DI PUSAT KOTA</div>
+      <div class="wf-hero-title">Kenyamanan Menginap Bernuansa Tradisional Ramah Keluarga</div>
+      <div class="wf-hero-sub">Nikmati pengalaman istirahat terbaik dengan fasilitas lengkap, harga terjangkau, dan suasana tenang dekat destinasi wisata favorit.</div>
+      <div class="wf-hero-actions">
+        <button class="wf-btn wf-btn-primary">Jelajahi Pilihan Kamar</button>
+        <button class="wf-btn wf-btn-outline">Hubungi Pengelola</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING SEARCH BAR -->
+  <div class="wf-search-widget">
+    <span class="wf-callout-badge">3</span>
+    <div class="wf-search-col">
+      <label class="wf-label">TANGGAL CHECK-IN</label>
+      <div class="wf-input-mock">28 Okt 2026 [v]</div>
+    </div>
+    <div class="wf-search-divider"></div>
+    <div class="wf-search-col">
+      <label class="wf-label">TANGGAL CHECK-OUT</label>
+      <div class="wf-input-mock">30 Okt 2026 [v]</div>
+    </div>
+    <div class="wf-search-divider"></div>
+    <div class="wf-search-col">
+      <label class="wf-label">JUMLAH TAMU</label>
+      <div class="wf-input-mock">2 Dewasa, 0 Anak [v]</div>
+    </div>
+    <div class="wf-search-divider"></div>
+    <div class="wf-search-col wf-search-btn-col">
+      <button class="wf-btn wf-btn-primary wf-btn-block">Cari Ketersediaan</button>
+    </div>
+  </div>
+
+  <!-- HIGHLIGHT FITUR -->
+  <div class="wf-section">
+    <div class="wf-section-header">
+      <span class="wf-callout-badge">4</span>
+      <div class="wf-section-title">Mengapa Memilih Rama Homestay?</div>
+      <div class="wf-section-sub">Komitmen kami memberikan kenyamanan maksimal bagi setiap tamu dan keluarga.</div>
+    </div>
+    <div class="wf-grid-4">
+      <div class="wf-card wf-card-feature">
+        <div class="wf-text-icon">[01]</div>
+        <div class="wf-card-title">Lokasi Strategis</div>
+        <div class="wf-card-desc">Hanya 5 menit ke pusat kuliner dan kawasan wisata utama kota.</div>
+      </div>
+      <div class="wf-card wf-card-feature">
+        <div class="wf-text-icon">[02]</div>
+        <div class="wf-card-title">Wi-Fi Berkecepatan Tinggi</div>
+        <div class="wf-card-desc">Akses internet serat optik stabil di seluruh area kamar dan umum.</div>
+      </div>
+      <div class="wf-card wf-card-feature">
+        <div class="wf-text-icon">[03]</div>
+        <div class="wf-card-title">Area Parkir Luas</div>
+        <div class="wf-card-desc">Kapasitas mobil dan bus pribadi dengan pengamanan terpadu.</div>
+      </div>
+      <div class="wf-card wf-card-feature">
+        <div class="wf-text-icon">[04]</div>
+        <div class="wf-card-title">Sarapan Tradisional</div>
+        <div class="wf-card-desc">Menu sarapan lokal hangat disediakan setiap pagi untuk tamu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED ROOMS -->
+  <div class="wf-section wf-bg-alt">
+    <div class="wf-section-header">
+      <span class="wf-callout-badge">5</span>
+      <div class="wf-section-title">Pilihan Kamar Unggulan</div>
+      <div class="wf-section-sub">Pilih tipe kamar yang sesuai dengan kebutuhan perjalanan Anda.</div>
+    </div>
+    <div class="wf-grid-3">
+      <!-- ROOM 1 -->
+      <div class="wf-card wf-room-card">
+        <div class="wf-img-placeholder"><div class="wf-cross"></div><span>[Placeholder Foto: Standard Single]</span></div>
+        <div class="wf-room-body">
+          <div class="wf-badge-row"><span class="wf-badge">Standard</span><span class="wf-rating">Rating: 4.8 / 5.0 (24)</span></div>
+          <div class="wf-room-name">Standard Single Room</div>
+          <div class="wf-room-facilities">1 Single Bed | 1 Tamu | AC | Air Panas</div>
+          <div class="wf-room-price-row">
+            <div><span class="wf-price">Rp 200.000</span><span class="wf-unit"> / malam</span></div>
+            <button class="wf-btn wf-btn-sm wf-btn-primary">Detail dan Pesan</button>
+          </div>
+        </div>
+      </div>
+      <!-- ROOM 2 -->
+      <div class="wf-card wf-room-card">
+        <div class="wf-img-placeholder"><div class="wf-cross"></div><span>[Placeholder Foto: Deluxe King]</span></div>
+        <div class="wf-room-body">
+          <div class="wf-badge-row"><span class="wf-badge">Deluxe</span><span class="wf-rating">Rating: 4.9 / 5.0 (48)</span></div>
+          <div class="wf-room-name">Deluxe King Room</div>
+          <div class="wf-room-facilities">1 King Bed | 2 Tamu | AC | TV Kabel</div>
+          <div class="wf-room-price-row">
+            <div><span class="wf-price">Rp 350.000</span><span class="wf-unit"> / malam</span></div>
+            <button class="wf-btn wf-btn-sm wf-btn-primary">Detail dan Pesan</button>
+          </div>
+        </div>
+      </div>
+      <!-- ROOM 3 -->
+      <div class="wf-card wf-room-card">
+        <div class="wf-img-placeholder"><div class="wf-cross"></div><span>[Placeholder Foto: Family Suite]</span></div>
+        <div class="wf-room-body">
+          <div class="wf-badge-row"><span class="wf-badge">Family</span><span class="wf-rating">Rating: 5.0 / 5.0 (31)</span></div>
+          <div class="wf-room-name">Family Suite Room</div>
+          <div class="wf-room-facilities">2 Queen Beds | 4 Tamu | AC | Dapur Mini</div>
+          <div class="wf-room-price-row">
+            <div><span class="wf-price">Rp 550.000</span><span class="wf-unit"> / malam</span></div>
+            <button class="wf-btn wf-btn-sm wf-btn-primary">Detail dan Pesan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="wf-section">
+    <div class="wf-section-header">
+      <span class="wf-callout-badge">7</span>
+      <div class="wf-section-title">Ulasan Tamu Homestay</div>
+      <div class="wf-section-sub">Ulasan terverifikasi dari tamu yang telah selesai menginap di Rama Homestay.</div>
+    </div>
+    <div class="wf-grid-3">
+      <div class="wf-card wf-card-testi">
+        <div class="wf-rating-text">[ Skor Penilaian: 5 / 5 ]</div>
+        <div class="wf-testi-text">"Kamar sangat bersih, suasana asri, dan staf sangat ramah membantu rekomendasi kuliner lokal. Pasti menginap lagi."</div>
+        <div class="wf-testi-user"><strong>Ahmad Prasetyo</strong> — Jakarta</div>
+      </div>
+      <div class="wf-card wf-card-testi">
+        <div class="wf-rating-text">[ Skor Penilaian: 5 / 5 ]</div>
+        <div class="wf-testi-text">"Pemesanan online lancar via Midtrans QRIS, langsung dapat e-tiket dan check-in tanpa kendala. Sangat direkomendasikan."</div>
+        <div class="wf-testi-user"><strong>Siti Rahmawati</strong> — Surabaya</div>
+      </div>
+      <div class="wf-card wf-card-testi">
+        <div class="wf-rating-text">[ Skor Penilaian: 5 / 5 ]</div>
+        <div class="wf-testi-text">"Sangat cocok untuk liburan bersama keluarga. Parkir luas, sarapan enak, dan air panas berfungsi optimal."</div>
+        <div class="wf-testi-user"><strong>Budi Santoso</strong> — Yogyakarta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="wf-footer">
+    <span class="wf-callout-badge">8</span>
+    <div class="wf-grid-3">
+      <div>
+        <div class="wf-footer-brand">[LOGO] RAMA HOMESTAY</div>
+        <div class="wf-footer-text">Penginapan berkonsep homestay asri, modern, dan terjangkau di pusat kota. Solusi istirahat ideal bagi wisatawan dan keluarga.</div>
+      </div>
+      <div>
+        <div class="wf-footer-title">Kontak dan Reservasi</div>
+        <div class="wf-footer-text">Alamat: Jl. Parangtritis Km 5.5, Yogyakarta<br>Telepon: (0274) 889912<br>WhatsApp: +62 812-3456-7890<br>Email: info@ramahomestay.com</div>
+      </div>
+      <div>
+        <div class="wf-footer-title">Area Peta Navigasi</div>
+        <div class="wf-map-box"><div class="wf-cross"></div><span>[Placeholder: Area Peta Google Maps]</span></div>
+      </div>
+    </div>
+    <div class="wf-footer-bottom">(c) 2026 Rama Homestay. Hak Cipta Dilindungi Undang-Undang.</div>
+  </div>
+</div>
+</body>
+</html>
